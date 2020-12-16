@@ -1,0 +1,253 @@
+# vim:foldmethod=marker:ft=i3config
+output * background ~/pictures/wallpapers/joshua-rawson-harris-LERmV2dl4tQ-unsplash.jpg fill
+
+
+set $mod Mod4
+# output HDMI-A-1 scale 1.2
+# output * bg /home/vlad/vladDotfiles/wallpapers/Pictures/Wallpapers/matt-hardy-562566-unsplash.jpg fill
+# output HDMI-A-1 bg /home/vlad/vladDotfiles/wallpapers/Pictures/Wallpapers/matt-hardy-562566-unsplash.jpg fill
+
+input * {
+    xkb_layout ro
+    xkb_options caps:escape,shift:both_capslock
+}
+
+font pango:DejaVu Sans Mono 10
+# xwayland disable
+
+set $term $TERMINAL
+
+set $menu bemenu
+set $menu_args  -i --fn "Hack 13" --nb "$background" --nf "$foreground" --sb "$color0" --sf "$foreground"
+
+bindsym $mod+Return exec $term
+bindsym $mod+Shift+Return exec kitty 
+# bindsym --release $mod exec notify-send --icon=gtk-info Volume "U pressed mute."
+
+bindsym $mod+d exec dmenu_path | $menu | xargs swaymsg exec
+bindsym $mod+space exec j4-dmenu-desktop --no-generic --dmenu='$menu' --term='alacritty'
+bindsym $mod+Shift+d exec j4-dmenu-desktop --dmenu='$menu -l10 -p run' --term='alacritty'
+# bindsym Mod1+Tab exec alttab.sh "$menu -l10 -p focus_window"
+# bindsym $mod+Ctrl+space exec termite --name=launcher -e "bash -c 'fzf-launcher.sh'"
+# bindsym $mod+p exec gopass ls --flat | sort | $menu -p password | xargs --no-run-if-empty gopass show -c
+bindsym $mod+p exec ~/vladDotfiles/_scripts/passmenu.js
+bindsym $mod+comma exec networkmanager_dmenu 
+# for_window [app_id="^launcher$"] floating enable, border none
+for_window [app_id="^launcher$"] floating enable, border pixel 10, sticky enable
+bindsym $mod+Ctrl+Space exec alacritty --class=launcher -e env TERMINAL_COMMAND="alacritty -e" sway-launcher-desktop.sh
+
+
+## Workspaces {{{
+
+set $left h
+set $down j
+set $up k
+set $right l
+
+gaps inner 10px
+gaps outer 10px
+
+bindsym $mod+bracketright gaps inner current plus 5
+bindsym $mod+bracketleft gaps inner current minus 5
+bindsym $mod+braceright gaps outer current plus 5
+bindsym $mod+braceleft gaps outer current minus 5
+
+bindsym $mod+q kill
+floating_modifier $mod normal
+bindsym $mod+Shift+c reload
+
+bindsym $mod+$left focus left
+bindsym $mod+$down focus down
+bindsym $mod+$up focus up
+bindsym $mod+$right focus right
+
+bindsym $mod+Shift+$left move left
+bindsym $mod+Shift+$down move down
+bindsym $mod+Shift+$up move up
+bindsym $mod+Shift+$right move right
+
+bindsym $mod+Mod1+$left focus output left
+bindsym $mod+Mod1+$right focus output right
+bindsym $mod+Mod1+$up focus output up
+bindsym $mod+Mod1+$down focus output down
+
+bindsym $mod+Mod1+Shift+$left move workspace to output left
+bindsym $mod+Mod1+Shift+$right move workspace to output right
+bindsym $mod+Mod1+Shift+$up move workspace to output up
+bindsym $mod+Mod1+Shift+$down move workspace to output down
+
+bindsym $mod+Tab workspace next_on_output 
+bindsym $mod+Shift+Tab workspace prev_on_output
+bindsym $mod+Escape workspace prev_on_output
+workspace_auto_back_and_forth yes
+
+set $ws1 1
+set $ws2 2
+set $ws3 3
+set $ws4 4
+set $ws5 5
+set $ws6 6
+set $ws7 7
+set $ws8 8
+# set $ws9 9
+set $ws9 9
+set $ws10 10
+
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
+bindsym $mod+4 workspace $ws4
+bindsym $mod+5 workspace $ws5
+bindsym $mod+6 workspace $ws6
+bindsym $mod+7 workspace $ws7
+bindsym $mod+8 workspace $ws8
+bindsym $mod+9 workspace $ws9
+bindsym $mod+0 workspace $ws10
+bindsym $mod+slash workspace back_and_forth
+bindsym $mod+grave workspace back_and_forth
+
+bindsym $mod+Shift+1 move container to workspace $ws1
+bindsym $mod+Shift+2 move container to workspace $ws2
+bindsym $mod+Shift+3 move container to workspace $ws3
+bindsym $mod+Shift+4 move container to workspace $ws4
+bindsym $mod+Shift+5 move container to workspace $ws5
+bindsym $mod+Shift+6 move container to workspace $ws6
+bindsym $mod+Shift+7 move container to workspace $ws7
+bindsym $mod+Shift+8 move container to workspace $ws8
+bindsym $mod+Shift+9 move container to workspace $ws9
+bindsym $mod+Shift+0 move container to workspace $ws10
+bindsym $mod+Shift+slash move container to workspace back_and_forth
+
+bindsym $mod+v splith
+bindsym $mod+b splitv
+
+bindsym $mod+Shift+t layout stacking
+bindsym $mod+t layout tabbed
+bindsym $mod+s layout toggle split
+
+bindsym $mod+f fullscreen
+bindsym $mod+Shift+space floating toggle
+bindsym $mod+Mod1+space focus mode_toggle
+bindsym $mod+a focus parent
+bindsym $mod+Shift+a focus child
+bindsym $mod+Shift+s sticky toggle
+
+bindsym $mod+Shift+minus move scratchpad
+bindsym $mod+minus scratchpad show
+bindsym Ctrl+Mod1+Tab scratchpad show
+
+bindsym $mod+Shift+Left resize shrink width 10px
+bindsym $mod+Shift+Down resize grow height 10px
+bindsym $mod+Shift+Up resize shrink height 10px
+bindsym $mod+Shift+Right resize grow width 10px
+### }}}
+
+####: Mods {{{
+mode "resize" {
+    bindsym $left resize shrink width 10px
+    bindsym $down resize grow height 10px
+    bindsym $up resize shrink height 10px
+    bindsym $right resize grow width 10px
+
+    bindsym Left resize shrink width 10px
+    bindsym Down resize grow height 10px
+    bindsym Up resize shrink height 10px
+    bindsym Right resize grow width 10px
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+r mode "resize"
+
+mode "USB Mount Umount" {
+	bindsym m exec mountmenu.sh "$menu $menu_args -l10 -p mount_disk", mode "default"
+	bindsym u exec umountmenu.sh "$menu $menu_args -l10 -p umount_disk", mode "default"
+	bindsym Return mode "default"
+	bindsym Escape mode "default"
+}
+bindsym $mod+m mode "USB Mount Umount"
+
+set $mode_inhibit Inhibit keybindings 
+mode "$mode_inhibit" {
+    bindsym pause mode "default"
+    bindsym XF86Favorites mode "default"
+}
+bindsym XF86Favorites mode "$mode_inhibit"
+bindsym pause mode "$mode_inhibit"
+
+set $mode_system System (l)ock, (e)xit, (s)uspend, (h)ibernate, (r)eboot, sh(u)tdown, rel(o)ad
+mode "$mode_system" {
+    bindsym l exec swaylock -f, mode "default"
+    bindsym e exec swaymsg exit, mode "default"
+    bindsym s exec systemctl suspend, mode "default"
+    bindsym h exec systemctl hibernate, mode "default"
+    bindsym r exec systemctl reboot, mode "default"
+    bindsym u exec systemctl poweroff -i, mode "default"  
+    bindsym o reload, mode "default"  
+
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+u mode "$mode_system"
+####: }}}
+
+
+bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle & notify-send --icon=gtk-info Volume "U pressed mute."
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5% 
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
+# bindsym XF86Display exec backlight_toggle.sh 
+# bindsym XF86Bluetooth exec bluetooth_toggle.sh 
+
+bindsym $mod+w exec firefox --browser
+bindsym $mod+e exec nautilus --new-window
+
+assign [class="^Chromium$"] $ws9
+assign [app_id="^firefox$"] $ws8
+assign [app_id="qutebrowser$"] $ws9
+assign [class="Gimp"] gimp
+assign [app_id="org.gnome.Nautilus"] $ws10
+
+for_window [app_id="^firefox$"] focus
+for_window [app_id="firefox"] inhibit_idle fullscreen
+for_window [title="About Mozilla Firefox"] floating enable
+for_window [class="Spotify"] move to scratchpad, focus
+for_window [class="^Steam$"] inhibit_idle fullscreen
+for_window [title="Steam - News*"] kill
+for_window [app_id="qutebrowser$"] border pixel
+for_window [app_id="org.gnome.Nautilus"] floating enable
+for_window [title="File Transfer*"] floating enable
+# for_window [title="Browser Access Request"] floating enable
+for_window [app_id="firefox" title="Firefox - Sharing Indicator"] kill
+for_window [title="^Picture-in-Picture$"] floating enable, sticky enable, move right 330px,move down 70px
+for_window [workspace=$ws10] floating enable
+
+for_window [urgent=latest] focus
+
+
+workspace $ws8 gaps inner 0
+workspace $ws8 gaps outer 0
+
+default_border pixel 3
+bindsym $mod+Shift+b border toggle
+
+exec mako
+bindsym $mod+n exec makoctl dismiss
+bindsym $mod+Shift+n exec makoctl dismiss -a
+bindsym Print exec grim $HOME/pictures/$(date +'%Y-%m-%d-%H%M%S_grim.png') && notify-send --icon=gtk-info Volume "U took a screenshot"
+bindsym $mod+Print exec grim -g "$(slurp)" $HOME/pictures/$(date +'%Y-%m-%d-%H%M%S_grim.png') && notify-send --icon=gtk-info Volume "U took a screenshot"
+
+bindsym --inhibited $mod+Ctrl+Shift+q shortcuts_inhibitor deactivate
+
+exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+# exec gammastep -l 44:26
+exec kanshi
+# exec inactive-windows-transparency.py
+# exec clipman -d
+# exec waybar
+
+include /etc/sway/security.d/*
+include ~/.config/sway/local.d/$(hostname)/*
+# exec systemd-notify --ready || true
+

@@ -1,0 +1,30 @@
+# vim:foldmethod=marker:ft=i3config
+
+
+input "2:8:AlpsPS/2_ALPS_DualPoint_TouchPad" {
+    natural_scroll disabled
+}
+input "2:14:ETPS/2_Elantech_Touchpad" {
+   natural_scroll enabled 
+   tap enabled
+}
+
+bar {
+    # font pango:DejaVu Sans Mono, FontAwesome 10
+    # font pango:Source Code Pro 11
+    font pango:Hack 13
+    # font pango:Hack Nerd Font 13
+    position top
+    status_command i3status-rs /home/vlad/vladDotfiles/sway/.config/i3status-rs/config.toml
+    colors {
+        separator $foreground
+        background $background
+
+        statusline $color1
+        focused_workspace $color2 $color2 #ffffff
+        active_workspace #333333 #333333 #ffffff
+        inactive_workspace $color0 $color0 #888888
+        urgent_workspace #2f343a #900000 #ffffff
+    }
+}
+

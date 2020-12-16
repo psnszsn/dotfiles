@@ -1,0 +1,40 @@
+# vim:foldmethod=marker:ft=i3config
+
+# output * scale 2
+
+output "Goldstar Company Ltd LG Ultra HD 0x0000AEAA" {
+    pos 0 0
+    scale 2
+    scale_filter nearest
+}
+
+bar {
+     swaybar_command waybar
+}
+
+# bar {
+#     # font pango:DejaVu Sans Mono, FontAwesome 10
+#     # font pango:Source Code Pro 11
+#     font pango:Hack 13
+#     # font pango:Hack Nerd Font 13
+#     position top
+#     status_command i3status-rs /home/vlad/vladDotfiles/sway/.config/i3status-rs/config_ryz.toml
+#     colors {
+#         background #00000000
+#         separator #00000000
+#     }
+# }
+
+
+exec swayidle -w \
+         timeout 300 'swaylock -f -c 000000' \
+         timeout 600 'swaymsg "output * dpms off"' \
+              resume 'swaymsg "output * dpms on"' \
+         before-sleep 'swaylock -f -c 000000'
+
+
+bindsym $mod+Up exec playerctl play
+bindsym $mod+Down exec playerctl pause
+bindsym $mod+Right exec playerctl next
+bindsym $mod+Left exec playerctl previous
+

@@ -1,0 +1,28 @@
+# vim:foldmethod=marker:ft=i3config
+bar {
+    # font pango:DejaVu Sans Mono, FontAwesome 10
+    # font pango:Source Code Pro 11
+    font pango:Hack 13
+    # font pango:Hack Nerd Font 13
+    position top
+    status_command i3status-rs /home/vlad/vladDotfiles/sway/.config/i3status-rs/config_ryz.toml
+    colors {
+       # separator $foreground
+        # background $background
+        background #00000000
+        separator #00000000
+
+        statusline $color1
+        focused_workspace $color2 $color2 #ffffff
+        active_workspace #333333 #333333 #ffffff
+        inactive_workspace $color0 $color0 #888888
+        urgent_workspace #2f343a #900000 #ffffff
+    }
+}
+
+
+exec swayidle -w \
+         timeout 300 'swaylock -f -c 000000' \
+         timeout 600 'swaymsg "output * dpms off"' \
+              resume 'swaymsg "output * dpms on"' \
+         before-sleep 'swaylock -f -c 000000'

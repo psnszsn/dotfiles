@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Winbox
+Comment=Microtik winbox
+Exec=wine '/home/vlad/documents/WINE/winbox.exe'
+Terminal=false
+Type=Application
+Categories=Wine;

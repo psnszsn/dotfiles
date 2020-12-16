@@ -1,0 +1,41 @@
+[user]
+	name = Vlad Pănăzan
+	email = vlad@panazan.ro
+
+[alias]
+    co = "!f() { git checkout \"$@\" && git stash list | grep \"$1:\"; }; f"
+    last = log -1 HEAD
+    st = status
+    uncommit = reset --soft HEAD~
+    unstage = reset HEAD --
+    lg = log --graph --abbrev-commit --decorate --date=relative --all
+    res = restore
+	acp = "!f() { git add -A && git commit -m \"$@\" && git push; }; f"
+    diffkitty = "difftool --no-symlinks --dir-diff --tool kitty"
+
+
+[color]
+    diff = auto
+    status = auto
+    branch = auto
+	ui = true
+[core]
+	editor = nvim
+    ; pager = delta
+
+[difftool "kitty"]
+    cmd = kitty +kitten diff $LOCAL $REMOTE
+
+[sendemail]
+	smtpserver = smtp.migadu.com
+	smtpuser = vlad@panazan.ro
+	smtpencryption = tls
+	smtpserverport = 587
+
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+[pull]
+	ff = only

@@ -98,7 +98,7 @@ map('n', '<leader>]', ':Buffers<CR>')
 map('n', '\\', '<cmd>noh<CR>')
 map('n', 'U', '<C-R>')
 
-map('', '<C-h>', '<C-w>j')
+map('', '<C-h>', '<C-w>h')
 map('', '<C-j>', '<C-w>j')
 map('', '<C-k>', '<C-w>k')
 map('', '<C-l>', '<C-w>l')

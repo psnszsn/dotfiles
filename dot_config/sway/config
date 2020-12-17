@@ -1,11 +1,7 @@
 # vim:foldmethod=marker:ft=i3config
 output * background ~/pictures/wallpapers/joshua-rawson-harris-LERmV2dl4tQ-unsplash.jpg fill
 
-
 set $mod Mod4
-# output HDMI-A-1 scale 1.2
-# output * bg /home/vlad/vladDotfiles/wallpapers/Pictures/Wallpapers/matt-hardy-562566-unsplash.jpg fill
-# output HDMI-A-1 bg /home/vlad/vladDotfiles/wallpapers/Pictures/Wallpapers/matt-hardy-562566-unsplash.jpg fill
 
 input * {
     xkb_layout ro
@@ -30,7 +26,7 @@ bindsym $mod+Shift+d exec j4-dmenu-desktop --dmenu='$menu -l10 -p run' --term='a
 # bindsym Mod1+Tab exec alttab.sh "$menu -l10 -p focus_window"
 # bindsym $mod+Ctrl+space exec termite --name=launcher -e "bash -c 'fzf-launcher.sh'"
 # bindsym $mod+p exec gopass ls --flat | sort | $menu -p password | xargs --no-run-if-empty gopass show -c
-bindsym $mod+p exec ~/vladDotfiles/_scripts/passmenu.js
+bindsym $mod+p exec passmenu.js
 bindsym $mod+comma exec networkmanager_dmenu 
 # for_window [app_id="^launcher$"] floating enable, border none
 for_window [app_id="^launcher$"] floating enable, border pixel 10, sticky enable

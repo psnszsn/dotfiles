@@ -32,6 +32,7 @@ paq 'Yggdroot/indentLine'
 paq 'mcchrish/nnn.vim'
 
 paq 'arzg/vim-colors-xcode'
+paq 'arcticicestudio/nord-vim'
 
 -------------------- PLUGIN SETUP --------------------------
 g['netrw_banner'] = 0
@@ -52,10 +53,12 @@ g['lightline'] = {
      },
 }
 
+cmd 'au TextYankPost * lua vim.highlight.on_yank {on_visual = false}'  -- disabled in visual mode
+
 -------------------- OPTIONS -------------------------------
 local indent = 4
-cmd 'colorscheme xcodedarkhc'
-bo.expandtab = true               -- Use spaces instead of tabs
+cmd 'colorscheme nord'
+bo.expandtab = false              -- Use spaces instead of tabs
 bo.shiftwidth = indent            -- Size of an indent
 bo.smartindent = true             -- Insert indents automatically
 bo.tabstop = indent               -- Number of spaces tabs count for
@@ -82,7 +85,7 @@ wo.listchars = 'tab:▸ ,trail:·,nbsp:+,eol:¬'
 wo.number = true                  -- Print line number
 wo.relativenumber = true          -- Relative line numbers
 wo.signcolumn = 'yes'             -- Show sign column
-wo.wrap = false                   -- Disable line wrap
+-- wo.wrap = false                   -- Disable line wrap
 
 o.shortmess = o.shortmess..'c'
 o.completeopt= 'menuone,noinsert,noselect'

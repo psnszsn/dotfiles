@@ -6,7 +6,7 @@
 # wait a second this is too fast for udev
 sleep 1
 
-btdev="$(pactl list sinks|grep Name|grep 'bluez5.a2dp.sink'|sed 's/Name: //'|sed 's/\s//')"
+btdev="$(pactl list sinks|grep Name|grep 'bluez.*.a2dp.sink'|sed 's/Name: //'|sed 's/\s//')"
 if [ -n "$btdev" ]; then
   echo "Found bluetooth device: $btdev"
 else

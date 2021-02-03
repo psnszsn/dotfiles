@@ -52,8 +52,6 @@ set -gx FZF_ALT_C_COMMAND 'fd --type directory --hidden'
 set -gx NNN_PLUG 'f:finder;o:fzcd;d:diffs;t:nmount;v:imgview;p:preview-tui;z:autojump'
 
 set -x fish_user_paths \
-        ~/vladDotfiles/_scripts \
-        ~/.local/bin \
         ~/.cargo/bin \
         ~/go/bin \
         ~/.local/share/npm/bin \

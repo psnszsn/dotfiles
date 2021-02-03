@@ -14,14 +14,13 @@ font pango:DejaVu Sans Mono 10
 set $term $TERMINAL
 
 set $menu bemenu
-set $menu_args  -i --fn "Hack 13" --nb "$background" --nf "$foreground" --sb "$color0" --sf "$foreground"
 
 bindsym $mod+Return exec $term
 bindsym $mod+Shift+Return exec kitty 
 # bindsym --release $mod exec notify-send --icon=gtk-info Volume "U pressed mute."
 
 bindsym $mod+d exec dmenu_path | $menu | xargs swaymsg exec
-bindsym $mod+space exec j4-dmenu-desktop --no-generic --dmenu='$menu' --term='alacritty'
+bindsym $mod+space exec j4-dmenu-desktop --no-generic --dmenu='$menu' --term='alacritty' --wrapper='swaymsg exec'
 bindsym $mod+Shift+d exec j4-dmenu-desktop --dmenu='$menu -l10 -p run' --term='alacritty'
 # bindsym Mod1+Tab exec alttab.sh "$menu -l10 -p focus_window"
 # bindsym $mod+Ctrl+space exec termite --name=launcher -e "bash -c 'fzf-launcher.sh'"
@@ -224,6 +223,8 @@ for_window [urgent=latest] focus
 
 workspace $ws8 gaps inner 0
 workspace $ws8 gaps outer 0
+workspace $ws9 gaps inner 0
+workspace $ws9 gaps outer 0
 
 default_border pixel 3
 bindsym $mod+Shift+b border toggle
@@ -237,11 +238,10 @@ bindsym $mod+Print exec grim -g "$(slurp)" $HOME/pictures/$(date +'%Y-%m-%d-%H%M
 bindsym --inhibited $mod+Ctrl+Shift+q shortcuts_inhibitor deactivate
 
 exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
-# exec gammastep -l 44:26
+exec gammastep -l 44:26
 exec kanshi
-# exec inactive-windows-transparency.py
+
 # exec clipman -d
-# exec waybar
 
 include /etc/sway/security.d/*
 include ~/.config/sway/local.d/$(hostname)/*

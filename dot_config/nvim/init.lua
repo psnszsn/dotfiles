@@ -33,6 +33,7 @@ paq 'mcchrish/nnn.vim'
 
 paq 'arzg/vim-colors-xcode'
 paq 'arcticicestudio/nord-vim'
+paq 'evanleck/vim-svelte'
 
 -------------------- PLUGIN SETUP --------------------------
 g['netrw_banner'] = 0
@@ -98,6 +99,8 @@ map('n', '<leader>l', ':set list!<CR>')
 map('n', '<leader>-', ':Files<CR>')
 map('n', '<leader>[', ':GFiles<CR>')
 map('n', '<leader>]', ':Buffers<CR>')
+map('n', '<leader>a', '<esc>ggVG<CR>')
+
 map('n', '\\', '<cmd>noh<CR>')
 map('n', 'U', '<C-R>')
 

@@ -1,0 +1,11 @@
+# vim:ft=sh
+
+echo Hello
+
+export EDITOR=nvim
+export WINEDLLOVERRIDES=winemenubuilder.exe=d
+
+if [ "$(tty)" = "/dev/tty1" ]
+then
+	exec $HOME/.local/bin/startsway.sh
+fi

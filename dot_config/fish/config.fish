@@ -23,6 +23,7 @@ abbr -a lsls "fd --changed-within 1d -X exa -dl -rs modified"
 abbr -a apk "sudo apk"
 abbr -a yay paru
 abbr -a j z
+abbr -a p paru
 abbr -a cz chezmoi
 
 

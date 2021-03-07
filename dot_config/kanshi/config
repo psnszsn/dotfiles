@@ -16,3 +16,10 @@ profile asd {
 	output "Unknown 0x243D 0x00000000" position 0,1440
 	output "Dell Inc. DELL U2518D 3C4YP8C7786L" position 0,0
 }
+
+
+profile 3_displ_ana {
+	output "Dell Inc. DELL P2720DC 81WTK9B7042S" position 0,0
+	output "Dell Inc. DELL U2518D 3C4YP8C7786L" position 2560,0
+	output eDP-1 position 1493,1440
+}

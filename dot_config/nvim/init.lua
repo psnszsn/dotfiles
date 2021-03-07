@@ -13,6 +13,7 @@ end
 -------------------- PLUGINS -------------------------------
 cmd 'packadd paq-nvim'
 local paq = require('paq-nvim').paq
+paq{'savq/paq-nvim', opt=true}     -- Let Paq manage itself
 
 paq 'tpope/vim-commentary'
 paq 'tpope/vim-surround'
@@ -25,24 +26,34 @@ paq {'nvim-treesitter/nvim-treesitter'}
 paq 'ojroques/nvim-lspfuzzy'
 paq 'nvim-lua/lsp-status.nvim'
 
+-- paq 'SirVer/ultisnips'
+-- paq 'honza/vim-snippets'
+
+paq 'nvim-lua/popup.nvim'
+paq 'nvim-lua/plenary.nvim'
+paq 'nvim-telescope/telescope.nvim'
+
 paq {'junegunn/fzf.vim'}
 paq 'itchyny/lightline.vim'
 paq 'lambdalisue/suda.vim'
 paq 'Yggdroot/indentLine'
-paq 'mcchrish/nnn.vim'
 
 paq 'arzg/vim-colors-xcode'
 paq 'arcticicestudio/nord-vim'
+paq 'embark-theme/vim'
 paq 'evanleck/vim-svelte'
 
 -------------------- PLUGIN SETUP --------------------------
-g['netrw_banner'] = 0
+-- g['netrw_banner'] = 0
 g['csv_no_conceal'] = 1
 g['xml_syntax_folding'] = 1
 g['vim_markdown_conceal'] = 0
 g['vim_markdown_conceal_code_blocks'] = 0
+g['embark_terminal_italics'] = 1
+-- g['completion_enable_snippet'] = 'UltiSnips'
 
 g['lightline'] = {
+	colorscheme = 'embark',
 	active = {
 		left = {
 			{'mode','paste'},
@@ -58,7 +69,7 @@ cmd 'au TextYankPost * lua vim.highlight.on_yank {on_visual = false}'  -- disabl
 
 -------------------- OPTIONS -------------------------------
 local indent = 4
-cmd 'colorscheme nord'
+cmd 'colorscheme embark'
 bo.expandtab = false              -- Use spaces instead of tabs
 bo.shiftwidth = indent            -- Size of an indent
 bo.smartindent = true             -- Insert indents automatically
@@ -99,6 +110,7 @@ map('n', '<leader>l', ':set list!<CR>')
 map('n', '<leader>-', ':Files<CR>')
 map('n', '<leader>[', ':GFiles<CR>')
 map('n', '<leader>]', ':Buffers<CR>')
+map('n', '-', ':Ex<CR>')
 map('n', '<leader>a', '<esc>ggVG<CR>')
 
 map('n', '\\', '<cmd>noh<CR>')
@@ -137,26 +149,88 @@ lsp_status.register_progress()
 function lspstat()
 	if #vim.lsp.buf_get_clients() == 0 then
 		return ''
-	end	
+	end
 	return require('lsp-status').status()
 end
 
 cmd 'au User LspDiagnosticsChanged call lightline#update()'
 cmd 'au User LspMessageUpdate call lightline#update()'
 cmd 'au User LspStatusUpdate call lightline#update()'
-	
-local lsp = require 'lspconfig'
+
+local nvim_lsp = require('lspconfig')
 local lsp_completion = require('completion')
 
-local function on_attach(client)
-    lsp_status.on_attach(client)
-    lsp_completion.on_attach(client)
+local on_attach = function(client, bufnr)
+  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+
+  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  -- Mappings.
+  local opts = { noremap=true, silent=true }
+  buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+  buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+  buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+  buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+  buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+  buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+  buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+  buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+
+  -- Set some keybinds conditional on server capabilities
+  if client.resolved_capabilities.document_formatting then
+    buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+  elseif client.resolved_capabilities.document_range_formatting then
+    buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
+  end
+
+	lsp_status.on_attach(client)
+	lsp_completion.on_attach(client)
 end
 
-local default_lsp_config = {on_attach = on_attach, capabilities = lsp_status.capabilities}
+-- local default_lsp_config = {on_attach = on_attach, capabilities = lsp_status.capabilities}
 
-lsp.clangd.setup(default_lsp_config)
-lsp.rust_analyzer.setup(default_lsp_config)
+-- lsp.clangd.setup(default_lsp_config)
+-- lsp.rust_analyzer.setup(default_lsp_config)
+-- lsp.gopls.setup(default_lsp_config)
+
+-- Use a loop to conveniently both setup defined servers
+-- and map buffer local keybindings when the language server attaches
+local servers = { "clangd", "rust_analyzer", "gopls" }
+for _, lsp in ipairs(servers) do
+  nvim_lsp[lsp].setup { on_attach = on_attach, capabilities = lsp_status.capabilities }
+end
+
+nvim_lsp.sumneko_lua.setup {
+  cmd = {'/bin/lua-language-server'},
+  settings = {
+    Lua = {
+      runtime = {
+        version = 'LuaJIT',
+        -- Setup your lua path
+        path = vim.split(package.path, ';'),
+      },
+      diagnostics = {
+        -- Get the language server to recognize the `vim` global
+        globals = {'vim'},
+      },
+      workspace = {
+        -- Make the server aware of Neovim runtime files
+        library = {
+          [vim.fn.expand('$VIMRUNTIME/lua')] = true,
+          [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
+        },
+      },
+    },
+  },
+}
 
 require('lspfuzzy').setup {}
 -- cmd 'autocmd BufEnter * lua require'completion'.on_attach()'
@@ -170,19 +244,19 @@ require('lspfuzzy').setup {}
 -- fn.sign_define("LspDiagnosticsSignHint",
 --     {text = "!", texthl = "LspDiagnosticsSignHint"})
 
-map('n', '<leader>,', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>')
-map('n', '<leader>;', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>')
-map('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>')
-map('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>')
-map('n', 'gi','<cmd>lua vim.lsp.buf.implementation()<CR>')
-map('n', 'gt','<cmd>lua vim.lsp.buf.type_definition()<CR>')
-map('n', '<leader>f', '<cmd>lua vim.lsp.buf.formatting()<CR>')
-map('n', '<leader>h', '<cmd>lua vim.lsp.buf.hover()<CR>')
-map('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>')
-map('n', '<leader>s', '<cmd>lua vim.lsp.buf.document_symbol()<CR>')
-map('n', '<leader>x', '<cmd>ClangdSwitchSourceHeader<CR>')
-map('n', '<leader>qf', '<cmd>lua vim.lsp.buf.code_action()<CR>')
-map('n', '<leader>ee','<cmd>lua vim.lsp.util.show_line_diagnostics()<CR>')
+-- map('n', '<leader>,', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>')
+-- map('n', '<leader>;', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>')
+-- map('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>')
+-- map('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>')
+-- map('n', 'gi','<cmd>lua vim.lsp.buf.implementation()<CR>')
+-- map('n', 'gt','<cmd>lua vim.lsp.buf.type_definition()<CR>')
+-- map('n', '<leader>f', '<cmd>lua vim.lsp.buf.formatting()<CR>')
+-- map('n', '<leader>h', '<cmd>lua vim.lsp.buf.hover()<CR>')
+-- map('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>')
+-- map('n', '<leader>s', '<cmd>lua vim.lsp.buf.document_symbol()<CR>')
+-- map('n', '<leader>x', '<cmd>ClangdSwitchSourceHeader<CR>')
+-- map('n', '<leader>qf', '<cmd>lua vim.lsp.buf.code_action()<CR>')
+-- map('n', '<leader>ee','<cmd>lua vim.lsp.util.show_line_diagnostics()<CR>')
 
 -------------------- TREE-SITTER ---------------------------
 local ts = require 'nvim-treesitter.configs'

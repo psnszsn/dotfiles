@@ -1,5 +1,5 @@
 # vim:foldmethod=marker:ft=i3config
-output * background ~/pictures/wallpapers/joshua-rawson-harris-LERmV2dl4tQ-unsplash.jpg fill
+output * background /usr/share/backgrounds/crepo/joshua-rawson-harris-LERmV2dl4tQ-unsplash.jpg fill
 
 set $mod Mod4
 
@@ -39,8 +39,8 @@ set $down j
 set $up k
 set $right l
 
-gaps inner 10px
-gaps outer 10px
+gaps inner 5px
+gaps outer 5px
 
 bindsym $mod+bracketright gaps inner current plus 5
 bindsym $mod+bracketleft gaps inner current minus 5
@@ -199,6 +199,7 @@ bindsym $mod+w exec firefox --browser
 bindsym $mod+e exec nautilus --new-window
 
 assign [class="^Chromium$"] $ws9
+assign [app_id="^Chromium$"] $ws9
 assign [app_id="^firefox$"] $ws8
 assign [app_id="qutebrowser$"] $ws9
 assign [class="Gimp"] gimp
@@ -243,7 +244,6 @@ exec kanshi
 
 # exec clipman -d
 
-include /etc/sway/security.d/*
 include ~/.config/sway/local.d/$(hostname)/*
 # exec systemd-notify --ready || true
-
+include /etc/sway/config.d/*

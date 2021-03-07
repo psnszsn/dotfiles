@@ -8,6 +8,9 @@ height=${3:-$(tput lines)}
 # hpos=$4
 # vpos=$5
 
+trap 'notify-send asd asd' SIGPIPE
+# notify-send asd as222
+
 
 FILE_PATH="${1}"
 FILE_EXTENSION="${FILE_PATH##*.}"
@@ -17,8 +20,8 @@ FILE_EXTENSION_LOWER=$(echo ${FILE_EXTENSION} | tr '[:upper:]' '[:lower:]')
 case "$FILE_EXTENSION_LOWER" in
 	a|ace|alz|arc|arj|bz|bz2|cab|cpio|deb|gz|jar|lha|lz|lzh|lzma|lzo|\
 	rpm|rz|t7z|tar|tbz|tbz2|tgz|tlz|txz|tZ|tzo|war|xpi|xz|Z|zip)
-		# atool --list -- "${FILE_PATH}"
-		bsdtar --list --file "${FILE_PATH}"
+		atool --list -- "${FILE_PATH}" || true
+		# bsdtar --list --file "${FILE_PATH}"
 		exit;;
 	rar)
 		unrar lt -p- -- "${FILE_PATH}"

@@ -10,6 +10,7 @@ input * {
 
 font pango:DejaVu Sans Mono 10
 # xwayland disable
+# mouse_warping container
 
 set $term $TERMINAL
 
@@ -25,7 +26,7 @@ bindsym $mod+Shift+d exec j4-dmenu-desktop --dmenu='$menu -l10 -p run' --term='a
 # bindsym Mod1+Tab exec alttab.sh "$menu -l10 -p focus_window"
 # bindsym $mod+Ctrl+space exec termite --name=launcher -e "bash -c 'fzf-launcher.sh'"
 # bindsym $mod+p exec gopass ls --flat | sort | $menu -p password | xargs --no-run-if-empty gopass show -c
-bindsym $mod+p exec ~/.local/bin/passmenu.js
+bindsym $mod+p exec keeprompt
 bindsym $mod+comma exec networkmanager_dmenu 
 # for_window [app_id="^launcher$"] floating enable, border none
 for_window [app_id="^launcher$"] floating enable, border pixel 10, sticky enable
@@ -188,6 +189,7 @@ bindsym $mod+u mode "$mode_system"
 ####: }}}
 
 
+# bindsym $mod+Alt+Tab exec alacritty
 bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle & notify-send --icon=gtk-info Volume "U pressed mute."
 bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5% 
 bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
@@ -208,7 +210,7 @@ assign [app_id="org.gnome.Nautilus"] $ws10
 for_window [app_id="^firefox$"] focus
 for_window [app_id="firefox"] inhibit_idle fullscreen
 for_window [title="About Mozilla Firefox"] floating enable
-for_window [class="Spotify"] move to scratchpad, focus
+for_window [class="Spotify"] move to scratchpad, focus, border normal
 for_window [class="^Steam$"] inhibit_idle fullscreen
 for_window [title="Steam - News*"] kill
 for_window [app_id="qutebrowser$"] border pixel

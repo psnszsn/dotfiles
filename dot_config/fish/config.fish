@@ -1,5 +1,4 @@
 abbr -a nv nvim
-abbr -a pass gopass
 abbr -a q exit
 abbr -a o xdg-open
 abbr -a swayconfig "nvim ~/.config/sway/config"

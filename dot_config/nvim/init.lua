@@ -7,7 +7,23 @@ local o, bo, wo = vim.o, vim.bo, vim.wo
 local function map(mode, lhs, rhs, opts)
   local options = {noremap = true}
   if opts then for k, v in pairs(opts) do options[k] = v end end
-  vim.api.nvim_set_keymap(mode, lhs, rhs, options)
+	vim.api.nvim_set_keymap(mode, lhs, rhs, options)
+end
+
+
+local function set_global_opt(...)
+	local args={...}
+	for i=1,#args do
+		if pcall(vim.api.nvim_buf_get_option, 0, args[i]) then
+			o[args[i]]=bo[args[i]]
+		elseif pcall(vim.api.nvim_win_get_option, 0, args[i]) then
+			o[args[i]]=wo[args[i]]
+		else
+			print("Invalid option.")
+		end
+		-- bo[args[i]]=o[args[i]]
+		-- print(args[i])
+	end
 end
 
 -------------------- PLUGINS -------------------------------
@@ -21,7 +37,8 @@ paq 'tpope/vim-repeat'
 paq 'tpope/vim-sensible'
 paq 'tpope/vim-fugitive'
 paq 'neovim/nvim-lspconfig'
-paq 'nvim-lua/completion-nvim'
+-- paq 'nvim-lua/completion-nvim'
+paq 'hrsh7th/nvim-compe'
 paq {'nvim-treesitter/nvim-treesitter'}
 paq 'ojroques/nvim-lspfuzzy'
 paq 'nvim-lua/lsp-status.nvim'
@@ -36,12 +53,17 @@ paq 'nvim-telescope/telescope.nvim'
 paq {'junegunn/fzf.vim'}
 paq 'itchyny/lightline.vim'
 paq 'lambdalisue/suda.vim'
-paq 'Yggdroot/indentLine'
+-- paq 'Yggdroot/indentLine'
+paq{'lukas-reineke/indent-blankline.nvim', branch='lua'}
 
 paq 'arzg/vim-colors-xcode'
-paq 'arcticicestudio/nord-vim'
+-- paq 'arcticicestudio/nord-vim'
+paq 'shaunsingh/nord.nvim'
 paq 'embark-theme/vim'
-paq 'evanleck/vim-svelte'
+-- paq 'shaunsingh/moonlight.nvim'
+-- paq 'evanleck/vim-svelte'
+paq 'mboughaba/i3config.vim'
+paq 'ziglang/zig.vim'
 
 -------------------- PLUGIN SETUP --------------------------
 -- g['netrw_banner'] = 0
@@ -67,6 +89,10 @@ g['lightline'] = {
 
 cmd 'au TextYankPost * lua vim.highlight.on_yank {on_visual = false}'  -- disabled in visual mode
 
+ -- ÃĂªŞÞŢãăºşþţ
+ cmd 'command FixSub set fileencoding=utf-8 | %s/Ã/Ă/ge | %s/ª/Ș/ge | %s/Þ/Ț/ge | %s/ã/ă/ge | %s/º/ș/ge | %s/þ/ț/ge'
+
+
 -------------------- OPTIONS -------------------------------
 local indent = 4
 cmd 'colorscheme embark'
@@ -74,6 +100,8 @@ bo.expandtab = false              -- Use spaces instead of tabs
 bo.shiftwidth = indent            -- Size of an indent
 bo.smartindent = true             -- Insert indents automatically
 bo.tabstop = indent               -- Number of spaces tabs count for
+set_global_opt('expandtab', 'shiftwidth', 'smartindent', 'tabstop');
+
 o.mouse='a'                       -- Use mouse
 o.undofile = true                 -- Persistend undo
 o.hidden = true                   -- Enable background buffers
@@ -93,14 +121,17 @@ o.conceallevel = 0                -- Disable conceal
 wo.colorcolumn = '80'             -- Line length marker
 wo.cursorline = true              -- Highlight cursor line
 wo.list = false                   -- Show some invisible characters
-wo.listchars = 'tab:▸ ,trail:·,nbsp:+,eol:¬'
+o.listchars = 'tab:▸ ,trail:·,nbsp:+,eol:¬'
+-- o.listchars = 'tab:▸ ,trail:·,nbsp:+,eol:¬'
 wo.number = true                  -- Print line number
 wo.relativenumber = true          -- Relative line numbers
 wo.signcolumn = 'yes'             -- Show sign column
+set_global_opt('number', 'relativenumber' ,'signcolumn')
 -- wo.wrap = false                   -- Disable line wrap
+--      asda sd asd
 
 o.shortmess = o.shortmess..'c'
-o.completeopt= 'menuone,noinsert,noselect'
+o.completeopt= 'menuone,noselect'
 
 -------------------- MAPPINGS ------------------------------
 vim.g.mapleader = " "
@@ -141,6 +172,8 @@ map('n', 'Q', '<nop>')
 
 map('i', '<S-Tab>', 'pumvisible() ? "<C-p>" : "<Tab>"', {expr = true})
 map('i', '<Tab>', 'pumvisible() ? "<C-n>" : "<Tab>"', {expr = true})
+map('i', '<C-Space>', 'compe#complete()', {expr = true})
+
 
 -------------------- LSP -----------------------------------
 local lsp_status = require('lsp-status')
@@ -192,7 +225,7 @@ local on_attach = function(client, bufnr)
   end
 
 	lsp_status.on_attach(client)
-	lsp_completion.on_attach(client)
+	-- lsp_completion.on_attach(client)
 end
 
 -- local default_lsp_config = {on_attach = on_attach, capabilities = lsp_status.capabilities}
@@ -203,10 +236,36 @@ end
 
 -- Use a loop to conveniently both setup defined servers
 -- and map buffer local keybindings when the language server attaches
-local servers = { "clangd", "rust_analyzer", "gopls" }
+local servers = { "clangd", "rust_analyzer", "gopls", "svelte", "zls"}
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup { on_attach = on_attach, capabilities = lsp_status.capabilities }
 end
+
+require'compe'.setup {
+  enabled = true;
+  autocomplete = true;
+  debug = false;
+  min_length = 1;
+  preselect = 'enable';
+  throttle_time = 80;
+  source_timeout = 200;
+  incomplete_delay = 400;
+  max_abbr_width = 100;
+  max_kind_width = 100;
+  max_menu_width = 100;
+  documentation = true;
+
+  source = {
+    path = true;
+    buffer = true;
+    calc = true;
+    nvim_lsp = true;
+    nvim_lua = true;
+    vsnip = false;
+  };
+
+}
+
 
 nvim_lsp.sumneko_lua.setup {
   cmd = {'/bin/lua-language-server'},
@@ -260,4 +319,9 @@ require('lspfuzzy').setup {}
 
 -------------------- TREE-SITTER ---------------------------
 local ts = require 'nvim-treesitter.configs'
-ts.setup {ensure_installed = 'maintained', highlight = {enable = true}}
+ts.setup {
+	ensure_installed = 'maintained',
+	highlight = {enable = true},
+	incremental_selection = {enable = true},
+	indent = {enable = true},
+}

@@ -23,3 +23,8 @@ profile 3_displ_ana {
 	output "Dell Inc. DELL U2518D 3C4YP8C7786L" position 2560,0
 	output eDP-1 position 1493,1440
 }
+
+profile tv_ana {
+	output "Samsung Electric Company SAMSUNG 0x00000701" position 0,0 scale 2
+	output eDP-1 position 0,1080
+}

@@ -24,3 +24,7 @@ bindsym $mod+Up exec playerctl play
 bindsym $mod+Down exec playerctl pause
 bindsym $mod+Right exec playerctl next
 bindsym $mod+Left exec playerctl previous
+
+set $laptop eDP-1
+bindswitch --reload --locked lid:on output $laptop disable
+bindswitch --reload --locked lid:off output $laptop enable

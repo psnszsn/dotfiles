@@ -243,6 +243,7 @@ bindsym --inhibited $mod+Ctrl+Shift+q shortcuts_inhibitor deactivate
 exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec gammastep -l 44:26
 exec kanshi
+exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
 
 # exec clipman -d
 

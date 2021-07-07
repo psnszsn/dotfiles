@@ -25,7 +25,4 @@ key_bindings:
   - { key: N, mods: Control|Shift, action: SpawnNewInstance }
   - { key: L, mods: Control|Shift, action: ClearHistory }
   # - { key: V, mods: Control,       action: Paste }
-  # key_bindings
-  # background_opacity
-  # :se
  

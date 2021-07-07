@@ -206,3 +206,8 @@ ts.setup {
 	incremental_selection = {enable = true},
 	indent = {enable = true},
 }
+
+
+cmd [[
+	autocmd BufWritePost ~/.local/share/chezmoi/* ! chezmoi apply --source-path %
+]]

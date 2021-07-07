@@ -1,7 +1,7 @@
 abbr -a nv nvim
 abbr -a q exit
 abbr -a o xdg-open
-abbr -a swayconfig "nvim ~/.config/sway/config"
+abbr -a swayconfig "chezmoi edit ~/.config/sway/config"
 abbr -a refl "sudo reflector --verbose --country Romania -l 10 --sort rate --save /etc/pacman.d/mirrorlist"
 abbr -a g git
 abbr -a c cargo
@@ -24,6 +24,7 @@ abbr -a yay paru
 abbr -a j z
 abbr -a p paru
 abbr -a cz chezmoi
+abbr -a czc czedit.sh
 
 
 if command -v direnv > /dev/null

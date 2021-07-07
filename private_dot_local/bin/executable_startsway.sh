@@ -32,22 +32,18 @@ export QT_QPA_PLATFORMTHEME=qt5ct
 # fi
 export BEMENU_OPTS="-i --fn 'Hack 13' -m '-1'"
 
-# export XDG_DESKTOP_DIR="$HOME"
-# export XDG_DOWNLOAD_DIR="$HOME/downloads"
-# export XDG_DOCUMENTS_DIR="$HOME/documents"
-# export XDG_MUSIC_DIR="$HOME/music"
-# export XDG_PICTURES_DIR="$HOME/pictures"
-# export XDG_VIDEOS_DIR="$HOME/videos"
 
 # exec sway -d -Ddamage=rerender 2>~/sway.log
 # exec sway -d 2> ~/desktop/sway.log
 
-if test -z "$DBUS_SESSION_BUS_ADDRESS"
-then
-    exec dbus-run-session sway
-else
-    exec sway
-fi
+# if test -z "$DBUS_SESSION_BUS_ADDRESS"
+# then
+#     exec dbus-run-session sway
+# else
+#     exec sway
+# fi
+
+exec systemd-cat --identifier sway sway
 
 # systemctl --user import-environment
 # exec systemctl --wait --user start sway.service

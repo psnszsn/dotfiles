@@ -2,68 +2,46 @@
 
 -------------------- HELPERS -------------------------------
 local cmd, fn, g = vim.cmd, vim.fn, vim.g
-local o, bo, wo = vim.o, vim.bo, vim.wo
+local opt = vim.opt
 
 local function map(mode, lhs, rhs, opts)
   local options = {noremap = true}
-  if opts then for k, v in pairs(opts) do options[k] = v end end
-	vim.api.nvim_set_keymap(mode, lhs, rhs, options)
+  if opts then options = vim.tbl_extend('force', options, opts) end
+  vim.api.nvim_set_keymap(mode, lhs, rhs, options)
 end
 
-
-local function set_global_opt(...)
-	local args={...}
-	for i=1,#args do
-		if pcall(vim.api.nvim_buf_get_option, 0, args[i]) then
-			o[args[i]]=bo[args[i]]
-		elseif pcall(vim.api.nvim_win_get_option, 0, args[i]) then
-			o[args[i]]=wo[args[i]]
-		else
-			print("Invalid option.")
-		end
-		-- bo[args[i]]=o[args[i]]
-		-- print(args[i])
-	end
-end
 
 -------------------- PLUGINS -------------------------------
-cmd 'packadd paq-nvim'
-local paq = require('paq-nvim').paq
-paq{'savq/paq-nvim', opt=true}     -- Let Paq manage itself
+require('packer').startup(function()
+	-- Packer can manage itself
+	use 'wbthomason/packer.nvim'
 
-paq 'tpope/vim-commentary'
-paq 'tpope/vim-surround'
-paq 'tpope/vim-repeat'
-paq 'tpope/vim-sensible'
-paq 'tpope/vim-fugitive'
-paq 'neovim/nvim-lspconfig'
--- paq 'nvim-lua/completion-nvim'
-paq 'hrsh7th/nvim-compe'
-paq {'nvim-treesitter/nvim-treesitter'}
-paq 'ojroques/nvim-lspfuzzy'
-paq 'nvim-lua/lsp-status.nvim'
+	use 'tpope/vim-commentary'
+	use 'tpope/vim-surround'
+	use 'tpope/vim-repeat'
+	use 'tpope/vim-sensible'
+	use 'tpope/vim-fugitive'
 
--- paq 'SirVer/ultisnips'
--- paq 'honza/vim-snippets'
+	use 'JoosepAlviste/nvim-ts-context-commentstring'
 
-paq 'nvim-lua/popup.nvim'
-paq 'nvim-lua/plenary.nvim'
-paq 'nvim-telescope/telescope.nvim'
+	use 'neovim/nvim-lspconfig'
+	use 'hrsh7th/nvim-compe'
+	use {'nvim-treesitter/nvim-treesitter'}
+	use 'ojroques/nvim-lspfuzzy'
+	use 'nvim-lua/lsp-status.nvim'
 
-paq {'junegunn/fzf.vim'}
-paq 'itchyny/lightline.vim'
-paq 'lambdalisue/suda.vim'
--- paq 'Yggdroot/indentLine'
-paq{'lukas-reineke/indent-blankline.nvim', branch='lua'}
+	use {'nvim-telescope/telescope.nvim', requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}} }
 
-paq 'arzg/vim-colors-xcode'
--- paq 'arcticicestudio/nord-vim'
-paq 'shaunsingh/nord.nvim'
-paq 'embark-theme/vim'
--- paq 'shaunsingh/moonlight.nvim'
--- paq 'evanleck/vim-svelte'
-paq 'mboughaba/i3config.vim'
-paq 'ziglang/zig.vim'
+	use {'junegunn/fzf.vim'}
+	use 'itchyny/lightline.vim'
+	use 'lambdalisue/suda.vim'
+	use 'lukas-reineke/indent-blankline.nvim'
+
+	use 'shaunsingh/nord.nvim'
+	use 'embark-theme/vim'
+	use 'mboughaba/i3config.vim'
+end)
+
 
 -------------------- PLUGIN SETUP --------------------------
 -- g['netrw_banner'] = 0
@@ -90,48 +68,46 @@ g['lightline'] = {
 cmd 'au TextYankPost * lua vim.highlight.on_yank {on_visual = false}'  -- disabled in visual mode
 
  -- ÃĂªŞÞŢãăºşþţ
- cmd 'command FixSub set fileencoding=utf-8 | %s/Ã/Ă/ge | %s/ª/Ș/ge | %s/Þ/Ț/ge | %s/ã/ă/ge | %s/º/ș/ge | %s/þ/ț/ge'
+cmd 'command FixSub set fileencoding=utf-8 | %s/Ã/Ă/ge | %s/ª/Ș/ge | %s/Þ/Ț/ge | %s/ã/ă/ge | %s/º/ș/ge | %s/þ/ț/ge'
 
+require'nvim-treesitter.configs'.setup {
+	context_commentstring = {
+		enable = true
+	}
+}
 
 -------------------- OPTIONS -------------------------------
 local indent = 4
 cmd 'colorscheme embark'
-bo.expandtab = false              -- Use spaces instead of tabs
-bo.shiftwidth = indent            -- Size of an indent
-bo.smartindent = true             -- Insert indents automatically
-bo.tabstop = indent               -- Number of spaces tabs count for
-set_global_opt('expandtab', 'shiftwidth', 'smartindent', 'tabstop');
+opt.expandtab = false               -- Use spaces instead of tabs
+opt.shiftwidth = indent             -- Size of an indent
+opt.smartindent = true              -- Insert indents automatically
+opt.tabstop = indent                -- Number of spaces tabs count for
 
-o.mouse='a'                       -- Use mouse
-o.undofile = true                 -- Persistend undo
-o.hidden = true                   -- Enable background buffers
-o.ignorecase = true               -- Ignore case
-o.joinspaces = false              -- No double spaces after a dot with join
--- o.pastetoggle = '<F2>'            -- Paste mode
-o.scrolloff = 4                   -- Lines of context
-o.shiftround = true               -- Round indent
-o.sidescrolloff = 8               -- Columns of context
-o.smartcase = true                -- Don't ignore case with capital letters
-o.splitbelow = true               -- Put new windows below current one
-o.splitright = true               -- Put new windows right of current one
-o.termguicolors = true            -- True color support
-o.updatetime = 100                -- Delay before swap file is saved
--- o.wildmode = 'longest:full,full'  -- Command-line completion mode
-o.conceallevel = 0                -- Disable conceal
-wo.colorcolumn = '80'             -- Line length marker
-wo.cursorline = true              -- Highlight cursor line
-wo.list = false                   -- Show some invisible characters
-o.listchars = 'tab:▸ ,trail:·,nbsp:+,eol:¬'
--- o.listchars = 'tab:▸ ,trail:·,nbsp:+,eol:¬'
-wo.number = true                  -- Print line number
-wo.relativenumber = true          -- Relative line numbers
-wo.signcolumn = 'yes'             -- Show sign column
-set_global_opt('number', 'relativenumber' ,'signcolumn')
--- wo.wrap = false                   -- Disable line wrap
---      asda sd asd
+opt.mouse='a'                       -- Use mouse
+opt.undofile = true                 -- Persistend undo
+opt.hidden = true                   -- Enable background buffers
+opt.ignorecase = true               -- Ignore case
+opt.joinspaces = false              -- No double spaces after a dot with join
+opt.scrolloff = 4                   -- Lines of context
+opt.shiftround = true               -- Round indent
+opt.sidescrolloff = 8               -- Columns of context
+opt.smartcase = true                -- Don't ignore case with capital letters
+opt.splitbelow = true               -- Put new windows below current one
+opt.splitright = true               -- Put new windows right of current one
+opt.termguicolors = true            -- True color support
+opt.updatetime = 100                -- Delay before swap file is saved
+opt.conceallevel = 0                -- Disable conceal
+opt.colorcolumn = '80'              -- Line length marker
+opt.cursorline = true               -- Highlight cursor line
+opt.list = false                    -- Show some invisible characters
+opt.number = true                   -- Print line number
+opt.relativenumber = true           -- Relative line numbers
+opt.signcolumn = 'yes'              -- Show sign column
 
-o.shortmess = o.shortmess..'c'
-o.completeopt= 'menuone,noselect'
+opt.listchars = { tab = '▸ ', trail = '·', nbsp = '+', eol = '¬'}
+opt.shortmess:append({ c = true })
+opt.completeopt = {'menuone', 'noselect'}
 
 -------------------- MAPPINGS ------------------------------
 vim.g.mapleader = " "
@@ -176,70 +152,22 @@ map('i', '<C-Space>', 'compe#complete()', {expr = true})
 
 
 -------------------- LSP -----------------------------------
-local lsp_status = require('lsp-status')
-lsp_status.register_progress()
+-- local lsp_status = require('lsp-status')
+-- lsp_status.register_progress()
 
-function lspstat()
-	if #vim.lsp.buf_get_clients() == 0 then
-		return ''
-	end
-	return require('lsp-status').status()
-end
+-- function lspstat()
+-- 	if #vim.lsp.buf_get_clients() == 0 then
+-- 		return ''
+-- 	end
+-- 	return lsp_status.status()
+-- end
 
-cmd 'au User LspDiagnosticsChanged call lightline#update()'
-cmd 'au User LspMessageUpdate call lightline#update()'
-cmd 'au User LspStatusUpdate call lightline#update()'
+-- cmd 'au User LspDiagnosticsChanged call lightline#update()'
+-- cmd 'au User LspMessageUpdate call lightline#update()'
+-- cmd 'au User LspStatusUpdate call lightline#update()'
 
-local nvim_lsp = require('lspconfig')
-local lsp_completion = require('completion')
+require('lsp')
 
-local on_attach = function(client, bufnr)
-  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-
-  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-  -- Mappings.
-  local opts = { noremap=true, silent=true }
-  buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-  buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-  buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-  buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-  buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-  buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-  buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-  buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-
-  -- Set some keybinds conditional on server capabilities
-  if client.resolved_capabilities.document_formatting then
-    buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-  elseif client.resolved_capabilities.document_range_formatting then
-    buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
-  end
-
-	lsp_status.on_attach(client)
-	-- lsp_completion.on_attach(client)
-end
-
--- local default_lsp_config = {on_attach = on_attach, capabilities = lsp_status.capabilities}
-
--- lsp.clangd.setup(default_lsp_config)
--- lsp.rust_analyzer.setup(default_lsp_config)
--- lsp.gopls.setup(default_lsp_config)
-
--- Use a loop to conveniently both setup defined servers
--- and map buffer local keybindings when the language server attaches
-local servers = { "clangd", "rust_analyzer", "gopls", "svelte", "zls"}
-for _, lsp in ipairs(servers) do
-  nvim_lsp[lsp].setup { on_attach = on_attach, capabilities = lsp_status.capabilities }
-end
 
 require'compe'.setup {
   enabled = true;
@@ -267,55 +195,8 @@ require'compe'.setup {
 }
 
 
-nvim_lsp.sumneko_lua.setup {
-  cmd = {'/bin/lua-language-server'},
-  settings = {
-    Lua = {
-      runtime = {
-        version = 'LuaJIT',
-        -- Setup your lua path
-        path = vim.split(package.path, ';'),
-      },
-      diagnostics = {
-        -- Get the language server to recognize the `vim` global
-        globals = {'vim'},
-      },
-      workspace = {
-        -- Make the server aware of Neovim runtime files
-        library = {
-          [vim.fn.expand('$VIMRUNTIME/lua')] = true,
-          [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
-        },
-      },
-    },
-  },
-}
-
 require('lspfuzzy').setup {}
--- cmd 'autocmd BufEnter * lua require'completion'.on_attach()'
 
--- fn.sign_define("LspDiagnosticsSignError",
---     {text = "", texthl = "LspDiagnosticsSignError"})
--- fn.sign_define("LspDiagnosticsSignWarning",
---     {text = "", texthl = "LspDiagnosticsSignWarning"})
--- fn.sign_define("LspDiagnosticsSignInformation",
---     {text = "🛈", texthl = "LspDiagnosticsSignInformation"})
--- fn.sign_define("LspDiagnosticsSignHint",
---     {text = "!", texthl = "LspDiagnosticsSignHint"})
-
--- map('n', '<leader>,', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>')
--- map('n', '<leader>;', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>')
--- map('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>')
--- map('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>')
--- map('n', 'gi','<cmd>lua vim.lsp.buf.implementation()<CR>')
--- map('n', 'gt','<cmd>lua vim.lsp.buf.type_definition()<CR>')
--- map('n', '<leader>f', '<cmd>lua vim.lsp.buf.formatting()<CR>')
--- map('n', '<leader>h', '<cmd>lua vim.lsp.buf.hover()<CR>')
--- map('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>')
--- map('n', '<leader>s', '<cmd>lua vim.lsp.buf.document_symbol()<CR>')
--- map('n', '<leader>x', '<cmd>ClangdSwitchSourceHeader<CR>')
--- map('n', '<leader>qf', '<cmd>lua vim.lsp.buf.code_action()<CR>')
--- map('n', '<leader>ee','<cmd>lua vim.lsp.util.show_line_diagnostics()<CR>')
 
 -------------------- TREE-SITTER ---------------------------
 local ts = require 'nvim-treesitter.configs'

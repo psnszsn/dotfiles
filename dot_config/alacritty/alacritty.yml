@@ -1,8 +1,8 @@
 shell:
   program: /usr/bin/fish
 font:
-  normal:
-    family: Inconsolata
+  # normal:
+    # family: Inconsolata
     #style: Regular
   #bold:
     #family: monospace

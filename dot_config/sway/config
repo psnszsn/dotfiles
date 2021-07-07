@@ -32,6 +32,8 @@ bindsym $mod+comma exec networkmanager_dmenu
 for_window [app_id="^launcher$"] floating enable, border pixel 10, sticky enable
 bindsym $mod+Ctrl+Space exec alacritty --class=launcher -e env TERMINAL_COMMAND="alacritty -e" sway-launcher-desktop.sh
 
+bindsym $mod+x exec sway-display-swap.sh
+
 
 ## Workspaces {{{
 
@@ -114,12 +116,13 @@ bindsym $mod+Shift+9 move container to workspace $ws9
 bindsym $mod+Shift+0 move container to workspace $ws10
 bindsym $mod+Shift+slash move container to workspace back_and_forth
 
-bindsym $mod+v splith
-bindsym $mod+b splitv
+bindsym $mod+b splith
+bindsym $mod+v splitv
 
 bindsym $mod+Shift+t layout stacking
 bindsym $mod+t layout tabbed
 bindsym $mod+s layout toggle split
+bindsym $mod+Shift+x layout default
 
 bindsym $mod+f fullscreen
 bindsym $mod+Shift+space floating toggle
@@ -167,8 +170,10 @@ set $mode_inhibit Inhibit keybindings
 mode "$mode_inhibit" {
     bindsym pause mode "default"
     bindsym XF86Favorites mode "default"
+	bindsym XF86LaunchB mode "default"
 }
 bindsym XF86Favorites mode "$mode_inhibit"
+bindsym XF86LaunchB mode "$mode_inhibit"
 bindsym pause mode "$mode_inhibit"
 
 set $mode_system System (l)ock, (e)xit, (s)uspend, (h)ibernate, (r)eboot, sh(u)tdown, rel(o)ad
@@ -243,6 +248,7 @@ bindsym --inhibited $mod+Ctrl+Shift+q shortcuts_inhibitor deactivate
 exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec gammastep -l 44:26
 exec kanshi
+
 exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
 
 # exec clipman -d

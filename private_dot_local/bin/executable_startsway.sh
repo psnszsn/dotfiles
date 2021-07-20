@@ -8,7 +8,6 @@ export MOZ_DBUS_REMOTE=1
 export XDG_SESSION_TYPE=wayland
 export XDG_CURRENT_DESKTOP=sway
 
-
 export BROWSER=firefox
 export TERMINAL=alacritty
 export QT_QPA_PLATFORMTHEME=qt5ct
@@ -31,7 +30,6 @@ export QT_QPA_PLATFORMTHEME=qt5ct
 # 	export XDG_RUNTIME_DIR=/tmp
 # fi
 export BEMENU_OPTS="-i --fn 'Hack 13' -m '-1'"
-
 
 # exec sway -d -Ddamage=rerender 2>~/sway.log
 # exec sway -d 2> ~/desktop/sway.log

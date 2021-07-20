@@ -1,4 +1,4 @@
 #!/bin/bash
-echo "$*" >> /tmp/xtermarg
+echo "$*" >>/tmp/xtermarg
 notify-send "Xterm wrapper used!" "xterm $*"
 exec $TERMINAL "$@"

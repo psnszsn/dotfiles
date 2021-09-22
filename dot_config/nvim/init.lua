@@ -11,6 +11,18 @@ local function map(mode, lhs, rhs, opts)
 	vim.api.nvim_set_keymap(mode, lhs, rhs, options)
 end
 
+function _G.put(...)
+  local objects = {}
+  for i = 1, select('#', ...) do
+    local v = select(i, ...)
+    table.insert(objects, vim.inspect(v))
+  end
+
+  print(table.concat(objects, '\n'))
+  return ...
+end
+
+
 -------------------- PLUGINS -------------------------------
 require("packer").startup(function()
 	-- Packer can manage itself
@@ -122,7 +134,7 @@ opt.completeopt = { "menuone", "noselect" }
 -------------------- MAPPINGS ------------------------------
 vim.g.mapleader = " "
 map("", "<leader>c", '"+y')
-map("n", "<leader>v", ":tabe $MYVIMRC<CR>")
+map("n", "<leader>v", ":execute 'tabe ' . system('chezmoi source-path $MYVIMRC')<CR>")
 map("n", "<leader>l", ":set list! | :IndentBlanklineToggle<CR>")
 map("n", "<leader>-", ":Files<CR>")
 map("n", "<leader>[", ":GFiles<CR>")
@@ -205,6 +217,7 @@ sudo = require("doas")
 cmd([[
 	autocmd BufWritePost ~/.local/share/chezmoi/* ! chezmoi apply --source-path %
 	autocmd FileType zig setlocal commentstring=//\ %s
+	autocmd FileType fish setlocal commentstring=#%s
 ]])
 
 local ts = require("nvim-treesitter.configs")

@@ -1,5 +1,6 @@
 # vim:foldmethod=marker:ft=i3config
-output * background /usr/share/backgrounds/crepo/joshua-rawson-harris-LERmV2dl4tQ-unsplash.jpg fill
+# output * background /usr/share/backgrounds/crepo/joshua-rawson-harris-LERmV2dl4tQ-unsplash.jpg fill
+output * background $(find /usr/share/backgrounds/crepo -type f | shuf -n1) fill
 
 set $mod Mod4
 

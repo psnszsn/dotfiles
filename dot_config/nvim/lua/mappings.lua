@@ -17,6 +17,7 @@ map("n", "<leader>-", ":Telescope find_files<CR>")
 map("n", "<leader>[", ":Telescope git_files<CR>")
 map("n", "<leader>]", ":Telescope buffers<CR>")
 map("n", "<leader>0", ":lua require('telescope.builtin').file_browser({ cwd = require'telescope.utils'.buffer_dir() }) <CR>")
+map("n", "<leader><leader>-", ":lua require('telescope.builtin').find_files({ cwd = require'telescope.utils'.buffer_dir() }) <CR>")
 map("n", "-", ":Ex<CR>")
 map("n", "<leader>a", "<esc>ggVG<CR>")
 

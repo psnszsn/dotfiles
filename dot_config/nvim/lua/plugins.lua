@@ -1,18 +1,28 @@
-
 -------------------- PLUGINS -------------------------------
 require("packer").startup(function()
 	-- Packer can manage itself
 	use("wbthomason/packer.nvim")
 
 	use("tpope/vim-commentary")
-	use("tpope/vim-surround")
+	use("tpope/vim-fugitive")
 	use("tpope/vim-repeat")
 	use("tpope/vim-sensible")
-	use("tpope/vim-fugitive")
+	use("tpope/vim-surround")
 
+	use("nvim-treesitter/nvim-treesitter")
 	use("JoosepAlviste/nvim-ts-context-commentstring")
-
+	use("lukas-reineke/indent-blankline.nvim")
 	use("neovim/nvim-lspconfig")
+	-- use("nvim-lua/lsp-status.nvim")
+	use ("windwp/nvim-autopairs")
+
+	use("itchyny/lightline.vim")
+	use("lambdalisue/suda.vim")
+	use("mboughaba/i3config.vim")
+	use("ojroques/vim-oscyank")
+
+	use("shaunsingh/nord.nvim")
+	use("embark-theme/vim")
 
 	use({
 		"hrsh7th/nvim-cmp",
@@ -25,22 +35,8 @@ require("packer").startup(function()
 	})
 
 	use({
-		"nvim-treesitter/nvim-treesitter",
-	})
-	use({
-		"ojroques/nvim-lspfuzzy",
-		config = require("lspfuzzy").setup({}),
-		requires = {
-			{ "junegunn/fzf" },
-			{ "junegunn/fzf.vim" }, -- to enable preview (optional)
-		},
-	})
-
-	use("nvim-lua/lsp-status.nvim")
-
-	use({
 		"nvim-telescope/telescope.nvim",
-		requires = { { "nvim-lua/plenary.nvim" } },
+		requires = { { "nvim-lua/plenary.nvim" }, { "gbrlsnchs/telescope-lsp-handlers.nvim" } },
 	})
 
 	-- use({
@@ -58,12 +54,4 @@ require("packer").startup(function()
 	-- 		}
 	-- 	end,
 	-- })
-	use("itchyny/lightline.vim")
-	use("lambdalisue/suda.vim")
-	use("lukas-reineke/indent-blankline.nvim")
-
-	use("shaunsingh/nord.nvim")
-	use("embark-theme/vim")
-	use("mboughaba/i3config.vim")
-	use "ojroques/vim-oscyank"
 end)

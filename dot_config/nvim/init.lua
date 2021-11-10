@@ -18,8 +18,6 @@ function RELOAD(pkg)
 	return require(pkg)
 end
 
-
-
 require("plugins")
 require("mappings")
 require("options")
@@ -60,9 +58,9 @@ ts.setup({
 	},
 })
 
--- require("indent_blankline").setup {
--- 	use_treesitter = true,
--- 	show_current_context = true,
--- }
---
---
+local telescope = require("telescope")
+telescope.load_extension('lsp_handlers')
+
+require("nvim-autopairs").setup({
+	fast_wrap = {},
+})

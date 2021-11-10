@@ -39,7 +39,7 @@ end
 local shfmt = { formatCommand = "shfmt -ci -s -bn", formatStdin = true }
 nvim_lsp.efm.setup({
 	init_options = { documentFormatting = true },
-	filetypes = { "lua", "sh" },
+	filetypes = { "lua", "sh", "python" },
 	settings = {
 		rootMarkers = { ".git/" },
 		languages = {
@@ -47,17 +47,18 @@ nvim_lsp.efm.setup({
 			zsh = { shfmt },
 			bash = { shfmt },
 			sh = { shfmt },
+			python = { { formatCommand = "black --quiet -", formatStdin = true } },
 		},
 	},
 	on_attach = on_attach,
 	flags = { debounce_text_changes = 150 },
 })
 
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
 -- local servers = { "pyright", "rust_analyzer", "tsserver" }
-local servers = { "clangd", "rust_analyzer", "gopls", "svelte", "zls" }
+local servers = { "clangd", "rust_analyzer", "gopls", "svelte", "zls", "pyright" }
 for _, lsp in ipairs(servers) do
 	nvim_lsp[lsp].setup({
 		on_attach = on_attach,

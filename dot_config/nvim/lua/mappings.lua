@@ -8,18 +8,29 @@ local function map(mode, lhs, rhs, opts)
 end
 
 
+
+vim.cmd [[runtime plugin/astronauta.vim]]
+local nnoremap = vim.keymap.nnoremap
+-- local km = require('astronauta.keymap')
+
 -------------------- MAPPINGS ------------------------------
 vim.g.mapleader = " "
 map("", "<leader>c", '"+y')
 map("n", "<leader>v", ":execute 'tabe ' . system('chezmoi source-path $MYVIMRC')<CR>")
 map("n", "<leader>l", ":set list! | :IndentBlanklineToggle<CR>")
-map("n", "<leader>-", ":Telescope find_files<CR>")
-map("n", "<leader>[", ":Telescope git_files<CR>")
-map("n", "<leader>]", ":Telescope buffers<CR>")
-map("n", "<leader>0", ":lua require('telescope.builtin').file_browser({ cwd = require'telescope.utils'.buffer_dir() }) <CR>")
-map("n", "<leader><leader>-", ":lua require('telescope.builtin').find_files({ cwd = require'telescope.utils'.buffer_dir() }) <CR>")
 map("n", "-", ":Ex<CR>")
 map("n", "<leader>a", "<esc>ggVG<CR>")
+
+nnoremap { '<leader>-', function() require('telescope.builtin').find_files() end }
+nnoremap { '<leader>[', function() require('telescope.builtin').git_files() end }
+nnoremap { '<leader>]', function() require('telescope.builtin').buffers() end }
+nnoremap { '<leader>0', function() require('telescope.builtin').file_browser({ cwd = require'telescope.utils'.buffer_dir() }) end }
+nnoremap { '<leader><leader>-', function() require('telescope.builtin').find_files({ cwd = require'telescope.utils'.buffer_dir() }) end }
+
+nnoremap { '<leader>ff', function() require('telescope.builtin').find_files() end }
+nnoremap { '<leader>fb', function() require('telescope.builtin').buffers() end }
+nnoremap { '<leader>fg', function() require('telescope.builtin').live_grep() end }
+nnoremap { '<leader>fh', function() require('telescope.builtin').help_tags() end }
 
 map("n", "\\", "<cmd>noh<CR>")
 map("n", "U", "<C-R>")

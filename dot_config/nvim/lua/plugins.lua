@@ -16,6 +16,7 @@ require("packer").startup(function()
 	-- use("nvim-lua/lsp-status.nvim")
 	use("windwp/nvim-autopairs")
 	use("tjdevries/astronauta.nvim")
+	use("ggandor/lightspeed.nvim")
 
 	use("itchyny/lightline.vim")
 	use("lambdalisue/suda.vim")

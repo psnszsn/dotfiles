@@ -43,7 +43,6 @@ cmd("au TextYankPost * lua vim.highlight.on_yank {on_visual = false}") -- disabl
 
 cmd([[
 	autocmd BufWritePost ~/.local/share/chezmoi/* silent ! chezmoi apply --source-path % 
-	autocmd FileType zig setlocal commentstring=//\ %s
 	autocmd FileType fish setlocal commentstring=#%s
 ]])
 
@@ -53,6 +52,7 @@ ts.setup({
 	highlight = { enable = true },
 	incremental_selection = { enable = true },
 	indent = { enable = true },
+	-- ignore_install = { "zig"},
 	context_commentstring = {
 		enable = true,
 	},

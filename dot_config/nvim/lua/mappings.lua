@@ -54,8 +54,13 @@ map("n", "<up>", "<nop>")
 map("n", "<down>", "<nop>")
 map("n", "<left>", "<nop>")
 map("n", "<right>", "<nop>")
+map("n", "<S-up>", "<nop>")
+map("n", "<S-down>", "<nop>")
 map("i", "<up>", "<nop>")
 map("i", "<down>", "<nop>")
+map("i", "<S-up>", "<nop>")
+map("i", "<S-down>", "<nop>")
+
 map("n", "Q", "<nop>")
 
 -- map("i", "<S-Tab>", 'pumvisible() ? "<C-p>" : "<Tab>"', { expr = true })

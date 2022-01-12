@@ -25,6 +25,7 @@ require("packer").startup(function()
 
 	use("shaunsingh/nord.nvim")
 	use("embark-theme/vim")
+	use("jose-elias-alvarez/null-ls.nvim")
 
 	use({
 		"hrsh7th/nvim-cmp",
@@ -38,7 +39,11 @@ require("packer").startup(function()
 
 	use({
 		"nvim-telescope/telescope.nvim",
-		requires = { { "nvim-lua/plenary.nvim" }, { "gbrlsnchs/telescope-lsp-handlers.nvim" } },
+		requires = {
+			{ "nvim-lua/plenary.nvim" },
+			{ "gbrlsnchs/telescope-lsp-handlers.nvim" },
+			{ "nvim-telescope/telescope-file-browser.nvim" },
+		},
 	})
 
 	-- use({

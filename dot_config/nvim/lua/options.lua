@@ -27,7 +27,7 @@ opt.colorcolumn = "80" -- Line length marker
 opt.cursorline = true -- Highlight cursor line
 opt.list = false -- Show some invisible characters
 opt.number = true -- Print line number
-opt.relativenumber = true -- Relative line numbers
+opt.relativenumber = false -- Relative line numbers
 opt.signcolumn = "yes" -- Show sign column
 
 opt.listchars = { tab = "▸ ", trail = "·", nbsp = "+", eol = "¬" }

@@ -24,12 +24,13 @@ map("n", "<leader>a", "<esc>ggVG<CR>")
 nnoremap { '<leader>-', function() require('telescope.builtin').find_files() end }
 nnoremap { '<leader>[', function() require('telescope.builtin').git_files() end }
 nnoremap { '<leader>]', function() require('telescope.builtin').buffers() end }
-nnoremap { '<leader>0', function() require('telescope.builtin').file_browser({ cwd = require'telescope.utils'.buffer_dir() }) end }
+nnoremap { '<leader>0', function() require('telescope').extensions.file_browser.file_browser({ cwd = require'telescope.utils'.buffer_dir() }) end }
 nnoremap { '<leader><leader>-', function() require('telescope.builtin').find_files({ cwd = require'telescope.utils'.buffer_dir() }) end }
 
 nnoremap { '<leader>ff', function() require('telescope.builtin').find_files() end }
 nnoremap { '<leader>fb', function() require('telescope.builtin').buffers() end }
 nnoremap { '<leader>fg', function() require('telescope.builtin').live_grep() end }
+nnoremap { '<leader>rg', function() require('telescope.builtin').live_grep() end }
 nnoremap { '<leader>fh', function() require('telescope.builtin').help_tags() end }
 
 map("n", "\\", "<cmd>noh<CR>")

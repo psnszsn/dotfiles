@@ -35,28 +35,24 @@ local on_attach = function(client, bufnr)
 	buf_set_keymap("n", "<space>q", "<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>", opts)
 	buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
 	buf_set_keymap("n", "<space>ds", "<cmd>lua vim.lsp.buf.document_symbol()<CR>", opts)
-	
+
 	if client.name == "clangd" then
 		buf_set_keymap("n", "<space>x", "<cmd>ClangdSwitchSourceHeader<CR>", opts)
 	end
 end
 
-local shfmt = { formatCommand = "shfmt -ci -s -bn", formatStdin = true }
-nvim_lsp.efm.setup({
-	init_options = { documentFormatting = true },
-	filetypes = { "lua", "sh", "python" },
-	settings = {
-		rootMarkers = { ".git/" },
-		languages = {
-			lua = { { formatCommand = "stylua -", formatStdin = true } },
-			zsh = { shfmt },
-			bash = { shfmt },
-			sh = { shfmt },
-			python = { { formatCommand = "black --quiet -", formatStdin = true } },
-		},
+
+local null_ls = require("null-ls")
+null_ls.setup({
+	sources = {
+		null_ls.builtins.formatting.stylua,
+		null_ls.builtins.formatting.shfmt,
+		null_ls.builtins.formatting.black,
+		null_ls.builtins.diagnostics.pylint.with({
+			method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
+		}),
 	},
 	on_attach = on_attach,
-	flags = { debounce_text_changes = 150 },
 })
 
 local capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())

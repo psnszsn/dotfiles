@@ -37,3 +37,7 @@ opt.shortmess:append({ c = true })
 -- opt.completeopt = { "menuone", "noselect" }
 opt.completeopt = { "menu", "menuone", "noselect" }
 
+if vim.env.TERM == "xterm" then
+	opt.termguicolors = false
+	opt.guicursor = ""
+end

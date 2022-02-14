@@ -24,6 +24,7 @@ require("options")
 require("lsp")
 require("completion")
 require("disable_builtin")
+require("snippets")
 
 -------------------- PLUGIN SETUP --------------------------
 -- g['netrw_banner'] = 0

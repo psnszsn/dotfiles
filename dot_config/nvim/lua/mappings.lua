@@ -16,7 +16,7 @@ local nnoremap = vim.keymap.nnoremap
 -------------------- MAPPINGS ------------------------------
 vim.g.mapleader = " "
 map("", "<leader>c", '"+y')
-map("n", "<leader>v", ":execute 'tabe ' . system('chezmoi source-path $MYVIMRC')<CR>")
+map("n", "<leader>v", ":tabe $MYVIMRC<CR>")
 map("n", "<leader>l", ":set list! | :IndentBlanklineToggle<CR>")
 map("n", "-", ":Ex<CR>")
 map("n", "<leader>a", "<esc>ggVG<CR>")

@@ -15,7 +15,6 @@ require("packer").startup(function()
 	use("neovim/nvim-lspconfig")
 	-- use("nvim-lua/lsp-status.nvim")
 	use("windwp/nvim-autopairs")
-	use("tjdevries/astronauta.nvim")
 	use("ggandor/lightspeed.nvim")
 
 	use("itchyny/lightline.vim")
@@ -28,16 +27,19 @@ require("packer").startup(function()
 	use("jose-elias-alvarez/null-ls.nvim")
 
 	use({ "L3MON4D3/LuaSnip" })
+
 	use({
 		"hrsh7th/nvim-cmp",
 		requires = {
 			{ "hrsh7th/cmp-nvim-lsp" },
 			{ "hrsh7th/cmp-buffer" },
 			{ "hrsh7th/cmp-path" },
+			{ "hrsh7th/cmp-nvim-lua" },
 			{ "saadparwaiz1/cmp_luasnip" },
 		},
 		-- config = function() print "commmm" end,
 	})
+	use({ "saadparwaiz1/cmp_luasnip" })
 
 	use({
 		"nvim-telescope/telescope.nvim",

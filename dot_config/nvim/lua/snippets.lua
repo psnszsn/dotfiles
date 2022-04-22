@@ -14,16 +14,21 @@ ls.config.set_config({
 	updateevents = "TextChanged,TextChangedI",
 })
 
-ls.snippets = {
+ls.add_snippets(nil, {
 	all = {
 		snippet("simple", t("wow, you were right!")),
 
-		-- date -> Tue 16 Nov 2021 09:43:49 AM EST
 		snippet({ trig = "date" }, {
 			f(function()
 				return string.format(string.gsub(vim.bo.commentstring, "%%s", " %%s"), os.date())
 			end, {}),
 		}),
+	},
+	sh = {
+		snippet("shebang", fmt("#!/bin/sh\n{}", { i(0) })),
+	},
+	python = {
+		snippet("shebang", fmt("#!/usr/bin/env python\n{}", { i(0) })),
 	},
 	zig = {
 		snippet(
@@ -34,36 +39,25 @@ ls.snippets = {
 			})
 		),
 	},
-}
-
-vim.keymap.inoremap({
-	"<c-k>",
-	function()
-		if ls.expand_or_jumpable() then
-			ls.expand_or_jump()
-		end
-	end,
-	{ silent = true },
 })
 
-vim.keymap.inoremap({
-	"<c-j>",
-	function()
-		if ls.jumpable(-1) then
-			ls.jump(-1)
-		end
-	end,
-	{ silent = true },
-})
+vim.keymap.set("i", "<c-k>", function()
+	if ls.expand_or_jumpable() then
+		ls.expand_or_jump()
+	end
+end, { silent = true, desc = "Expand or jump luasnip" })
 
-vim.keymap.inoremap({
-	"<c-l>",
-	function()
-		if ls.choice_active() then
-			ls.change_choice(1)
-		end
-	end,
-})
+vim.keymap.set("i", "<c-j>", function()
+	if ls.jumpable(-1) then
+		ls.jump(-1)
+	end
+end, { silent = true, desc = "Luasnip jump" })
+
+vim.keymap.set("i", "<c-l>", function()
+	if ls.choice_active() then
+		ls.change_choice(1)
+	end
+end, { desc = "Luasnip change choice" })
 
 -- shorcut to source my luasnips file again, which will reload my snippets
--- vim.keymap.set("n", "<leader><leader>s", "<cmd>source ~/.config/nvim/lua/luasnip.lua<CR>")
+vim.keymap.set("n", "<leader><leader>s", "<cmd>source ~/.config/nvim/lua/snippets.lua<CR>")

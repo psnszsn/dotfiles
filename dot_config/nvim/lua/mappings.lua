@@ -1,68 +1,60 @@
-
-local function map(mode, lhs, rhs, opts)
-	local options = { noremap = true }
-	if opts then
-		options = vim.tbl_extend("force", options, opts)
-	end
-	vim.api.nvim_set_keymap(mode, lhs, rhs, options)
-end
-
-
-
-vim.cmd [[runtime plugin/astronauta.vim]]
-local nnoremap = vim.keymap.nnoremap
--- local km = require('astronauta.keymap')
-
 -------------------- MAPPINGS ------------------------------
 vim.g.mapleader = " "
-map("", "<leader>c", '"+y')
-map("n", "<leader>v", ":tabe $MYVIMRC<CR>")
-map("n", "<leader>l", ":set list! | :IndentBlanklineToggle<CR>")
-map("n", "-", ":Ex<CR>")
-map("n", "<leader>a", "<esc>ggVG<CR>")
+vim.keymap.set("", "<leader>c", '"+y')
+vim.keymap.set("n", "<leader>v", ":tabe $MYVIMRC<CR>")
+vim.keymap.set("n", "<leader>l", ":set list! | :IndentBlanklineToggle<CR>")
+vim.keymap.set("n", "-", ":Ex<CR>")
+vim.keymap.set("n", "<leader>a", "<esc>ggVG<CR>")
 
-nnoremap { '<leader>-', function() require('telescope.builtin').find_files() end }
-nnoremap { '<leader>[', function() require('telescope.builtin').git_files() end }
-nnoremap { '<leader>]', function() require('telescope.builtin').buffers() end }
-nnoremap { '<leader>0', function() require('telescope').extensions.file_browser.file_browser({ cwd = require'telescope.utils'.buffer_dir() }) end }
-nnoremap { '<leader><leader>-', function() require('telescope.builtin').find_files({ cwd = require'telescope.utils'.buffer_dir() }) end }
+-- vim.keymap.set("n", "<leader>H", function() print("Hello world!") end)
+vim.keymap.set("n", "<leader>-", require("telescope.builtin").find_files)
+vim.keymap.set("n", "<leader>[", require("telescope.builtin").git_files)
+vim.keymap.set("n", "<leader>]", require("telescope.builtin").buffers)
 
-nnoremap { '<leader>ff', function() require('telescope.builtin').find_files() end }
-nnoremap { '<leader>fb', function() require('telescope.builtin').buffers() end }
-nnoremap { '<leader>fg', function() require('telescope.builtin').live_grep() end }
-nnoremap { '<leader>rg', function() require('telescope.builtin').live_grep() end }
-nnoremap { '<leader>fh', function() require('telescope.builtin').help_tags() end }
+vim.keymap.set("n", "<leader>0", function()
+	require("telescope").extensions.file_browser.file_browser({ cwd = require("telescope.utils").buffer_dir() })
+end)
+vim.keymap.set("n", "<leader><leader>-", function()
+	require("telescope.builtin").find_files({ cwd = require("telescope.utils").buffer_dir() })
+end)
 
-map("n", "\\", "<cmd>noh<CR>")
-map("n", "U", "<C-R>")
+vim.keymap.set("n", "<leader>ff", require("telescope.builtin").find_files)
+vim.keymap.set("n", "<leader>fb", require("telescope.builtin").buffers)
+vim.keymap.set("n", "<leader>fg", require("telescope.builtin").live_grep)
+vim.keymap.set("n", "<leader>rg", require("telescope.builtin").live_grep)
+vim.keymap.set("n", "<leader>fh", require("telescope.builtin").help_tags)
+vim.keymap.set("n", "<leader>/", require("telescope.builtin").current_buffer_fuzzy_find)
 
-map("", "<C-h>", "<C-w>h")
-map("", "<C-j>", "<C-w>j")
-map("", "<C-k>", "<C-w>k")
-map("", "<C-l>", "<C-w>l")
+vim.keymap.set("n", "\\", "<cmd>noh<CR>")
+vim.keymap.set("n", "U", "<C-R>")
 
-map("", "H", "^")
-map("", "L", "$")
+vim.keymap.set("", "<C-h>", "<C-w>h")
+vim.keymap.set("", "<C-j>", "<C-w>j")
+vim.keymap.set("", "<C-k>", "<C-w>k")
+vim.keymap.set("", "<C-l>", "<C-w>l")
 
-map("n", "j", "gj")
-map("n", "k", "gk")
+vim.keymap.set("", "H", "^")
+vim.keymap.set("", "L", "$")
 
-map("n", "<Tab>", ":tabnext<CR>")
-map("n", "<S-Tab>", ":tabprevious<CR>")
-map("n", "<leader><BS>", "<c-^>")
+vim.keymap.set("n", "j", "gj")
+vim.keymap.set("n", "k", "gk")
 
-map("n", "<up>", "<nop>")
-map("n", "<down>", "<nop>")
-map("n", "<left>", "<nop>")
-map("n", "<right>", "<nop>")
-map("n", "<S-up>", "<nop>")
-map("n", "<S-down>", "<nop>")
-map("i", "<up>", "<nop>")
-map("i", "<down>", "<nop>")
-map("i", "<S-up>", "<nop>")
-map("i", "<S-down>", "<nop>")
+vim.keymap.set("n", "<Tab>", ":tabnext<CR>")
+vim.keymap.set("n", "<S-Tab>", ":tabprevious<CR>")
+vim.keymap.set("n", "<leader><BS>", "<c-^>")
 
-map("n", "Q", "<nop>")
+vim.keymap.set("n", "<up>", "<nop>")
+vim.keymap.set("n", "<down>", "<nop>")
+vim.keymap.set("n", "<left>", "<nop>")
+vim.keymap.set("n", "<right>", "<nop>")
+vim.keymap.set("n", "<S-up>", "<nop>")
+vim.keymap.set("n", "<S-down>", "<nop>")
+vim.keymap.set("i", "<up>", "<nop>")
+vim.keymap.set("i", "<down>", "<nop>")
+vim.keymap.set("i", "<S-up>", "<nop>")
+vim.keymap.set("i", "<S-down>", "<nop>")
+
+vim.keymap.set("n", "Q", "<nop>")
 
 -- map("i", "<S-Tab>", 'pumvisible() ? "<C-p>" : "<Tab>"', { expr = true })
 -- map("i", "<Tab>", 'pumvisible() ? "<C-n>" : "<Tab>"', { expr = true })

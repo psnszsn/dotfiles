@@ -21,35 +21,43 @@ end
 require("plugins")
 require("mappings")
 require("options")
+require("snippets")
 require("lsp")
 require("completion")
 require("disable_builtin")
-require("snippets")
 
 -------------------- PLUGIN SETUP --------------------------
 -- g['netrw_banner'] = 0
-g["csv_no_conceal"] = 1
-g["xml_syntax_folding"] = 1
-g["vim_markdown_conceal"] = 0
-g["vim_markdown_conceal_code_blocks"] = 0
-g["embark_terminal_italics"] = 1
+g.csv_no_conceal = 1
+g.xml_syntax_folding = 1
+g.vim_markdown_conceal = 0
+g.vim_markdown_conceal_code_blocks = 0
+g.embark_terminal_italics = 1
 -- g['completion_enable_snippet'] = 'UltiSnips'
+g.do_filetype_lua = 1
+g.did_load_filetypes = 0
 
 -- ÃĂªŞÞŢãăºşþţ
-cmd(
-	"command FixSub set fileencoding=utf-8 | %s/Ã/Ă/ge | %s/ª/Ș/ge | %s/Þ/Ț/ge | %s/ã/ă/ge | %s/º/ș/ge | %s/þ/ț/ge"
+vim.api.nvim_create_user_command(
+	"FixSub",
+	"set fileencoding=utf-8 | %s/Ã/Ă/ge | %s/ª/Ș/ge | %s/Þ/Ț/ge | %s/ã/ă/ge | %s/º/ș/ge | %s/þ/ț/ge",
+	{}
 )
 
-cmd("au TextYankPost * lua vim.highlight.on_yank {on_visual = false}") -- disabled in visual mode
+-- Highlight on yank
+local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
+vim.api.nvim_create_autocmd("TextYankPost", {
+	callback = function()
+		vim.highlight.on_yank({ on_visual = false })
+	end,
+	group = highlight_group,
+	pattern = "*",
+})
 
-cmd([[
-	autocmd BufWritePost ~/.local/share/chezmoi/* silent ! chezmoi apply --source-path % 
-	autocmd FileType fish setlocal commentstring=#%s
-]])
 
 local ts = require("nvim-treesitter.configs")
 ts.setup({
-	ensure_installed = "maintained",
+	ensure_installed = "all",
 	highlight = { enable = true },
 	incremental_selection = { enable = true },
 	indent = { enable = true },

@@ -25,6 +25,7 @@ require("snippets")
 require("lsp")
 require("completion")
 require("disable_builtin")
+require("clipboard")
 
 -------------------- PLUGIN SETUP --------------------------
 -- g['netrw_banner'] = 0
@@ -36,6 +37,7 @@ g.embark_terminal_italics = 1
 -- g['completion_enable_snippet'] = 'UltiSnips'
 g.do_filetype_lua = 1
 g.did_load_filetypes = 0
+
 
 -- ÃĂªŞÞŢãăºşþţ
 vim.api.nvim_create_user_command(
@@ -53,7 +55,6 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	group = highlight_group,
 	pattern = "*",
 })
-
 
 local ts = require("nvim-treesitter.configs")
 ts.setup({

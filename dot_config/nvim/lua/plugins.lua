@@ -24,6 +24,8 @@ require("packer").startup(function()
 
 	use("shaunsingh/nord.nvim")
 	use("embark-theme/vim")
+	use("rebelot/kanagawa.nvim")
+
 	use("jose-elias-alvarez/null-ls.nvim")
 
 	use({ "L3MON4D3/LuaSnip" })

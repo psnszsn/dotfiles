@@ -3,7 +3,7 @@ local opt = vim.opt
 
 -------------------- OPTIONS -------------------------------
 local indent = 4
-cmd("colorscheme embark")
+cmd("colorscheme kanagawa")
 opt.expandtab = false -- Use spaces instead of tabs
 opt.shiftwidth = indent -- Size of an indent
 opt.smartindent = true -- Insert indents automatically

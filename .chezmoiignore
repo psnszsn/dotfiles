@@ -1,4 +1,4 @@
-{{- if ne .chezmoi.hostname "ryz" }}
+{{- if eq .chezmoi.hostname "abcd" }}
 .mozilla
 .config/*
 .local

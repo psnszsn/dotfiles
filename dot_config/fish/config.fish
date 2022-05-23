@@ -1,7 +1,7 @@
 abbr -a nv nvim
 abbr -a q exit
 abbr -a o xdg-open
-abbr -a swayconfig "chezmoi edit ~/.config/sway/config"
+abbr -a swayconfig "chezmoi edit ~/.config/sway/config --apply"
 abbr -a refl "sudo reflector --verbose --country Romania -l 10 --sort rate --save /etc/pacman.d/mirrorlist"
 abbr -a g git
 abbr -a c cargo

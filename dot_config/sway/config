@@ -13,23 +13,14 @@ font pango:DejaVu Sans Mono 10
 # xwayland disable
 # mouse_warping container
 
-set $term $TERMINAL
 
-set $menu bemenu
+bindsym $mod+Return exec foot
+bindsym $mod+Shift+Return exec alacritty 
 
-bindsym $mod+Return exec $term
-bindsym $mod+Shift+Return exec kitty 
-# bindsym --release $mod exec notify-send --icon=gtk-info Volume "U pressed mute."
+bindsym $mod+d exec bemenu_run
+bindsym $mod+space exec fuzzel --terminal='foot' --launch-prefix='swaymsg exec --'
 
-bindsym $mod+d exec dmenu_path | $menu | xargs swaymsg exec
-bindsym $mod+space exec j4-dmenu-desktop --no-generic --dmenu='$menu' --term='alacritty' --wrapper='swaymsg exec'
-bindsym $mod+Shift+d exec j4-dmenu-desktop --dmenu='$menu -l10 -p run' --term='alacritty'
-# bindsym Mod1+Tab exec alttab.sh "$menu -l10 -p focus_window"
-# bindsym $mod+Ctrl+space exec termite --name=launcher -e "bash -c 'fzf-launcher.sh'"
-# bindsym $mod+p exec gopass ls --flat | sort | $menu -p password | xargs --no-run-if-empty gopass show -c
 bindsym $mod+p exec keeprompt
-bindsym $mod+comma exec networkmanager_dmenu 
-# for_window [app_id="^launcher$"] floating enable, border none
 for_window [app_id="^launcher$"] floating enable, border pixel 10, sticky enable
 bindsym $mod+Ctrl+Space exec alacritty --class=launcher -e env TERMINAL_COMMAND="alacritty -e" sway-launcher-desktop.sh
 

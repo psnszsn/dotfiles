@@ -15,8 +15,8 @@ font:
     #style: Bold Italic
   size: 15.0
 
-window:
-  opacity: 0.8
+# window:
+#   opacity: 0.8
 
 selection:
   save_to_clipboard: true

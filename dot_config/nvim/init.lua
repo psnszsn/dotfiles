@@ -69,7 +69,8 @@ ts.setup({
 })
 
 local telescope = require("telescope")
-telescope.load_extension("lsp_handlers")
+-- telescope.load_extension("lsp_handlers")
+telescope.load_extension("fzf")
 
 require("nvim-autopairs").setup({
 	fast_wrap = {},

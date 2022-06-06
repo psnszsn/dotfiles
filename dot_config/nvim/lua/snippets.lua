@@ -33,7 +33,7 @@ ls.add_snippets(nil, {
 	zig = {
 		snippet(
 			"print",
-			fmta('std.debug.print("<>\\n"), .{<>});', {
+			fmta('std.debug.print("<>\\n", .{<>});', {
 				c(1, { t("{}"), t("{s}"), t("{any}") }),
 				i(2, "vars"),
 			})

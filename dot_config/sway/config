@@ -125,6 +125,7 @@ bindsym $mod+Shift+s sticky toggle
 
 bindsym $mod+Shift+minus move scratchpad
 bindsym $mod+minus scratchpad show
+bindsym $mod+z scratchpad show
 bindsym Ctrl+Mod1+Tab scratchpad show
 
 bindsym $mod+Shift+Left resize shrink width 10px

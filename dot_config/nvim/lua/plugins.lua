@@ -51,6 +51,7 @@ require("packer").startup(function()
 			{ "nvim-telescope/telescope-file-browser.nvim" },
 		},
 	})
+	use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
 
 	-- use({
 	-- 	"itchyny/lightline.vim",

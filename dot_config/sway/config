@@ -200,6 +200,8 @@ bindsym $mod+e exec nautilus --new-window
 
 assign [class="^Chromium$"] $ws9
 assign [app_id="^Chromium$"] $ws9
+# assign [name="Chromium"] $ws9
+assign [title="Chromium"] $ws9
 assign [app_id="^firefox$"] $ws8
 assign [app_id="qutebrowser$"] $ws9
 assign [class="Gimp"] gimp
@@ -239,7 +241,8 @@ bindsym $mod+Print exec grim -g "$(slurp)" $HOME/pictures/$(date +'%Y-%m-%d-%H%M
 bindsym --inhibited $mod+Ctrl+Shift+q shortcuts_inhibitor deactivate
 
 exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
-exec gammastep -l 44:26
+# exec gammastep -l 44:26
+exec gammastep -l 51:4
 exec kanshi
 
 exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway

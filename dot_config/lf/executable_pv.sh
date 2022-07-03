@@ -46,10 +46,11 @@ case "$mimetype" in
 	text/* | */xml)
 		bat -f --terminal-width=${width} --style="snip"  "$1"
 		exit;;
-	image/*)
-		# exiftool "${FILE_PATH}"
-		chafa --fill=block --symbols=block -s ${width}x"${height}" "${FILE_PATH}"
-		exit;;
+	# image/*)
+	# 	# exiftool "${FILE_PATH}"
+	# 	# chafa --fill=block --symbols=block -s ${width}x"${height}" "${FILE_PATH}"
+	# 	chafa --size ${width}x"${height}" "${FILE_PATH}"
+	# 	exit;;
 
 esac
 

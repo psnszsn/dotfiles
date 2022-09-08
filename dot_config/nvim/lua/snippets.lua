@@ -32,6 +32,28 @@ ls.add_snippets(nil, {
 	},
 	zig = {
 		snippet(
+			"main",
+			t({
+				'const std = @import("std");',
+				"",
+				"pub fn main() void {",
+				"    const stdout = std.io.getStdOut().writer();",
+				'    try stdout.print("Hello, {s}!\\n", .{"world"});',
+				"}",
+			})
+		),
+		snippet("imps", t('const std = @import("std");')),
+
+		snippet(
+			"fn",
+			fmta("fn <>(<>) void{\n    <>\n}" , {
+				i(1, "name"),
+				c(2, { t("comptime T: type"), t("") }),
+				i(3, "body"),
+			})
+		),
+
+		snippet(
 			"print",
 			fmta('std.debug.print("<>\\n", .{<>});', {
 				c(1, { t("{}"), t("{s}"), t("{any}") }),

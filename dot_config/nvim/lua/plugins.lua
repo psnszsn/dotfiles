@@ -1,5 +1,5 @@
 -------------------- PLUGINS -------------------------------
-require("packer").startup(function()
+require("packer").startup(function(use)
 	-- Packer can manage itself
 	use("wbthomason/packer.nvim")
 
@@ -8,6 +8,8 @@ require("packer").startup(function()
 	use("tpope/vim-repeat")
 	use("tpope/vim-sensible")
 	use("tpope/vim-surround")
+
+	-- use("wincent/command-t")
 
 	use("nvim-treesitter/nvim-treesitter")
 	use("JoosepAlviste/nvim-ts-context-commentstring")
@@ -21,10 +23,19 @@ require("packer").startup(function()
 	use("lambdalisue/suda.vim")
 	use("mboughaba/i3config.vim")
 	use("ojroques/vim-oscyank")
+	-- use {'akinsho/bufferline.nvim', tag = "v2.*", requires = 'kyazdani42/nvim-web-devicons'}
 
 	use("shaunsingh/nord.nvim")
 	use("embark-theme/vim")
 	use("rebelot/kanagawa.nvim")
+	use("bluz71/vim-nightfly-guicolors")
+	use({ "catppuccin/nvim", as = "catppuccin" })
+	use({
+		"olivercederborg/poimandres.nvim",
+		config = function()
+			require("poimandres").setup({})
+		end,
+	})
 
 	use("jose-elias-alvarez/null-ls.nvim")
 

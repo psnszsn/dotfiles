@@ -3,7 +3,6 @@ local opt = vim.opt
 
 -------------------- OPTIONS -------------------------------
 local indent = 4
-cmd("colorscheme kanagawa")
 opt.expandtab = false -- Use spaces instead of tabs
 opt.shiftwidth = indent -- Size of an indent
 opt.smartindent = true -- Insert indents automatically
@@ -36,6 +35,16 @@ opt.listchars = { tab = "▸ ", trail = "·", nbsp = "+", eol = "¬" }
 opt.shortmess:append({ c = true })
 -- opt.completeopt = { "menuone", "noselect" }
 opt.completeopt = { "menu", "menuone", "noselect" }
+
+vim.g.catppuccin_flavour = "mocha" -- latte, frappe, macchiato, mocha
+require("catppuccin").setup()
+cmd("colorscheme catppuccin")
+
+
+-- opt.foldnestmax=1
+-- opt.foldmethod = "expr"
+-- opt.foldexpr="nvim_treesitter#foldexpr()"
+
 
 if vim.env.TERM == "xterm" then
 	opt.termguicolors = false

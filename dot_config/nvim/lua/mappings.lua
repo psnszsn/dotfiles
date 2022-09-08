@@ -6,8 +6,13 @@ vim.keymap.set("n", "<leader>l", ":set list! | :IndentBlanklineToggle<CR>")
 vim.keymap.set("n", "-", ":Ex<CR>")
 vim.keymap.set("n", "<leader>a", "<esc>ggVG<CR>")
 
--- vim.keymap.set("n", "<leader>H", function() print("Hello world!") end)
-vim.keymap.set("n", "<leader>-", require("telescope.builtin").find_files)
+vim.keymap.set("n", "<leader>-", function()
+	local opts = {} -- define here if you want to define something
+	local ok = pcall(require("telescope.builtin").git_files, opts)
+	if not ok then
+		require("telescope.builtin").find_files(opts)
+	end
+end)
 vim.keymap.set("n", "<leader>[", require("telescope.builtin").git_files)
 vim.keymap.set("n", "<leader>]", require("telescope.builtin").buffers)
 
@@ -36,14 +41,13 @@ vim.keymap.set("", "<C-l>", "<C-w>l")
 vim.keymap.set("", "H", "^")
 vim.keymap.set("", "L", "$")
 
-
 -- Remap for dealing with word wrap
-vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
-vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
 vim.keymap.set("n", "<Tab>", ":tabnext<CR>")
 vim.keymap.set("n", "<S-Tab>", ":tabprevious<CR>")
-vim.keymap.set("n", "<leader><BS>", "<c-^>")
+-- vim.keymap.set("n", "<leader><BS>", "<c-^>")
 
 vim.keymap.set("n", "<up>", "<nop>")
 vim.keymap.set("n", "<down>", "<nop>")
@@ -57,6 +61,7 @@ vim.keymap.set("i", "<S-up>", "<nop>")
 vim.keymap.set("i", "<S-down>", "<nop>")
 
 vim.keymap.set("n", "Q", "<nop>")
+vim.keymap.set("t", "<C-Esc>", "<C-\\><C-n>")
 
 -- map("i", "<S-Tab>", 'pumvisible() ? "<C-p>" : "<Tab>"', { expr = true })
 -- map("i", "<Tab>", 'pumvisible() ? "<C-n>" : "<Tab>"', { expr = true })

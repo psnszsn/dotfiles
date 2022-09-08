@@ -16,3 +16,7 @@ opt_local.suffixesadd = { ".zig", ".zir" }
 
 opt_local.commentstring="// %s"
 -- opt_local.formatoptions-=t formatoptions+=croql
+--
+vim.keymap.set("n", "<leader>sl", function()
+	require("telescope.builtin").find_files({ cwd = "/usr/lib/zig/std/" })
+end)

@@ -38,7 +38,6 @@ g.embark_terminal_italics = 1
 g.do_filetype_lua = 1
 g.did_load_filetypes = 0
 
-
 -- ÃĂªŞÞŢãăºşþţ
 vim.api.nvim_create_user_command(
 	"FixSub",
@@ -54,6 +53,27 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	end,
 	group = highlight_group,
 	pattern = "*",
+})
+
+local colon_ln_group = vim.api.nvim_create_augroup("ColonLN", { clear = true })
+vim.api.nvim_create_autocmd("BufNewFile", {
+	callback = function()
+		local bufnr = vim.fn.bufnr("%")
+		local bufname = vim.api.nvim_buf_get_name(0)
+		-- local bufname = "asd:"
+		local filename, line = bufname:match("(.+):(%d+)$")
+
+		if filename and vim.fn.filereadable(filename) == 1 then
+			vim.cmd("keepalt e " .. vim.fn.fnameescape(filename))
+			vim.api.nvim_buf_delete(bufnr, {})
+			vim.api.nvim_win_set_cursor(0, { tonumber(line), 0 })
+			vim.cmd("filetype detect")
+		end
+		vim.pretty_print(filename, line)
+		print("rEaDiNg bFr: ", bufname)
+	end,
+	group = colon_ln_group,
+	pattern = "*:[0-9]*{:[0-9]*}\\=",
 })
 
 local ts = require("nvim-treesitter.configs")
@@ -75,3 +95,6 @@ telescope.load_extension("fzf")
 require("nvim-autopairs").setup({
 	fast_wrap = {},
 })
+
+-- require("bufferline").setup{}
+--

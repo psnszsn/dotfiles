@@ -42,11 +42,21 @@ ls.add_snippets(nil, {
 				"}",
 			})
 		),
+
+		snippet(
+			"gpa",
+			t({
+				"var gpa = std.heap.GeneralPurposeAllocator(.{}){};",
+				"defer std.debug.assert(!gpa.deinit());",
+				"",
+				"const allocator = gpa.allocator();",
+			})
+		),
 		snippet("imps", t('const std = @import("std");')),
 
 		snippet(
 			"fn",
-			fmta("fn <>(<>) void{\n    <>\n}" , {
+			fmta("fn <>(<>) void{\n    <>\n}", {
 				i(1, "name"),
 				c(2, { t("comptime T: type"), t("") }),
 				i(3, "body"),

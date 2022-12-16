@@ -1,6 +1,6 @@
 local dic = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
 
-function b64enc(data)
+local function b64enc(data)
 	return (
 		(data:gsub(".", function(x)
 			local r, b = "", x:byte()
@@ -21,23 +21,28 @@ function b64enc(data)
 	)
 end
 
-function osc_yank(str)
-	file = io.open("/dev/stderr", "wb")
-	buf = "\27]52;c;" .. b64enc(str) .. "\7"
+local function osc_yank(str)
+	local file = io.open("/dev/stderr", "wb")
+	local buf = "\27]52;c;" .. b64enc(str) .. "\7"
 	file:write(buf)
 	file:flush()
 	io.close(file)
 end
 
-vim.g.clipboard = {
-	name = "osc52",
-	copy = {
-		["+"] = function(lines, regtype)
-			osc_yank(table.concat(lines, "\n"))
-		end,
-	},
-	paste = {
-		["+"] = { "notify_send", "no paste" },
-	},
-	cache_enabled = false,
-}
+
+
+-- if not vim.g.neovide then
+-- 	vim.g.clipboard = {
+-- 		name = "osc52",
+-- 		copy = {
+-- 			["+"] = function(lines, regtype)
+-- 				print("ALLO")
+-- 				osc_yank(table.concat(lines, "\n"))
+-- 			end,
+-- 		},
+-- 		-- paste = {
+-- 		-- 	["+"] = { "notify_send", "no paste" },
+-- 		-- },
+-- 		cache_enabled = false,
+-- 	}
+-- end

@@ -36,7 +36,7 @@ g.vim_markdown_conceal_code_blocks = 0
 g.embark_terminal_italics = 1
 -- g['completion_enable_snippet'] = 'UltiSnips'
 g.do_filetype_lua = 1
-g.did_load_filetypes = 0
+--g.did_load_filetypes = 0
 
 -- ÃĂªŞÞŢãăºşþţ
 vim.api.nvim_create_user_command(
@@ -64,10 +64,11 @@ vim.api.nvim_create_autocmd("BufNewFile", {
 		local filename, line = bufname:match("(.+):(%d+)$")
 
 		if filename and vim.fn.filereadable(filename) == 1 then
-			vim.cmd("keepalt e " .. vim.fn.fnameescape(filename))
+			-- vim.cmd("e " .. vim.fn.fnameescape(filename))
+			vim.cmd.edit({ filename, mods = { keepalt = true } })
 			vim.api.nvim_buf_delete(bufnr, {})
 			vim.api.nvim_win_set_cursor(0, { tonumber(line), 0 })
-			vim.cmd("filetype detect")
+			vim.cmd.filetype("detect")
 		end
 		vim.pretty_print(filename, line)
 		print("rEaDiNg bFr: ", bufname)
@@ -95,6 +96,8 @@ telescope.load_extension("fzf")
 require("nvim-autopairs").setup({
 	fast_wrap = {},
 })
+
+require('leap').add_default_mappings()
 
 -- require("bufferline").setup{}
 --

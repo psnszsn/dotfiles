@@ -32,7 +32,10 @@ local on_attach = function(client, bufnr)
 	vim.keymap.set("n", "<leader>so", require("telescope.builtin").lsp_document_symbols, opts)
 	vim.keymap.set("n", "<leader>ds", require("telescope.builtin").lsp_document_symbols, opts)
 	-- vim.keymap.set("n", "<space>ds", vim.lsp.buf.document_symbol, opts)
-	vim.keymap.set("n", "<space>f", vim.lsp.buf.formatting, opts)
+	-- vim.keymap.set("n", "<space>f", vim.lsp.buf.formatting, opts)
+	vim.keymap.set("n", "<space>f", function()
+		vim.lsp.buf.format({ async = true })
+	end, opts)
 
 	if client.name == "clangd" then
 		vim.keymap.set("n", "<space>x", "<cmd>ClangdSwitchSourceHeader<CR>", opts)
@@ -52,7 +55,7 @@ null_ls.setup({
 	on_attach = on_attach,
 })
 
-local capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
 -- local servers = { "pyright", "rust_analyzer", "tsserver" }

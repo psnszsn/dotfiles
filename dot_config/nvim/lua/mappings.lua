@@ -1,18 +1,24 @@
 -------------------- MAPPINGS ------------------------------
 vim.g.mapleader = " "
 vim.keymap.set("", "<leader>c", '"+y')
+vim.keymap.set("", "<leader>ps", '"+p')
+
+vim.keymap.set("x", "<leader>px", '"_dP')
+vim.keymap.set("n", "<leader>m", ':make<CR>')
 vim.keymap.set("n", "<leader>v", ":tabe $MYVIMRC<CR>")
 vim.keymap.set("n", "<leader>l", ":set list! | :IndentBlanklineToggle<CR>")
 vim.keymap.set("n", "-", ":Ex<CR>")
 vim.keymap.set("n", "<leader>a", "<esc>ggVG<CR>")
 
 vim.keymap.set("n", "<leader>-", function()
-	local opts = {} -- define here if you want to define something
-	local ok = pcall(require("telescope.builtin").git_files, opts)
-	if not ok then
-		require("telescope.builtin").find_files(opts)
+	local in_git_repo = vim.fn.systemlist("git rev-parse --is-inside-work-tree")[1] == "true"
+	if in_git_repo then
+		require("telescope.builtin").git_files()
+	else
+		require("telescope.builtin").find_files()
 	end
 end)
+
 vim.keymap.set("n", "<leader>[", require("telescope.builtin").git_files)
 vim.keymap.set("n", "<leader>]", require("telescope.builtin").buffers)
 
@@ -45,8 +51,8 @@ vim.keymap.set("", "L", "$")
 vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
-vim.keymap.set("n", "<Tab>", ":tabnext<CR>")
-vim.keymap.set("n", "<S-Tab>", ":tabprevious<CR>")
+-- vim.keymap.set("n", "<Tab>", ":tabnext<CR>")
+-- vim.keymap.set("n", "<S-Tab>", ":tabprevious<CR>")
 -- vim.keymap.set("n", "<leader><BS>", "<c-^>")
 
 vim.keymap.set("n", "<up>", "<nop>")

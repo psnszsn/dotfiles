@@ -24,6 +24,7 @@ abbr -a py python
 abbr -a hx helix
 abbr -a cz chezmoi
 abbr -a czc czedit.sh
+abbr -a nvd neovide
 
 
 if command -v direnv > /dev/null
@@ -32,6 +33,10 @@ end
 
 if command -v zoxide > /dev/null
 	zoxide init fish | source
+end
+
+if command -v doas > /dev/null
+	abbr -a sudo 'doas'
 end
 
 if command -v exa > /dev/null

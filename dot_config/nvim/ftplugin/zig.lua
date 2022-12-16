@@ -12,6 +12,8 @@ opt_local.softtabstop = 4
 opt_local.shiftwidth = 4
 opt_local.suffixesadd = { ".zig", ".zir" }
 
+vim.cmd.compiler("zig_build")
+
 
 
 opt_local.commentstring="// %s"

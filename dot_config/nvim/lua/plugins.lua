@@ -9,19 +9,16 @@ require("packer").startup(function(use)
 	use("tpope/vim-sensible")
 	use("tpope/vim-surround")
 
-	-- use("wincent/command-t")
-
 	use("nvim-treesitter/nvim-treesitter")
 	use("JoosepAlviste/nvim-ts-context-commentstring")
 	use("lukas-reineke/indent-blankline.nvim")
 	use("neovim/nvim-lspconfig")
 	-- use("nvim-lua/lsp-status.nvim")
 	use("windwp/nvim-autopairs")
-	use("ggandor/lightspeed.nvim")
+	use("ggandor/leap.nvim")
 
 	use("itchyny/lightline.vim")
 	use("lambdalisue/suda.vim")
-	use("mboughaba/i3config.vim")
 	use("ojroques/vim-oscyank")
 	-- use {'akinsho/bufferline.nvim', tag = "v2.*", requires = 'kyazdani42/nvim-web-devicons'}
 
@@ -30,12 +27,6 @@ require("packer").startup(function(use)
 	use("rebelot/kanagawa.nvim")
 	use("bluz71/vim-nightfly-guicolors")
 	use({ "catppuccin/nvim", as = "catppuccin" })
-	use({
-		"olivercederborg/poimandres.nvim",
-		config = function()
-			require("poimandres").setup({})
-		end,
-	})
 
 	use("jose-elias-alvarez/null-ls.nvim")
 
@@ -50,7 +41,6 @@ require("packer").startup(function(use)
 			{ "hrsh7th/cmp-nvim-lua" },
 			{ "saadparwaiz1/cmp_luasnip" },
 		},
-		-- config = function() print "commmm" end,
 	})
 	use({ "saadparwaiz1/cmp_luasnip" })
 

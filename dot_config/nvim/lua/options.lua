@@ -40,11 +40,14 @@ vim.g.catppuccin_flavour = "mocha" -- latte, frappe, macchiato, mocha
 require("catppuccin").setup()
 cmd("colorscheme catppuccin")
 
+if g.neovide then
+	opt.guifont = { "JetBrains Mono", ":h11" }
+	-- opt.guifont = { "Iosevka Fixed" }
+end
 
 -- opt.foldnestmax=1
 -- opt.foldmethod = "expr"
 -- opt.foldexpr="nvim_treesitter#foldexpr()"
-
 
 if vim.env.TERM == "xterm" then
 	opt.termguicolors = false

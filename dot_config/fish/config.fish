@@ -24,7 +24,7 @@ abbr -a py python
 abbr -a hx helix
 abbr -a cz chezmoi
 abbr -a czc czedit.sh
-abbr -a nvd neovide
+abbr -a nvd "alacritty -e nvim &"
 
 
 if command -v direnv > /dev/null

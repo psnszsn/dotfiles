@@ -7,7 +7,7 @@ vim.keymap.set("x", "<leader>px", '"_dP')
 vim.keymap.set("n", "<leader>m", ':make<CR>')
 vim.keymap.set("n", "<leader>v", ":tabe $MYVIMRC<CR>")
 vim.keymap.set("n", "<leader>l", ":set list! | :IndentBlanklineToggle<CR>")
-vim.keymap.set("n", "-", ":Ex<CR>")
+vim.keymap.set("n", "-", vim.cmd.Ex)
 vim.keymap.set("n", "<leader>a", "<esc>ggVG<CR>")
 
 vim.keymap.set("n", "<leader>-", function()

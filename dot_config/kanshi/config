@@ -49,3 +49,14 @@ profile dell_dual {
 	output "Dell Inc. DELL U2722DE 5593BH3" position 2560,0 transform 90
 	output eDP-1 disable
 }
+
+profile dell_lg_dual {
+	output "Dell Inc. DELL P2720DC 81WTK9B7042S" position 0,0
+	output "LG Electronics LG Ultra HD 0x0000AEAA" position 2560,0 scale 2 transform 90
+	output eDP-1 disable
+}
+
+profile lg_tower {
+	output "Goldstar Company Ltd LG Ultra HD 0x0000AEAA" position 0,0 scale 2
+	output eDP-1 position 1,1080
+}

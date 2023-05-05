@@ -13,7 +13,7 @@ font:
   #bold_italic:
     #family: monospace
     #style: Bold Italic
-  size: 15.0
+  size: 13.0
 
 # window:
 #   opacity: 0.8

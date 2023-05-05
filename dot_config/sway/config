@@ -10,12 +10,12 @@ input * {
 }
 
 font pango:DejaVu Sans Mono 10
-xwayland disable
+xwayland enable
 # mouse_warping container
 
 
-bindsym $mod+Return exec foot
-bindsym $mod+Shift+Return exec alacrittyiiiiiiiiiii 
+bindsym $mod+Return exec alacritty
+bindsym $mod+Shift+Return exec foot
 
 bindsym $mod+d exec bemenu_run
 bindsym $mod+space exec fuzzel --terminal='foot' --launch-prefix='swaymsg exec --'
@@ -210,6 +210,7 @@ assign [app_id="org.gnome.Nautilus"] $ws10
 for_window [app_id="^firefox$"] focus
 for_window [app_id="firefox"] inhibit_idle fullscreen
 for_window [title="About Mozilla Firefox"] floating enable
+for_window [title="KeyPassXC*"] floating enable
 for_window [class="Spotify"] move to scratchpad, focus, border normal
 for_window [class="^Steam$"] inhibit_idle fullscreen
 for_window [title="Steam - News*"] kill

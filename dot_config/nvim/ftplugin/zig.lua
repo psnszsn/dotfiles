@@ -15,7 +15,6 @@ opt_local.suffixesadd = { ".zig", ".zir" }
 vim.cmd.compiler("zig_build")
 
 
-
 opt_local.commentstring="// %s"
 -- opt_local.formatoptions-=t formatoptions+=croql
 --

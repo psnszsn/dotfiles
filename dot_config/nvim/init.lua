@@ -2,17 +2,6 @@
 -------------------- HELPERS -------------------------------
 local cmd, fn, g = vim.cmd, vim.fn, vim.g
 
-function _G.put(...)
-	local objects = {}
-	for i = 1, select("#", ...) do
-		local v = select(i, ...)
-		table.insert(objects, vim.inspect(v))
-	end
-
-	print(table.concat(objects, "\n"))
-	return ...
-end
-
 function RELOAD(pkg)
 	package.loaded[pkg] = nil
 	return require(pkg)
@@ -29,6 +18,8 @@ require("clipboard")
 
 -------------------- PLUGIN SETUP --------------------------
 -- g['netrw_banner'] = 0
+g.loaded_netrw = 1 -- disable netrw
+g.loaded_netrwPlugin = 1 --disable netrw
 g.csv_no_conceal = 1
 g.xml_syntax_folding = 1
 g.vim_markdown_conceal = 0
@@ -62,6 +53,8 @@ vim.api.nvim_create_autocmd("BufNewFile", {
 		local bufname = vim.api.nvim_buf_get_name(0)
 		-- local bufname = "asd:"
 		local filename, line = bufname:match("(.+):(%d+)$")
+		-- local reg = vim.regex([[.*:[0-9]\+\(:[0-9]\+\)\=]])
+		-- local m = reg:match_str("asdf:9")
 
 		if filename and vim.fn.filereadable(filename) == 1 then
 			-- vim.cmd("e " .. vim.fn.fnameescape(filename))
@@ -70,7 +63,7 @@ vim.api.nvim_create_autocmd("BufNewFile", {
 			vim.api.nvim_win_set_cursor(0, { tonumber(line), 0 })
 			vim.cmd.filetype("detect")
 		end
-		vim.pretty_print(filename, line)
+		vim.print(filename, line)
 		print("rEaDiNg bFr: ", bufname)
 	end,
 	group = colon_ln_group,
@@ -87,6 +80,47 @@ ts.setup({
 	context_commentstring = {
 		enable = true,
 	},
+	textobjects = {
+		select = {
+			enable = true,
+
+			lookahead = true,
+
+			keymaps = {
+				-- You can use the capture groups defined in textobjects.scm
+				["af"] = "@function.outer",
+				["if"] = "@function.inner",
+				["ac"] = "@class.outer",
+				-- You can optionally set descriptions to the mappings (used in the desc parameter of
+				-- nvim_buf_set_keymap) which plugins like which-key display
+				["ic"] = { query = "@class.inner", desc = "Select inner part of a class region" },
+				-- You can also use captures from other query groups like `locals.scm`
+				["as"] = { query = "@scope", query_group = "locals", desc = "Select language scope" },
+			},
+			-- You can choose the select mode (default is charwise 'v')
+			--
+			-- Can also be a function which gets passed a table with the keys
+			-- * query_string: eg '@function.inner'
+			-- * method: eg 'v' or 'o'
+			-- and should return the mode ('v', 'V', or '<c-v>') or a table
+			-- mapping query_strings to modes.
+			selection_modes = {
+				["@parameter.outer"] = "v", -- charwise
+				["@function.outer"] = "V", -- linewise
+				["@class.outer"] = "<c-v>", -- blockwise
+			},
+			-- If you set this to `true` (default is `false`) then any textobject is
+			-- extended to include preceding or succeeding whitespace. Succeeding
+			-- whitespace has priority in order to act similarly to eg the built-in
+			-- `ap`.
+			--
+			-- Can also be a function which gets passed a table with the keys
+			-- * query_string: eg '@function.inner'
+			-- * selection_mode: eg 'v'
+			-- and should return true of false
+			include_surrounding_whitespace = true,
+		},
+	},
 })
 
 local telescope = require("telescope")
@@ -97,7 +131,9 @@ require("nvim-autopairs").setup({
 	fast_wrap = {},
 })
 
-require('leap').add_default_mappings()
+require("leap").add_default_mappings()
+vim.keymap.del({'x', 'o'}, 'x')
+vim.keymap.del({'x', 'o'}, 'X')
 
 -- require("bufferline").setup{}
 --

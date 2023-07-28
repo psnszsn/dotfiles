@@ -17,7 +17,7 @@ abbr -a cal "cal -m"
 abbr -a dush "du -sh"
 abbr -a lst "exa -la -s modified"
 abbr -a lsls "fd --changed-within 1d -X exa -dl -rs modified"
-abbr -a apk "sudo apk"
+abbr -a apk "doas apk"
 abbr -a yay paru
 abbr -a p paru
 abbr -a py python
@@ -56,7 +56,7 @@ set -gx FZF_ALT_C_COMMAND 'fd --type directory --hidden'
 
 fish_add_path -p ~/.cargo/bin ~/go/bin ~/.local/share/npm/bin
 
-eval (dircolors -c)
+# eval (dircolors -c)
 
 
 if status is-login

@@ -1,4 +1,5 @@
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"); /* only needed once */
+@namespace xhtml url("http://www.w3.org/1999/xhtml");
 
 #window-controls  { display:none!important; } /* hide window controls in full screen mode */
 
@@ -11,4 +12,9 @@
 #main-window[title^="Mozilla Firefox"] #PersonalToolbar, 
 #main-window[title^="Firefox"] #PersonalToolbar {
   visibility: visible !important;
+}
+
+
+xhtml|html:not([privatebrowsingmode="temporary"]) #TabsToolbar {
+  visibility: collapse !important;
 }

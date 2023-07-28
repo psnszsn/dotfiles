@@ -64,6 +64,13 @@ ls.add_snippets(nil, {
 		),
 
 		snippet(
+			"info",
+			fmta('std.log.info("<>", .{<>});', {
+				c(1, { t("{}"), t("{s}"), t("{any}") }),
+				i(2, "vars"),
+			})
+		),
+		snippet(
 			"print",
 			fmta('std.debug.print("<>\\n", .{<>});', {
 				c(1, { t("{}"), t("{s}"), t("{any}") }),

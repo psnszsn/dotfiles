@@ -1,72 +1,100 @@
 -------------------- PLUGINS -------------------------------
-require("packer").startup(function(use)
-	-- Packer can manage itself
-	use("wbthomason/packer.nvim")
+-- require("packer").startup(function(use)
+-- 	-- Packer can manage itself
+-- 	use("wbthomason/packer.nvim")
 
-	use("tpope/vim-commentary")
-	use("tpope/vim-fugitive")
-	use("tpope/vim-repeat")
-	use("tpope/vim-sensible")
-	use("tpope/vim-surround")
+-- 	use("lambdalisue/suda.vim")
+-- 	use("ojroques/vim-oscyank")
+-- 	-- use {'akinsho/bufferline.nvim', tag = "v2.*", requires = 'kyazdani42/nvim-web-devicons'}
 
-	use("nvim-treesitter/nvim-treesitter")
-	use("JoosepAlviste/nvim-ts-context-commentstring")
-	use("lukas-reineke/indent-blankline.nvim")
-	use("neovim/nvim-lspconfig")
-	-- use("nvim-lua/lsp-status.nvim")
-	use("windwp/nvim-autopairs")
-	use("ggandor/leap.nvim")
+-- 	use("shaunsingh/nord.nvim")
+-- 	use("embark-theme/vim")
+-- 	use("rebelot/kanagawa.nvim")
+-- 	use("bluz71/vim-nightfly-guicolors")
 
-	use("itchyny/lightline.vim")
-	use("lambdalisue/suda.vim")
-	use("ojroques/vim-oscyank")
-	-- use {'akinsho/bufferline.nvim', tag = "v2.*", requires = 'kyazdani42/nvim-web-devicons'}
+--     use {
+--       'stevearc/oil.nvim',
+--       config = function() require('oil').setup() end
+--     }
 
-	use("shaunsingh/nord.nvim")
-	use("embark-theme/vim")
-	use("rebelot/kanagawa.nvim")
-	use("bluz71/vim-nightfly-guicolors")
-	use({ "catppuccin/nvim", as = "catppuccin" })
+-- end)
 
-	use("jose-elias-alvarez/null-ls.nvim")
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+	vim.fn.system({
+		"git",
+		"clone",
+		"--filter=blob:none",
+		"https://github.com/folke/lazy.nvim.git",
+		"--branch=stable", -- latest stable release
+		lazypath,
+	})
+end
+vim.opt.rtp:prepend(lazypath)
 
-	use({ "L3MON4D3/LuaSnip" })
+require("lazy").setup({
 
-	use({
+	"tpope/vim-commentary",
+	"tpope/vim-fugitive",
+	"tpope/vim-repeat",
+	"tpope/vim-sensible",
+	"tpope/vim-surround",
+
+	"lambdalisue/suda.vim",
+	"windwp/nvim-autopairs",
+	"ggandor/leap.nvim",
+	"itchyny/lightline.vim",
+
+	"lukas-reineke/indent-blankline.nvim",
+	{ "catppuccin/nvim", name = "catppuccin" },
+	{
+		"neovim/nvim-lspconfig",
+		dependencies = {
+			"jose-elias-alvarez/null-ls.nvim",
+		},
+	},
+	{
+		-- Autocompletion
 		"hrsh7th/nvim-cmp",
-		requires = {
-			{ "hrsh7th/cmp-nvim-lsp" },
-			{ "hrsh7th/cmp-buffer" },
-			{ "hrsh7th/cmp-path" },
-			{ "hrsh7th/cmp-nvim-lua" },
-			{ "saadparwaiz1/cmp_luasnip" },
+		dependencies = {
+			"L3MON4D3/LuaSnip",
+			"saadparwaiz1/cmp_luasnip",
+			"hrsh7th/cmp-nvim-lsp",
+			-- 'rafamadriz/friendly-snippets',
+			"hrsh7th/cmp-buffer",
+			"hrsh7th/cmp-path",
+			"hrsh7th/cmp-nvim-lua",
 		},
-	})
-	use({ "saadparwaiz1/cmp_luasnip" })
+	},
 
-	use({
+	{
 		"nvim-telescope/telescope.nvim",
-		requires = {
-			{ "nvim-lua/plenary.nvim" },
-			{ "gbrlsnchs/telescope-lsp-handlers.nvim" },
-			{ "nvim-telescope/telescope-file-browser.nvim" },
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"nvim-telescope/telescope-file-browser.nvim",
 		},
-	})
-	use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
+	},
 
-	-- use({
-	-- 	"itchyny/lightline.vim",
-	-- 	setup = function()
-	-- 		g["lightline"] = {
-	-- 			colorscheme = "embark",
-	-- 			active = {
-	-- 				left = {
-	-- 					{ "mode", "paste" },
-	-- 					{ "lsp_status", "readonly", "filename", "modified" },
-	-- 				},
-	-- 			},
-	-- 			component_expand = { lsp_status = "v:lua.lspstat" },
-	-- 		}
-	-- 	end,
-	-- })
-end)
+	{
+		"nvim-telescope/telescope-fzf-native.nvim",
+		build = "make",
+		cond = function()
+			return vim.fn.executable("make") == 1
+		end,
+	},
+
+	{
+		"nvim-treesitter/nvim-treesitter",
+		dependencies = {
+			"nvim-treesitter/nvim-treesitter-textobjects",
+			"JoosepAlviste/nvim-ts-context-commentstring",
+		},
+		build = ":TSUpdate",
+	},
+
+	{
+		"stevearc/oil.nvim",
+		opts = {},
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+	},
+})

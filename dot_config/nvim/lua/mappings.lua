@@ -4,10 +4,11 @@ vim.keymap.set("", "<leader>c", '"+y')
 vim.keymap.set("", "<leader>ps", '"+p')
 
 vim.keymap.set("x", "<leader>px", '"_dP')
-vim.keymap.set("n", "<leader>m", ':make<CR>')
+vim.keymap.set("n", "<leader>m", ":make<CR>")
 vim.keymap.set("n", "<leader>v", ":tabe $MYVIMRC<CR>")
 vim.keymap.set("n", "<leader>l", ":set list! | :IndentBlanklineToggle<CR>")
-vim.keymap.set("n", "-", vim.cmd.Ex)
+-- vim.keymap.set("n", "-", vim.cmd.Ex)
+vim.keymap.set("n", "-", require("oil").open, { desc = "Open parent directory" })
 vim.keymap.set("n", "<leader>a", "<esc>ggVG<CR>")
 
 vim.keymap.set("n", "<leader>-", function()

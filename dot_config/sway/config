@@ -5,6 +5,7 @@ output 'LG Electronics LG Ultra HD 0x0000AEAA' background $(find /home/vlad/docu
 
 
 set $mod Mod4
+set $alt Mod1
 
 input * {
     xkb_layout ro
@@ -238,8 +239,11 @@ bindsym $mod+Shift+b border toggle
 exec mako
 bindsym $mod+n exec makoctl dismiss
 bindsym $mod+Shift+n exec makoctl dismiss -a
-bindsym Print exec grim $HOME/pictures/$(date +'%Y-%m-%d-%H%M%S_grim.png') && notify-send --icon=gtk-info Volume "U took a screenshot"
-bindsym $mod+Print exec grim -g "$(slurp)" $HOME/pictures/$(date +'%Y-%m-%d-%H%M%S_grim.png') && notify-send --icon=gtk-info Volume "U took a screenshot"
+
+set $screenshot grim $HOME/pictures/$(date +'%Y-%m-%d-%H%M%S_grim.png') && notify-send --icon=gtk-info Volume "U took a screenshot"
+
+bindsym $alt+Shift+3 exec $screenshot
+bindsym $alt+Shift+4 exec grim -g "$(slurp)" $HOME/pictures/$(date +'%Y-%m-%d-%H%M%S_grim.png') && notify-send --icon=gtk-info Volume "U took a screenshot"
 
 bindsym --inhibited $mod+Ctrl+Shift+q shortcuts_inhibitor deactivate
 
@@ -247,8 +251,9 @@ bindsym --inhibited $mod+Ctrl+Shift+q shortcuts_inhibitor deactivate
 # exec gammastep -l 44:26
 exec gammastep -l 51:4
 exec kanshi
+exec /usr/libexec/pipewire-launcher
 
-exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+exec dbus-update-activation-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
 
 # exec clipman -d
 seat seat0 xcursor_theme Adwaita 

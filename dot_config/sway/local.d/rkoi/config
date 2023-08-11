@@ -1,0 +1,21 @@
+# vim:foldmethod=marker:ft=i3config
+
+
+exec swayidle -w \
+         timeout 500 'swaylock -f -c 000000' \
+         timeout 1000 'swaymsg "output * dpms off"' \
+              resume 'swaymsg "output * dpms on"' \
+         before-sleep 'swaylock -f -c 000000' \
+         after-resume 'swaymsg "output * dpms on"'
+
+bindsym XF86MonBrightnessDown exec light -U 5
+bindsym XF86MonBrightnessUp exec light -A 5
+
+bar {
+     swaybar_command waybar
+}
+
+bindsym $mod+Up exec playerctl play
+bindsym $mod+Down exec playerctl pause
+bindsym $mod+Right exec playerctl next
+bindsym $mod+Left exec playerctl previous

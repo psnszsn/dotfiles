@@ -2,8 +2,10 @@ if vim.b.did_ftplugin then
 	print "DONE"
 	return
 end
+
 vim.b.did_ftplugin = 1
 
+print("Hello Zig!")
 local opt_local = vim.opt_local
 
 opt_local.expandtab = true

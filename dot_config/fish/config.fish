@@ -8,6 +8,7 @@ abbr -a c cargo
 abbr -a m make
 abbr -a pacman "sudo pacman"
 abbr -a ip "ip -c"
+abbr -a service "doas service"
 abbr -a start "systemctl start"
 abbr -a stop "systemctl stop"
 abbr -a status "systemctl status"

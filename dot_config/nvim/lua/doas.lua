@@ -26,7 +26,7 @@ function M.doas(term)
     local stderr = vim.loop.new_pipe(false)
 	local password = vim.fn.inputsecret('Password:')
 
-    handle = vim.loop.spawn('sudo', {args = {"-S", "-p","", "ls"}, stdio = {stdin, stdout, stderr}}, vim.schedule_wrap(function(code, signal)
+    handle = vim.loop.spawn('doas', {args = {"ls"}, stdio = {stdin, stdout, stderr}}, vim.schedule_wrap(function(code, signal)
 		print("doas exit code:", code)
 		stdin:close()
 		stdout:close()

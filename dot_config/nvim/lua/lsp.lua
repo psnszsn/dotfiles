@@ -51,6 +51,7 @@ null_ls.setup({
 		null_ls.builtins.diagnostics.pylint.with({
 			method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
 		}),
+		null_ls.builtins.formatting.prettier,
 	},
 	on_attach = on_attach,
 })

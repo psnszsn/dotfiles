@@ -1,24 +1,3 @@
--------------------- PLUGINS -------------------------------
--- require("packer").startup(function(use)
--- 	-- Packer can manage itself
--- 	use("wbthomason/packer.nvim")
-
--- 	use("lambdalisue/suda.vim")
--- 	use("ojroques/vim-oscyank")
--- 	-- use {'akinsho/bufferline.nvim', tag = "v2.*", requires = 'kyazdani42/nvim-web-devicons'}
-
--- 	use("shaunsingh/nord.nvim")
--- 	use("embark-theme/vim")
--- 	use("rebelot/kanagawa.nvim")
--- 	use("bluz71/vim-nightfly-guicolors")
-
---     use {
---       'stevearc/oil.nvim',
---       config = function() require('oil').setup() end
---     }
-
--- end)
-
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
 	vim.fn.system({
@@ -43,7 +22,17 @@ require("lazy").setup({
 	"lambdalisue/suda.vim",
 	"windwp/nvim-autopairs",
 	"ggandor/leap.nvim",
-	"itchyny/lightline.vim",
+
+	{
+		"nvim-lualine/lualine.nvim",
+		opts = {
+			options = {
+				icons_enabled = false,
+				component_separators = "|",
+				section_separators = "",
+			},
+		},
+	},
 
 	"lukas-reineke/indent-blankline.nvim",
 	{ "catppuccin/nvim", name = "catppuccin" },
@@ -97,4 +86,6 @@ require("lazy").setup({
 		opts = {},
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 	},
+
+	{ "rebelot/kanagawa.nvim" },
 })

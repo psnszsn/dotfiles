@@ -10,7 +10,7 @@ opt.tabstop = indent -- Number of spaces tabs count for
 
 opt.mouse = "a" -- Use mouse
 opt.undofile = true -- Persistend undo
-	opt.hidden = true -- Enable background buffers
+opt.hidden = true -- Enable background buffers
 opt.ignorecase = true -- Ignore case
 opt.joinspaces = false -- No double spaces after a dot with join
 opt.scrolloff = 4 -- Lines of context
@@ -35,9 +35,6 @@ opt.listchars = { tab = "▸ ", trail = "·", nbsp = "+", eol = "¬" }
 opt.shortmess:append({ c = true })
 -- opt.completeopt = { "menuone", "noselect" }
 opt.completeopt = { "menu", "menuone", "noselect" }
-
--- require("catppuccin").setup()
-cmd("colorscheme kanagawa-dragon")
 
 if g.neovide then
 	opt.guifont = { "JetBrains Mono", ":h11" }

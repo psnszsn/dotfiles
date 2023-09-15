@@ -1,50 +1,90 @@
--- NEOVIM CONFIG
--------------------- HELPERS -------------------------------
-local cmd, fn, g = vim.cmd, vim.fn, vim.g
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 
-function RELOAD(pkg)
-	package.loaded[pkg] = nil
-	return require(pkg)
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+	vim.fn.system({
+		"git",
+		"clone",
+		"--filter=blob:none",
+		"https://github.com/folke/lazy.nvim.git",
+		"--branch=stable", -- latest stable release
+		lazypath,
+	})
 end
+vim.opt.rtp:prepend(lazypath)
 
-require("plugins")
-require("mappings")
-require("options")
-require("snippets")
-require("lsp")
-require("completion")
-require("disable_builtin")
-require("clipboard")
+require("lazy").setup({
+	require("my.plugins.lsp"),
+	require("my.plugins.cmp"),
+	require("my.plugins.telescope"),
+	require("my.plugins.treesitter"),
+	-- require "my.plugins.gitsigns",
 
--------------------- PLUGIN SETUP --------------------------
--- g['netrw_banner'] = 0
-g.loaded_netrw = 1 -- disable netrw
-g.loaded_netrwPlugin = 1 --disable netrw
-g.csv_no_conceal = 1
-g.xml_syntax_folding = 1
-g.vim_markdown_conceal = 0
-g.vim_markdown_conceal_code_blocks = 0
-g.embark_terminal_italics = 1
--- g['completion_enable_snippet'] = 'UltiSnips'
-g.do_filetype_lua = 1
---g.did_load_filetypes = 0
+	{ "folke/which-key.nvim",  opts = {} },
+	{
+		"rebelot/kanagawa.nvim",
+		priority = 1000,
+		config = function()
+			vim.cmd.colorscheme("kanagawa-dragon")
+		end,
+	},
 
--- ÃĂªŞÞŢãăºşþţ
-vim.api.nvim_create_user_command(
-	"FixSub",
-	"set fileencoding=utf-8 | %s/Ã/Ă/ge | %s/ª/Ș/ge | %s/Þ/Ț/ge | %s/ã/ă/ge | %s/º/ș/ge | %s/þ/ț/ge",
-	{}
-)
+	{
+		"nvim-lualine/lualine.nvim",
+		opts = {
+			options = {
+				icons_enabled = false,
+				component_separators = "|",
+				section_separators = "",
+			},
+		},
+	},
 
--- Highlight on yank
+	{
+		"lukas-reineke/indent-blankline.nvim",
+		opts = {
+			char = "┊",
+			show_trailing_blankline_indent = false,
+		},
+	},
+
+	{ "numToStr/Comment.nvim", opts = {} },
+
+	{
+		"kylechui/nvim-surround",
+		version = "*", -- Use for stability; omit to use `main` branch for the latest features
+		event = "VeryLazy",
+		config = function()
+			require("nvim-surround").setup({
+				-- Configuration here, or leave empty to use defaults
+			})
+		end
+	},
+
+	{
+		"stevearc/oil.nvim",
+		opts = {},
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+	},
+
+
+}, {})
+
+require("my.options")
+require("my.keymaps")
+require("my.lsp")
+require("my.disable_builtin")
+
 local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
 vim.api.nvim_create_autocmd("TextYankPost", {
 	callback = function()
-		vim.highlight.on_yank({ on_visual = false })
+		vim.highlight.on_yank()
 	end,
 	group = highlight_group,
 	pattern = "*",
 })
+
 
 local colon_ln_group = vim.api.nvim_create_augroup("ColonLN", { clear = true })
 vim.api.nvim_create_autocmd("BufNewFile", {
@@ -70,70 +110,9 @@ vim.api.nvim_create_autocmd("BufNewFile", {
 	pattern = "*:[0-9]*{:[0-9]*}\\=",
 })
 
-local ts = require("nvim-treesitter.configs")
-ts.setup({
-	ensure_installed = "all",
-	highlight = { enable = true },
-	incremental_selection = { enable = true },
-	indent = { enable = true },
-	-- ignore_install = { "zig"},
-	context_commentstring = {
-		enable = true,
-	},
-	--textobjects = {
-	--	select = {
-	--		enable = true,
-
-	--		lookahead = true,
-
-	--		keymaps = {
-	--			-- You can use the capture groups defined in textobjects.scm
-	--			["af"] = "@function.outer",
-	--			["if"] = "@function.inner",
-	--			["ac"] = "@class.outer",
-	--			-- You can optionally set descriptions to the mappings (used in the desc parameter of
-	--			-- nvim_buf_set_keymap) which plugins like which-key display
-	--			["ic"] = { query = "@class.inner", desc = "Select inner part of a class region" },
-	--			-- You can also use captures from other query groups like `locals.scm`
-	--			["as"] = { query = "@scope", query_group = "locals", desc = "Select language scope" },
-	--		},
-	--		-- You can choose the select mode (default is charwise 'v')
-	--		--
-	--		-- Can also be a function which gets passed a table with the keys
-	--		-- * query_string: eg '@function.inner'
-	--		-- * method: eg 'v' or 'o'
-	--		-- and should return the mode ('v', 'V', or '<c-v>') or a table
-	--		-- mapping query_strings to modes.
-	--		selection_modes = {
-	--			["@parameter.outer"] = "v", -- charwise
-	--			["@function.outer"] = "V", -- linewise
-	--			["@class.outer"] = "<c-v>", -- blockwise
-	--		},
-	--		-- If you set this to `true` (default is `false`) then any textobject is
-	--		-- extended to include preceding or succeeding whitespace. Succeeding
-	--		-- whitespace has priority in order to act similarly to eg the built-in
-	--		-- `ap`.
-	--		--
-	--		-- Can also be a function which gets passed a table with the keys
-	--		-- * query_string: eg '@function.inner'
-	--		-- * selection_mode: eg 'v'
-	--		-- and should return true of false
-	--		include_surrounding_whitespace = true,
-	--	},
-	-- },
-})
-
-local telescope = require("telescope")
--- telescope.load_extension("lsp_handlers")
-telescope.load_extension("fzf")
-
-require("nvim-autopairs").setup({
-	fast_wrap = {},
-})
-
-require("leap").add_default_mappings()
-vim.keymap.del({'x', 'o'}, 'x')
-vim.keymap.del({'x', 'o'}, 'X')
-
--- require("bufferline").setup{}
---
+-- ÃĂªŞÞŢãăºşþţ
+vim.api.nvim_create_user_command(
+	"FixSub",
+	"set fileencoding=utf-8 | %s/Ã/Ă/ge | %s/ª/Ș/ge | %s/Þ/Ț/ge | %s/ã/ă/ge | %s/º/ș/ge | %s/þ/ț/ge",
+	{}
+)

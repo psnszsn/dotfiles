@@ -21,7 +21,8 @@ require("lazy").setup({
 	require("my.plugins.treesitter"),
 	-- require "my.plugins.gitsigns",
 
-	{ "folke/which-key.nvim",  opts = {} },
+	{ "folke/which-key.nvim", opts = {} },
+	{ "numToStr/Comment.nvim", opts = {} },
 	{
 		"rebelot/kanagawa.nvim",
 		priority = 1000,
@@ -29,7 +30,6 @@ require("lazy").setup({
 			vim.cmd.colorscheme("kanagawa-dragon")
 		end,
 	},
-
 	{
 		"nvim-lualine/lualine.nvim",
 		opts = {
@@ -40,35 +40,31 @@ require("lazy").setup({
 			},
 		},
 	},
-
 	{
 		"lukas-reineke/indent-blankline.nvim",
 		opts = {
 			char = "┊",
+			-- char = "।",
 			show_trailing_blankline_indent = false,
+			show_first_indent_level = false,
 		},
 	},
-
-	{ "numToStr/Comment.nvim", opts = {} },
-
 	{
 		"kylechui/nvim-surround",
 		version = "*", -- Use for stability; omit to use `main` branch for the latest features
 		event = "VeryLazy",
-		config = function()
-			require("nvim-surround").setup({
-				-- Configuration here, or leave empty to use defaults
-			})
-		end
+		opts = {},
 	},
-
+	{
+		"windwp/nvim-autopairs",
+		event = "InsertEnter",
+		opts = {},
+	},
 	{
 		"stevearc/oil.nvim",
 		opts = {},
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 	},
-
-
 }, {})
 
 require("my.options")
@@ -84,7 +80,6 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	group = highlight_group,
 	pattern = "*",
 })
-
 
 local colon_ln_group = vim.api.nvim_create_augroup("ColonLN", { clear = true })
 vim.api.nvim_create_autocmd("BufNewFile", {

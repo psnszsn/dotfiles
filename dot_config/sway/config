@@ -214,6 +214,7 @@ for_window [app_id="^firefox$"] focus
 for_window [app_id="firefox"] inhibit_idle fullscreen
 for_window [title="About Mozilla Firefox"] floating enable
 for_window [title="KeePassXC*"] floating enable
+for_window [title="Extension:*Firefox$"] floating enable
 for_window [class="Spotify"] move to scratchpad, focus, border normal
 for_window [class="^Steam$"] inhibit_idle fullscreen
 for_window [title="Steam - News*"] kill

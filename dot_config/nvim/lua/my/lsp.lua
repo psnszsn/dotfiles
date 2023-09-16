@@ -93,7 +93,7 @@ nvim_lsp.lua_ls.setup({
 				enable = false,
 			},
 			format = {
-				enable = true,
+				enable = false,
 			},
 		},
 	},

@@ -19,7 +19,7 @@ require("lazy").setup({
 	require("my.plugins.cmp"),
 	require("my.plugins.telescope"),
 	require("my.plugins.treesitter"),
-	-- require "my.plugins.gitsigns",
+	require "my.plugins.gitsigns",
 
 	{ "folke/which-key.nvim", opts = {} },
 	{ "numToStr/Comment.nvim", opts = {} },
@@ -71,6 +71,7 @@ require("my.options")
 require("my.keymaps")
 require("my.lsp")
 require("my.disable_builtin")
+require("my.clipboard")
 
 local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
 vim.api.nvim_create_autocmd("TextYankPost", {

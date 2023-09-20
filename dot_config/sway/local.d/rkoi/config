@@ -1,5 +1,14 @@
 # vim:foldmethod=marker:ft=i3config
 
+input "2362:597:UNIW0001:00_093A:0255_Touchpad" {
+   natural_scroll enabled
+   tap enabled
+}
+
+output eDP-1 {
+	subpixel rgb
+}
+
 
 exec swayidle -w \
          timeout 500 'swaylock -f -c 000000' \
@@ -19,3 +28,7 @@ bindsym $mod+Up exec playerctl play
 bindsym $mod+Down exec playerctl pause
 bindsym $mod+Right exec playerctl next
 bindsym $mod+Left exec playerctl previous
+
+set $laptop eDP-1
+bindswitch --reload --locked lid:on output $laptop disable
+bindswitch --reload --locked lid:off output $laptop enable

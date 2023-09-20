@@ -1,44 +1,50 @@
 local M = {}
-local loop = vim.loop
-local api = vim.api
-local results = {}
 
-local function onread(err, data)
-    if err then
-        -- print('ERROR: ', err)
-        -- TODO handle err
-    end
-	print(data)
-    -- if data then
-    --     local vals = vim.split(data, "\n")
-    --     for _, d in pairs(vals) do
-    --         if d == "" then goto continue end
-    --         table.insert(results, d)
-    --         ::continue::
-    --     end
-    -- end
-	-- print(results)
+local function onstdout(id, data, _)
+	if type(data) == "table" and #data > 0 then
+		data = table.concat(data, " ")
+	end
+
+	print("Data:", data)
+	-- local msg = "install " .. u .. " finished"
+	-- vim.notify(data, vim.log.levels.INFO)
+
+	if vim.endswith(data, "password: ") then
+		local password = vim.fn.inputsecret("Password:")
+		vim.fn.chansend(id, { password .. "\r\n" })
+	end
 end
 
 function M.doas(term)
-    local stdin = vim.loop.new_pipe(false)
-    local stdout = vim.loop.new_pipe(false)
-    local stderr = vim.loop.new_pipe(false)
-	local password = vim.fn.inputsecret('Password:')
+	local tempfile = vim.fn.tempname()
+	vim.cmd.write({ tempfile })
+	local path = vim.fn.expand("%:p")
+	if not path or #path == 0 then
+		vim.schedule(function()
+			vim.notify("E32: No file name", vim.log.levels.ERROR)
+		end)
+		return
+	end
 
-    handle = vim.loop.spawn('doas', {args = {"ls"}, stdio = {stdin, stdout, stderr}}, vim.schedule_wrap(function(code, signal)
-		print("doas exit code:", code)
-		stdin:close()
-		stdout:close()
-        handle:close()
-        -- setQF()
-    end))
-	vim.loop.write(stdin, password)
-	vim.loop.read_start(stdout, onread)
-	vim.loop.read_start(stderr, onread)
-	-- vim.loop.write(stdin, password)
+	local command = ("dd if=%s of=%s bs=1048576"):format(vim.fn.shellescape(tempfile), vim.fn.shellescape(path))
+	-- print("")
+	-- vim.schedule(function()
+	-- 	vim.notify("HELLOP")
+	-- end)
+	print(command)
+	local id = vim.fn.jobstart("doas " .. command, {
+		on_stdout = onstdout,
+		on_stderr = onstdout,
+		on_exit = function(_, exitcode)
+			print("doas exitcode:", exitcode)
+			vim.fn.delete(tempfile)
+			vim.cmd("e!")
+		end,
+		pty = true,
+	})
+	-- _ = id
 end
 
--- M.doas("f")
+M.doas("f")
 
 return M

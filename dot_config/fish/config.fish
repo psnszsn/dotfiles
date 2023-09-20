@@ -7,7 +7,6 @@ abbr -a g git
 abbr -a c cargo
 abbr -a m make
 abbr -a pacman "sudo pacman"
-abbr -a ip "ip -c"
 abbr -a service "doas service"
 abbr -a start "systemctl start"
 abbr -a stop "systemctl stop"
@@ -27,6 +26,9 @@ abbr -a cz chezmoi
 abbr -a czc czedit.sh
 abbr -a nvd "alacritty -e nvim &"
 
+if not test -L (which ip)
+	abbr -a ip "ip -c"
+end
 
 if command -v direnv > /dev/null
     direnv hook fish | source

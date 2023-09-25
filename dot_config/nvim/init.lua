@@ -19,7 +19,7 @@ require("lazy").setup({
 	require("my.plugins.cmp"),
 	require("my.plugins.telescope"),
 	require("my.plugins.treesitter"),
-	require "my.plugins.gitsigns",
+	require("my.plugins.gitsigns"),
 
 	{ "folke/which-key.nvim", opts = {} },
 	{ "numToStr/Comment.nvim", opts = {} },

@@ -79,5 +79,5 @@ ls.add_snippets(nil, {
 })
 
 -- shorcut to source my luasnips file again, which will reload my snippets
-vim.keymap.set("n", "<leader><leader>s", "<cmd>source ~/.config/nvim/lua/my/snippets.lua<CR>")
+-- vim.keymap.set("n", "<leader><leader>s", "<cmd>source ~/.config/nvim/lua/my/snippets.lua<CR>")
 

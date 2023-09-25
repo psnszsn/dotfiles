@@ -23,3 +23,5 @@ opt_local.commentstring="// %s"
 vim.keymap.set("n", "<leader>sl", function()
 	require("telescope.builtin").find_files({ cwd = "/usr/lib/zig/std/" })
 end)
+
+vim.opt_local.formatprg = "zig fmt --stdin"

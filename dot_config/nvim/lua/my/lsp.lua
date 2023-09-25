@@ -42,9 +42,6 @@ local on_attach = function(_, bufnr)
 		vim.lsp.buf.format()
 	end, { desc = "Format current buffer with LSP" })
 
-	nmap("<space>fo", function()
-		vim.lsp.buf.format({ async = true })
-	end, "Format buffer")
 end
 
 -- Setup neovim lua configuration
@@ -53,7 +50,6 @@ end
 -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
-
 
 local servers = { "clangd", "rust_analyzer", "gopls", "svelte", "pyright" }
 for _, lsp in ipairs(servers) do

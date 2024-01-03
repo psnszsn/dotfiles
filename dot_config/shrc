@@ -5,6 +5,8 @@ echo Hello
 export EDITOR=nvim
 export WINEDLLOVERRIDES=winemenubuilder.exe=d
 
+PATH=$PATH:~/.local/bin
+
 if [ "$(tty)" = "/dev/tty1" ]
 then
 	exec $HOME/.local/bin/startsway.sh

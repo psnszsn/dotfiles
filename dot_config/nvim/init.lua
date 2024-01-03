@@ -20,6 +20,7 @@ require("lazy").setup({
 	require("my.plugins.telescope"),
 	require("my.plugins.treesitter"),
 	require("my.plugins.gitsigns"),
+	require("my.plugins.lint"),
 
 	{ "folke/which-key.nvim", opts = {} },
 	{ "numToStr/Comment.nvim", opts = {} },
@@ -60,6 +61,7 @@ require("lazy").setup({
 		event = "InsertEnter",
 		opts = {},
 	},
+	{"nvim-treesitter/nvim-treesitter-context"},
 	{
 		"stevearc/oil.nvim",
 		opts = {},
@@ -112,3 +114,9 @@ vim.api.nvim_create_user_command(
 	"set fileencoding=utf-8 | %s/Ã/Ă/ge | %s/ª/Ș/ge | %s/Þ/Ț/ge | %s/ã/ă/ge | %s/º/ș/ge | %s/þ/ț/ge",
 	{}
 )
+
+vim.filetype.add({
+	extension = {
+		zon = "zig",
+	},
+})

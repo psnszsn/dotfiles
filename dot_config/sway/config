@@ -13,11 +13,11 @@ input * {
 }
 
 font pango:DejaVu Sans Mono 10
-xwayland enable
+# xwayland disable
 # mouse_warping container
 
 
-bindsym $mod+Return exec alacritty
+bindsym $mod+Return exec ghostty
 bindsym $mod+Shift+Return exec foot
 
 bindsym $mod+d exec bemenu_run

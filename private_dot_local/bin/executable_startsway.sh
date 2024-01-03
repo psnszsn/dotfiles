@@ -37,6 +37,7 @@ export BEMENU_OPTS="-i --fn 'Hack 13' -m '-1'"
 if test -z "$DBUS_SESSION_BUS_ADDRESS"
 then
     exec dbus-run-session -- sway
+    # exec dbus-run-session -- sway -d 2> ~/sway.log
 else
     exec sway
 fi

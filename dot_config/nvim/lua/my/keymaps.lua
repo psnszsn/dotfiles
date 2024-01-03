@@ -49,7 +49,14 @@ vim.keymap.set("n", "<leader>fr", require("telescope.builtin").resume, { desc = 
 -----------
 vim.keymap.set("n", "<space>fo", function()
 	local win_state = vim.fn.winsaveview()
-	vim.cmd("normal gggqG")
+	local formatprg = vim.opt_local.formatprg:get()
+
+	-- vim.cmd.execute("normal! i ")
+	-- vim.cmd.execute([[normal! a\<bs>"]])
+
+	vim.cmd("%!" .. formatprg)
+	-- vim.cmd("keepjumps normal gggqG")
+
 	vim.fn.winrestview(win_state)
 end, { desc = "Format buffer" })
 

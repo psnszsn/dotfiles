@@ -25,6 +25,7 @@ abbr -a hx helix
 abbr -a cz chezmoi
 abbr -a czc czedit.sh
 abbr -a nvd "alacritty -e nvim &"
+abbr -a myip "curl https://ipinfo.io"
 
 if not test -L (which ip)
 	abbr -a ip "ip -c"
@@ -42,10 +43,10 @@ if command -v doas > /dev/null
 	abbr -a sudo 'doas'
 end
 
-if command -v exa > /dev/null
-	abbr -a l 'exa -l'
-	abbr -a ls 'exa'
-	abbr -a ll 'exa -la'
+if command -v eza > /dev/null
+	abbr -a l 'eza -l'
+	abbr -a ls 'eza'
+	abbr -a ll 'eza -la'
 else
 	abbr -a l 'ls'
 	abbr -a ll 'ls -l'

@@ -20,7 +20,8 @@ require("lazy").setup({
 	require("my.plugins.telescope"),
 	require("my.plugins.treesitter"),
 	require("my.plugins.gitsigns"),
-	--require("my.plugins.lint"),
+	require("my.plugins.lint"),
+	require("my.plugins.conform"),
 
 	{ "folke/which-key.nvim", opts = {} },
 	{ "numToStr/Comment.nvim", opts = {} },
@@ -43,10 +44,11 @@ require("lazy").setup({
 	},
 	{
 		"lukas-reineke/indent-blankline.nvim",
-		main = "ibl",
 		opts = {
-			indent = { char = "│" },
-			-- indent = { char = "┊" },
+			char = "┊",
+			-- char = "।",
+			show_trailing_blankline_indent = false,
+			show_first_indent_level = false,
 		},
 	},
 	{
@@ -60,7 +62,7 @@ require("lazy").setup({
 		event = "InsertEnter",
 		opts = {},
 	},
-	{ "nvim-treesitter/nvim-treesitter-context" },
+	{"nvim-treesitter/nvim-treesitter-context"},
 	{
 		"stevearc/oil.nvim",
 		opts = {},

@@ -21,6 +21,7 @@ vim.keymap.set("n", "<leader>-", function()
 		require("telescope.builtin").git_files()
 	else
 		require("telescope.builtin").find_files()
+		-- require("telescope.builtin").find_files({ cwd = require("telescope.utils").buffer_dir() })
 	end
 end, { desc = "Find files (git/local)" })
 
@@ -47,18 +48,18 @@ vim.keymap.set("n", "<leader>fd", require("telescope.builtin").diagnostics, { de
 vim.keymap.set("n", "<leader>fr", require("telescope.builtin").resume, { desc = "[F]find [R]resume" })
 --
 -----------
-vim.keymap.set("n", "<space>fo", function()
-	local win_state = vim.fn.winsaveview()
-	local formatprg = vim.opt_local.formatprg:get()
-
-	-- vim.cmd.execute("normal! i ")
-	-- vim.cmd.execute([[normal! a\<bs>"]])
-
-	vim.cmd("%!" .. formatprg)
-	-- vim.cmd("keepjumps normal gggqG")
-
-	vim.fn.winrestview(win_state)
-end, { desc = "Format buffer" })
+-- vim.keymap.set("n", "<space>fo", function()
+-- 	local win_state = vim.fn.winsaveview()
+-- 	local formatprg = vim.opt_local.formatprg:get()
+--
+-- 	-- vim.cmd.execute("normal! i ")
+-- 	-- vim.cmd.execute([[normal! a\<bs>"]])
+--
+-- 	vim.cmd("%!" .. formatprg)
+-- 	-- vim.cmd("keepjumps normal gggqG")
+--
+-- 	vim.fn.winrestview(win_state)
+-- end, { desc = "Format buffer" })
 
 vim.keymap.set("n", "\\", "<cmd>noh<CR>")
 vim.keymap.set("n", "U", "<C-R>")

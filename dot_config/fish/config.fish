@@ -7,7 +7,6 @@ abbr -a g git
 abbr -a c cargo
 abbr -a m make
 abbr -a pacman "sudo pacman"
-abbr -a service "doas service"
 abbr -a start "systemctl start"
 abbr -a stop "systemctl stop"
 abbr -a status "systemctl status"
@@ -17,15 +16,19 @@ abbr -a cal "cal -m"
 abbr -a dush "du -sh"
 abbr -a lst "exa -la -s modified"
 abbr -a lsls "fd --changed-within 1d -X exa -dl -rs modified"
-abbr -a apk "doas apk"
 abbr -a yay paru
 abbr -a p paru
 abbr -a py python
 abbr -a hx helix
 abbr -a cz chezmoi
 abbr -a czc czedit.sh
+abbr -a j just
 abbr -a nvd "alacritty -e nvim &"
 abbr -a myip "curl https://ipinfo.io"
+
+for cmd in ifup ifdown wg-quick apk service
+	abbr -a $cmd "doas $cmd"
+end
 
 if not test -L (which ip)
 	abbr -a ip "ip -c"

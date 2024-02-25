@@ -63,5 +63,5 @@ profile lg_tower {
 
 profile miniryz {
 	output "Dell Inc. DELL P2720DC 81WTK9B7042S" position 0,0
-	output "LG Electronics LG Ultra HD 0x0000AEAA" position 2560,0 scale 2 transform 90
+	output "LG Electronics LG Ultra HD 0x0002AEAA" position 2560,0 scale 1.8 transform 90
 }

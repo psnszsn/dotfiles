@@ -34,8 +34,7 @@ ls.add_snippets(nil, {
 					"fragrant", "aged", "snowy", "proud", "floral", "restless", "divine",
 					"polished", "ancient", "purple", "lively", "nameless" }
 				-- stylua: ignore
-				local noun = {
-					"waterfall", "river", "breeze", "moon", "rain", "wind", "sea", "morning",
+				local noun = { "waterfall", "river", "breeze", "moon", "rain", "wind", "sea", "morning",
 					"snow", "lake", "sunset", "pine", "shadow", "leaf", "dawn", "glitter", "forest",
 					"hill", "cloud", "meadow", "sun", "glade", "bird", "brook", "butterfly",
 					"bush", "dew", "dust", "field", "fire", "flower", "firefly", "feather", "grass",

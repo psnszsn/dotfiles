@@ -1,9 +1,11 @@
 [user]
 	name = Vlad Pănăzan
 	email = vlad@panazan.ro
+	signingKey = /home/vlad/.ssh/id_ed25519.pub
 
 [alias]
-    co = "!f() { git checkout \"$@\" && git stash list | grep \"$1:\"; }; f"
+    co = checkout
+    sw = switch
     last = log -1 HEAD
     st = status
     uncommit = reset --soft HEAD~
@@ -43,3 +45,7 @@
 	defaultBranch = main
 [submodule]
 	recurse = true
+[gpg]
+	format = ssh
+[commit]
+	gpgsign = true

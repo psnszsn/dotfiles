@@ -77,6 +77,8 @@ ls.add_snippets(nil, {
 		),
 		snippet("imps", t('const std = @import("std");')),
 
+		snippet("panic", t('@panic("TODO")')),
+
 		snippet(
 			"fn",
 			fmta("fn <>(<>) void{\n    <>\n}", {

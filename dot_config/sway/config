@@ -1,7 +1,7 @@
 # vim:foldmethod=marker:ft=i3config
 # output * background /usr/share/backgrounds/crepo/joshua-rawson-harris-LERmV2dl4tQ-unsplash.jpg fill
 output * background $(find /home/vlad/documents/SYNC/wallpapers -type f -maxdepth 1 | shuf -n1) fill
-output 'LG Electronics LG Ultra HD 0x0000AEAA' background $(find /home/vlad/documents/SYNC/wallpapers/tiled -type f | shuf -n1) tile
+output 'LG Electronics LG Ultra HD 0x0002AEAA' background $(find /home/vlad/documents/SYNC/wallpapers/tiled -type f | shuf -n1) tile
 
 
 set $mod Mod4
@@ -206,6 +206,7 @@ assign [app_id="^Chromium$"] $ws9
 # assign [name="Chromium"] $ws9
 assign [title="Chromium"] $ws9
 assign [app_id="^firefox$"] $ws8
+assign [app_id="^thunderbird$"] mail
 assign [app_id="qutebrowser$"] $ws9
 assign [class="Gimp"] gimp
 assign [app_id="org.gnome.Nautilus"] $ws10

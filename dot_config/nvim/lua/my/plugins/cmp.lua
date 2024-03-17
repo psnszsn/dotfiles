@@ -1,17 +1,15 @@
 return {
 	-- Autocompletion
-	'hrsh7th/nvim-cmp',
+	"hrsh7th/nvim-cmp",
 	dependencies = {
 		-- Snippet Engine & its associated nvim-cmp source
-		'L3MON4D3/LuaSnip',
-		'saadparwaiz1/cmp_luasnip',
+		"L3MON4D3/LuaSnip",
+		"saadparwaiz1/cmp_luasnip",
 
 		-- Adds LSP completion capabilities
-		'hrsh7th/cmp-nvim-lsp',
+		"hrsh7th/cmp-nvim-lsp",
 		"hrsh7th/cmp-buffer",
 		"hrsh7th/cmp-path",
-
-
 	},
 	config = function()
 		local cmp = require("cmp")
@@ -33,7 +31,7 @@ return {
 				["<C-f>"] = cmp.mapping.scroll_docs(4),
 				["<C-Space>"] = cmp.mapping.complete({}),
 				["<CR>"] = cmp.mapping.confirm({
-					behavior = cmp.ConfirmBehavior.Replace,
+					-- behavior = cmp.ConfirmBehavior.Replace,
 					select = true,
 				}),
 				["<C-k>"] = cmp.mapping(function(fallback)
@@ -65,5 +63,5 @@ return {
 				{ name = "path" },
 			},
 		})
-    end,
+	end,
 }

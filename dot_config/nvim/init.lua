@@ -1,6 +1,8 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
+vim.filetype.add({ extension = { zig2 = "zig2" } })
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
 	vim.fn.system({
@@ -22,9 +24,9 @@ require("lazy").setup({
 	require("my.plugins.gitsigns"),
 	require("my.plugins.lint"),
 	require("my.plugins.conform"),
+	require("my.plugins.mini"),
 
 	{ "folke/which-key.nvim", opts = {} },
-	{ "numToStr/Comment.nvim", opts = {} },
 	{
 		"rebelot/kanagawa.nvim",
 		priority = 1000,
@@ -42,27 +44,17 @@ require("lazy").setup({
 			},
 		},
 	},
-	{
-		"lukas-reineke/indent-blankline.nvim",
-		opts = {
+	{ "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {
+		indent = {
 			char = "┊",
-			-- char = "।",
-			show_trailing_blankline_indent = false,
-			show_first_indent_level = false,
 		},
-	},
-	{
-		"kylechui/nvim-surround",
-		version = "*", -- Use for stability; omit to use `main` branch for the latest features
-		event = "VeryLazy",
-		opts = {},
-	},
+	} },
 	{
 		"windwp/nvim-autopairs",
 		event = "InsertEnter",
 		opts = {},
 	},
-	{"nvim-treesitter/nvim-treesitter-context"},
+	{ "nvim-treesitter/nvim-treesitter-context" },
 	{
 		"stevearc/oil.nvim",
 		opts = {},

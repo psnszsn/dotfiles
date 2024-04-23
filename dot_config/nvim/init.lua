@@ -25,6 +25,7 @@ require("lazy").setup({
 	require("my.plugins.lint"),
 	require("my.plugins.conform"),
 	require("my.plugins.mini"),
+	-- require("my.plugins.debugprint"),
 
 	{ "folke/which-key.nvim", opts = {} },
 	{

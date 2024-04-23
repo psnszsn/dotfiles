@@ -18,26 +18,30 @@ vim.keymap.set("n", "-", require("oil").open, { desc = "Open parent directory" }
 vim.keymap.set("n", "<leader>a", "<esc>ggVG<CR>")
 
 -- Shortcut for searching your neovim configuration files
-vim.keymap.set('n', '<leader>sn', function()
-	builtin.find_files { cwd = vim.fn.stdpath 'config' }
-end, { desc = '[S]earch [N]eovim files' })
+vim.keymap.set("n", "<leader>sn", function()
+	builtin.find_files({ cwd = vim.fn.stdpath("config") })
+end, { desc = "[S]earch [N]eovim files" })
 
-vim.keymap.set("n", "<leader>-", function()
-	local in_git_repo = vim.fn.systemlist("git rev-parse --is-inside-work-tree")[1] == "true"
-	if in_git_repo then
-		builtin.git_files()
-	else
-		builtin.find_files()
-		-- builtin.find_files({ cwd = require("telescope.utils").buffer_dir() })
-	end
-end, { desc = "Find files (git/local)" })
+-- vim.keymap.set("n", "<leader>-", function()
+-- require("telescope").extensions.frecency.frecency({ workspace = "CWD" })
+-- local in_git_repo = vim.fn.systemlist("git rev-parse --is-inside-work-tree")[1] == "true"
+-- if in_git_repo then
+-- 	builtin.git_files()
+-- else
+-- 	builtin.find_files()
+-- 	-- builtin.find_files({ cwd = require("telescope.utils").buffer_dir() })
+-- end
+-- end, { desc = "Find files (git/local)" })
 
 -- vim.keymap.set("n", "<leader><leader>-", function()
 -- 	builtin.find_files({ cwd = require("telescope.utils").buffer_dir() })
 -- end, { desc = "Telescope find files in buffer dir" })
 
 vim.keymap.set("n", "<leader>?", builtin.oldfiles, { desc = "[?] Find recently opened files" })
-vim.keymap.set("n", "<leader><space>", builtin.buffers, { desc = "[ ] Find existing buffers" })
+-- vim.keymap.set("n", "<leader><space>", builtin.buffers, { desc = "[ ] Find existing buffers" })
+vim.keymap.set("n", "<leader><leader>", function()
+	require("telescope").extensions.smart_open.smart_open()
+end, { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>/", function()
 	-- You can pass additional configuration to telescope to change theme, layout, etc.
 	builtin.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
@@ -46,7 +50,7 @@ vim.keymap.set("n", "<leader>/", function()
 	}))
 end, { desc = "[/] Fuzzily search in current buffer" })
 
-vim.keymap.set("n", "<leader>gf", builtin.git_files, { desc = "Search [G]it [F]iles" })
+vim.keymap.set("n", "<leader>fg", builtin.git_files, { desc = "[F]ind [G]it Files" })
 vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "[F]ind [F]iles" })
 vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "[F]ind [H]elp" })
 vim.keymap.set("n", "<leader>fw", builtin.grep_string, { desc = "[F]ind current [W]ord" })

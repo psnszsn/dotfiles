@@ -1,4 +1,5 @@
 local ls = require("luasnip")
+local extras = require("luasnip.extras")
 local snippet = ls.s
 local t = ls.text_node
 local i = ls.insert_node
@@ -93,6 +94,14 @@ ls.add_snippets(nil, {
 			fmta('std.log.info("<>", .{<>});', {
 				c(1, { t("{}"), t("{s}"), t("{any}") }),
 				i(2, "vars"),
+			})
+		),
+
+		snippet(
+			"info_var",
+			fmta('std.log.info("<>={}", .{<>});', {
+				i(1, "var_name"),
+				extras.rep(1),
 			})
 		),
 		snippet(

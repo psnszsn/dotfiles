@@ -1,4 +1,4 @@
-# vim:foldmethod=marker:ft=i3config
+# vim:foldmethod=marker:ft=swayconfig
 # output * background /usr/share/backgrounds/crepo/joshua-rawson-harris-LERmV2dl4tQ-unsplash.jpg fill
 output * background $(find /home/vlad/documents/SYNC/wallpapers -type f -maxdepth 1 | shuf -n1) fill
 output 'LG Electronics LG Ultra HD 0x0002AEAA' background $(find /home/vlad/documents/SYNC/wallpapers/tiled -type f | shuf -n1) tile
@@ -22,6 +22,7 @@ bindsym $mod+Shift+Return exec foot
 
 bindsym $mod+d exec bemenu_run
 bindsym $mod+space exec fuzzel --terminal='foot' --launch-prefix='swaymsg exec --'
+bindsym $mod+n exec fuzzel --terminal='foot' --launch-prefix='swaymsg exec --'
 
 bindsym $mod+p exec keeprompt
 for_window [app_id="^launcher$"] floating enable, border pixel 10, sticky enable
@@ -70,9 +71,13 @@ bindsym $mod+Mod1+Shift+$up move workspace to output up
 bindsym $mod+Mod1+Shift+$down move workspace to output down
 
 bindsym $mod+Tab workspace next_on_output 
+bindsym $mod+Backspace workspace next_on_output 
 bindsym $mod+Shift+Tab workspace prev_on_output
 bindsym $mod+Escape workspace prev_on_output
 workspace_auto_back_and_forth yes
+
+bindsym $mod+m exec sway-next-ws.py
+bindsym $mod+Shift+m exec sway-next-ws.py prev
 
 set $ws1 1
 set $ws2 2
@@ -121,12 +126,14 @@ bindsym $mod+Shift+x layout default
 
 bindsym $mod+f fullscreen
 bindsym $mod+Shift+space floating toggle
+bindsym $mod+Shift+f floating toggle
 bindsym $mod+Mod1+space focus mode_toggle
 bindsym $mod+a focus parent
 bindsym $mod+Shift+a focus child
 bindsym $mod+Shift+s sticky toggle
 
 bindsym $mod+Shift+minus move scratchpad
+bindsym $mod+Shift+z move scratchpad
 bindsym $mod+minus scratchpad show
 bindsym $mod+z scratchpad show
 bindsym Ctrl+Mod1+Tab scratchpad show
@@ -153,14 +160,6 @@ mode "resize" {
     bindsym Escape mode "default"
 }
 bindsym $mod+r mode "resize"
-
-mode "USB Mount Umount" {
-	bindsym m exec mountmenu.sh "$menu $menu_args -l10 -p mount_disk", mode "default"
-	bindsym u exec umountmenu.sh "$menu $menu_args -l10 -p umount_disk", mode "default"
-	bindsym Return mode "default"
-	bindsym Escape mode "default"
-}
-bindsym $mod+m mode "USB Mount Umount"
 
 set $mode_inhibit Inhibit keybindings 
 mode "$mode_inhibit" {
@@ -239,7 +238,7 @@ default_border pixel 3
 bindsym $mod+Shift+b border toggle
 
 exec mako
-bindsym $mod+n exec makoctl dismiss
+# bindsym $mod+n exec makoctl dismiss
 bindsym $mod+Shift+n exec makoctl dismiss -a
 
 set $screenshot grim $HOME/pictures/$(date +'%Y-%m-%d-%H%M%S_grim.png') && notify-send --icon=gtk-info Volume "U took a screenshot"

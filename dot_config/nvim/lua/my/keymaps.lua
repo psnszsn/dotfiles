@@ -1,4 +1,4 @@
-local builtin = require("telescope.builtin")
+local builtin = require "telescope.builtin"
 
 vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
 
@@ -16,10 +16,11 @@ vim.keymap.set("n", "<leader>l", ":set list! | :IndentBlanklineToggle<CR>")
 -- vim.keymap.set("n", "-", vim.cmd.Ex)
 vim.keymap.set("n", "-", require("oil").open, { desc = "Open parent directory" })
 vim.keymap.set("n", "<leader>a", "<esc>ggVG<CR>")
+vim.keymap.set("n", "<leader>ww", ":w<CR>")
 
 -- Shortcut for searching your neovim configuration files
 vim.keymap.set("n", "<leader>sn", function()
-	builtin.find_files({ cwd = vim.fn.stdpath("config") })
+  builtin.find_files { cwd = vim.fn.stdpath "config" }
 end, { desc = "[S]earch [N]eovim files" })
 
 -- vim.keymap.set("n", "<leader>-", function()
@@ -38,16 +39,17 @@ end, { desc = "[S]earch [N]eovim files" })
 -- end, { desc = "Telescope find files in buffer dir" })
 
 vim.keymap.set("n", "<leader>?", builtin.oldfiles, { desc = "[?] Find recently opened files" })
--- vim.keymap.set("n", "<leader><space>", builtin.buffers, { desc = "[ ] Find existing buffers" })
 vim.keymap.set("n", "<leader><leader>", function()
-	require("telescope").extensions.smart_open.smart_open()
+  require("telescope").extensions.smart_open.smart_open {
+    cwd_only = true,
+  }
 end, { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>/", function()
-	-- You can pass additional configuration to telescope to change theme, layout, etc.
-	builtin.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
-		winblend = 10,
-		previewer = false,
-	}))
+  -- You can pass additional configuration to telescope to change theme, layout, etc.
+  builtin.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown {
+    winblend = 10,
+    previewer = false,
+  })
 end, { desc = "[/] Fuzzily search in current buffer" })
 
 vim.keymap.set("n", "<leader>fg", builtin.git_files, { desc = "[F]ind [G]it Files" })
@@ -57,6 +59,7 @@ vim.keymap.set("n", "<leader>fw", builtin.grep_string, { desc = "[F]ind current 
 vim.keymap.set("n", "<leader>rg", builtin.live_grep, { desc = "Find by [R]ip[G]rep" })
 vim.keymap.set("n", "<leader>fd", builtin.diagnostics, { desc = "[F]ind [D]iagnostics" })
 vim.keymap.set("n", "<leader>fr", builtin.resume, { desc = "[F]find [R]resume" })
+vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "[ ] Find existing buffers" })
 --
 -----------
 -- vim.keymap.set("n", "<space>fo", function()
@@ -73,7 +76,7 @@ vim.keymap.set("n", "<leader>fr", builtin.resume, { desc = "[F]find [R]resume" }
 -- end, { desc = "Format buffer" })
 
 vim.keymap.set("n", "\\", "<cmd>noh<CR>")
-vim.keymap.set("n", "U", "<C-R>")
+-- vim.keymap.set("n", "U", "<C-R>")
 
 vim.keymap.set("", "<C-h>", "<C-w>h")
 vim.keymap.set("", "<C-j>", "<C-w>j")

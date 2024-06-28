@@ -54,6 +54,15 @@ ls.add_snippets(nil, {
 	python = {
 		snippet("shebang", fmt("#!/usr/bin/env python\n{}", { i(0) })),
 	},
+	markdown = {
+		snippet(
+			"link",
+			fmt("[{}]({})", {
+				i(1, "name"),
+				i(2, "url"),
+			})
+		),
+	},
 	zig = {
 		snippet(
 			"main",

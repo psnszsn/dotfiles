@@ -1,6 +1,6 @@
 [user]
-	name = Vlad Pănăzan
-	email = vlad@panazan.ro
+	name = Vlad Panazan
+	email = git@praznet.com
 	signingKey = /home/vlad/.ssh/id_ed25519.pub
 
 [alias]

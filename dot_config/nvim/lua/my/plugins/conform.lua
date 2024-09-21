@@ -7,7 +7,7 @@ return {
 			-- Customize or remove this keymap to your liking
 			"<leader>fo",
 			function()
-				require("conform").format({ async = true, lsp_fallback = true })
+				require("conform").format { async = true, lsp_fallback = true }
 			end,
 			mode = "",
 			desc = "Format buffer",
@@ -20,6 +20,8 @@ return {
 			lua = { "stylua" },
 			python = { "black" },
 			javascript = { { "prettierd", "prettier" } },
+			shtml = { "superhtml" },
+			json = { "jq" },
 			-- zig = { "zigfmt" },
 		},
 		-- Set up format-on-save

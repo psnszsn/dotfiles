@@ -1,4 +1,4 @@
-local nvim_lsp = require("lspconfig")
+local nvim_lsp = require "lspconfig"
 
 -- Diagnostic keymaps
 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic message" })
@@ -43,7 +43,6 @@ local on_attach = function(client, bufnr)
 	vim.api.nvim_buf_create_user_command(bufnr, "Format", function(_)
 		vim.lsp.buf.format()
 	end, { desc = "Format current buffer with LSP" })
-
 end
 
 -- Setup neovim lua configuration
@@ -53,23 +52,23 @@ end
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
-local servers = { "clangd", "rust_analyzer", "gopls", "svelte", "pyright" }
+local servers = { "clangd", "rust_analyzer", "gopls", "svelte", "pyright", "superhtml" }
 for _, lsp in ipairs(servers) do
-	nvim_lsp[lsp].setup({
+	nvim_lsp[lsp].setup {
 		on_attach = on_attach,
 		flags = { debounce_text_changes = 150 },
 		capabilities = capabilities,
-	})
+	}
 end
 
-nvim_lsp.zls.setup({
+nvim_lsp.zls.setup {
 	on_attach = on_attach,
 	flags = { debounce_text_changes = 150 },
 	capabilities = capabilities,
 	cmd = { "/home/vlad/clonez/zls/zig-out/bin/zls" },
-})
+}
 
-nvim_lsp.lua_ls.setup({
+nvim_lsp.lua_ls.setup {
 	on_attach = on_attach,
 	settings = {
 		Lua = {
@@ -95,4 +94,4 @@ nvim_lsp.lua_ls.setup({
 			},
 		},
 	},
-})
+}

@@ -25,6 +25,7 @@ abbr -a czc czedit.sh
 abbr -a j just
 abbr -a nvd "alacritty -e nvim &"
 abbr -a myip "curl https://ipinfo.io"
+abbr -a cs cd
 
 for cmd in ifup ifdown wg-quick apk service
 	abbr -a $cmd "doas $cmd"

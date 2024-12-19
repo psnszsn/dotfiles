@@ -52,11 +52,15 @@ require("lazy").setup({
 			},
 		},
 	},
-	{ "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {
-		indent = {
-			char = "┊",
+	{
+		"lukas-reineke/indent-blankline.nvim",
+		main = "ibl",
+		opts = {
+			indent = {
+				char = "┊",
+			},
 		},
-	} },
+	},
 	{
 		"windwp/nvim-autopairs",
 		event = "InsertEnter",
@@ -85,6 +89,7 @@ require "my.keymaps"
 require "my.lsp"
 require "my.disable_builtin"
 require "my.clipboard"
+require "my.bazel"
 
 local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
 vim.api.nvim_create_autocmd("TextYankPost", {

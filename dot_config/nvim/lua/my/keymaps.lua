@@ -102,8 +102,4 @@ vim.keymap.set("i", "<S-up>", "<nop>")
 vim.keymap.set("i", "<S-down>", "<nop>")
 
 vim.keymap.set("n", "Q", "<nop>")
-vim.keymap.set("t", "<C-Esc>", "<C-\\><C-n>")
-
--- map("i", "<S-Tab>", 'pumvisible() ? "<C-p>" : "<Tab>"', { expr = true })
--- map("i", "<Tab>", 'pumvisible() ? "<C-n>" : "<Tab>"', { expr = true })
--- map("i", "<C-Space>", "compe#complete()", { expr = true })
+vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>")

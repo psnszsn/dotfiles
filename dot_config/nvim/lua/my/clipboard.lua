@@ -39,8 +39,8 @@ if vim.env.SSH_CONNECTION then
 			end,
 		},
 		paste = {
-			["+"] = function ()
-				print("No paste")		
+			["+"] = function()
+				print "No paste"
 			end,
 		},
 		cache_enabled = false,

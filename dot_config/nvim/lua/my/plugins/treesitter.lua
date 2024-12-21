@@ -13,7 +13,7 @@ return {
 		-- 	},
 		-- 	filetype = "zig", -- if filetype does not match the parser name
 		-- }
-		require("nvim-treesitter.configs").setup({
+		require("nvim-treesitter.configs").setup {
 			ensure_installed = "all",
 			ignore_install = {},
 			auto_install = false,
@@ -40,6 +40,6 @@ return {
 					node_decremental = "<M-space>",
 				},
 			},
-		})
+		}
 	end,
 }

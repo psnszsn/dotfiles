@@ -32,7 +32,7 @@ opt.signcolumn = "yes" -- Show sign column
 opt.listchars = { tab = "▸ ", trail = "·", nbsp = "+", eol = "¬" }
 -- set listchars=tab:▸\ ,eol:¬
 -- asdasd  asdasd
-opt.shortmess:append({ c = true })
+opt.shortmess:append { c = true }
 -- opt.completeopt = { "menuone", "noselect" }
 opt.completeopt = { "menu", "menuone", "noselect" }
 

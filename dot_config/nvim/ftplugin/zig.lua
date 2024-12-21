@@ -14,11 +14,11 @@ opt_local.softtabstop = 4
 opt_local.shiftwidth = 4
 opt_local.suffixesadd = { ".zig", ".zir", ".zon" }
 
-vim.cmd.compiler("zig_build2")
+vim.cmd.compiler "zig_build2"
 
 opt_local.commentstring = "// %s"
 -- opt_local.formatoptions-=t formatoptions+=croql
 --
 vim.keymap.set("n", "<leader>sl", function()
-	require("telescope.builtin").find_files({ cwd = "/usr/lib/zig/std/" })
+	require("telescope.builtin").find_files { cwd = "/usr/lib/zig/std/" }
 end)

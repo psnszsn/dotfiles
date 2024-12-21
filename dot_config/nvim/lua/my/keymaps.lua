@@ -20,7 +20,7 @@ vim.keymap.set("n", "<leader>ww", ":w<CR>")
 
 -- Shortcut for searching your neovim configuration files
 vim.keymap.set("n", "<leader>sn", function()
-  builtin.find_files { cwd = vim.fn.stdpath "config" }
+	builtin.find_files { cwd = vim.fn.stdpath "config" }
 end, { desc = "[S]earch [N]eovim files" })
 
 -- vim.keymap.set("n", "<leader>-", function()
@@ -40,16 +40,16 @@ end, { desc = "[S]earch [N]eovim files" })
 
 vim.keymap.set("n", "<leader>?", builtin.oldfiles, { desc = "[?] Find recently opened files" })
 vim.keymap.set("n", "<leader><leader>", function()
-  require("telescope").extensions.smart_open.smart_open {
-    cwd_only = true,
-  }
+	require("telescope").extensions.smart_open.smart_open {
+		cwd_only = true,
+	}
 end, { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>/", function()
-  -- You can pass additional configuration to telescope to change theme, layout, etc.
-  builtin.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown {
-    winblend = 10,
-    previewer = false,
-  })
+	-- You can pass additional configuration to telescope to change theme, layout, etc.
+	builtin.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown {
+		winblend = 10,
+		previewer = false,
+	})
 end, { desc = "[/] Fuzzily search in current buffer" })
 
 vim.keymap.set("n", "<leader>fg", builtin.git_files, { desc = "[F]ind [G]it Files" })

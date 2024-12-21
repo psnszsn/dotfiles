@@ -1,8 +1,8 @@
 if vim.b.current_compiler then
-	print("CURRENT COMP")
+	print "CURRENT COMP"
 	return
 end
-print("zzz")
+print "zzz"
 
 vim.opt_local.makeprg = "zig build $*"
 vim.opt_local.errorformat = [[%f:%l:%c: %t%.%#: %m]]

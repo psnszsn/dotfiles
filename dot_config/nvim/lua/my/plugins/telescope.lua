@@ -7,7 +7,7 @@ return {
 			"nvim-telescope/telescope-fzf-native.nvim",
 			build = "make",
 			cond = function()
-				return vim.fn.executable("make") == 1
+				return vim.fn.executable "make" == 1
 			end,
 		},
 		{
@@ -19,7 +19,7 @@ return {
 		},
 	},
 	config = function()
-		require("telescope").load_extension("fzf")
-		require("telescope").load_extension("smart_open")
+		require("telescope").load_extension "fzf"
+		require("telescope").load_extension "smart_open"
 	end,
 }

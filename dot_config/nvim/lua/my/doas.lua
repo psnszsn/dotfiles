@@ -10,15 +10,15 @@ local function onstdout(id, data, _)
 	-- vim.notify(data, vim.log.levels.INFO)
 
 	if vim.endswith(data, "password: ") then
-		local password = vim.fn.inputsecret("Password:")
+		local password = vim.fn.inputsecret "Password:"
 		vim.fn.chansend(id, { password .. "\r\n" })
 	end
 end
 
 function M.doas(term)
 	local tempfile = vim.fn.tempname()
-	vim.cmd.write({ tempfile })
-	local path = vim.fn.expand("%:p")
+	vim.cmd.write { tempfile }
+	local path = vim.fn.expand "%:p"
 	if not path or #path == 0 then
 		vim.schedule(function()
 			vim.notify("E32: No file name", vim.log.levels.ERROR)
@@ -38,13 +38,13 @@ function M.doas(term)
 		on_exit = function(_, exitcode)
 			print("doas exitcode:", exitcode)
 			vim.fn.delete(tempfile)
-			vim.cmd("e!")
+			vim.cmd "e!"
 		end,
 		pty = true,
 	})
 	-- _ = id
 end
 
-M.doas("f")
+M.doas "f"
 
 return M

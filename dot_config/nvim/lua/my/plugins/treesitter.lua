@@ -1,6 +1,6 @@
 return {
-	"nvim-treesitter/nvim-treesitter",
-	build = ":TSUpdate",
+	'nvim-treesitter/nvim-treesitter',
+	build = ':TSUpdate',
 	config = function()
 		-- local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
 		-- parser_config.zig2 = {
@@ -13,8 +13,8 @@ return {
 		-- 	},
 		-- 	filetype = "zig", -- if filetype does not match the parser name
 		-- }
-		require("nvim-treesitter.configs").setup {
-			ensure_installed = "all",
+		require('nvim-treesitter.configs').setup {
+			ensure_installed = 'all',
 			ignore_install = {},
 			auto_install = false,
 			sync_install = false,
@@ -34,10 +34,10 @@ return {
 			incremental_selection = {
 				enable = true,
 				keymaps = {
-					init_selection = "<c-space>",
-					node_incremental = "<c-space>",
-					scope_incremental = "<c-s>",
-					node_decremental = "<M-space>",
+					init_selection = '<c-space>',
+					node_incremental = '<c-space>',
+					scope_incremental = '<c-s>',
+					node_decremental = '<M-space>',
 				},
 			},
 		}

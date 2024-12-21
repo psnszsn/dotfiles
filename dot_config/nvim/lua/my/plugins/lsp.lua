@@ -1,8 +1,8 @@
 return {
 	-- LSP Configuration & Plugins
-	"neovim/nvim-lspconfig",
+	'neovim/nvim-lspconfig',
 	dependencies = {
-		{ "j-hui/fidget.nvim", opts = {} },
+		{ 'j-hui/fidget.nvim', opts = {} },
 
 		-- Additional lua configuration, makes nvim stuff amazing!
 		-- 'folke/neodev.nvim',

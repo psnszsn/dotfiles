@@ -1,27 +1,27 @@
 return {
-	"stevearc/conform.nvim",
+	'stevearc/conform.nvim',
 	-- event = { "BufWritePre" },
 	-- cmd = { "ConformInfo" },
 	keys = {
 		{
 			-- Customize or remove this keymap to your liking
-			"<leader>fo",
+			'<leader>fo',
 			function()
-				require("conform").format { async = true, lsp_fallback = true }
+				require('conform').format { async = true, lsp_fallback = true }
 			end,
-			mode = "",
-			desc = "Format buffer",
+			mode = '',
+			desc = 'Format buffer',
 		},
 	},
 	-- Everything in opts will be passed to setup()
 	opts = {
 		-- Define your formatters
 		formatters_by_ft = {
-			lua = { "stylua" },
-			python = { "ruff_format" },
-			javascript = { { "prettierd", "prettier" } },
-			shtml = { "superhtml" },
-			json = { "jq" },
+			lua = { 'stylua' },
+			python = { 'ruff_format' },
+			javascript = { { 'prettierd', 'prettier' } },
+			shtml = { 'superhtml' },
+			json = { 'jq' },
 			-- zig = { "zigfmt" },
 		},
 		-- Set up format-on-save
@@ -29,7 +29,7 @@ return {
 		-- Customize formatters
 		formatters = {
 			shfmt = {
-				prepend_args = { "-i", "2" },
+				prepend_args = { '-i', '2' },
 			},
 		},
 	},

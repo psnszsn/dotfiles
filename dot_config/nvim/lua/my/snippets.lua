@@ -1,28 +1,28 @@
-local ls = require "luasnip"
-local extras = require "luasnip.extras"
+local ls = require 'luasnip'
+local extras = require 'luasnip.extras'
 local snippet = ls.s
 local t = ls.text_node
 local i = ls.insert_node
 local f = ls.function_node
 local c = ls.choice_node
-local fmt = require("luasnip.extras.fmt").fmt
-local fmta = require("luasnip.extras.fmt").fmta
+local fmt = require('luasnip.extras.fmt').fmt
+local fmta = require('luasnip.extras.fmt').fmta
 
 ls.config.set_config {
 	history = true,
-	updateevents = "TextChanged,TextChangedI",
+	updateevents = 'TextChanged,TextChangedI',
 }
 
 ls.add_snippets(nil, {
 	all = {
-		snippet("simple", t "wow, you were right!"),
+		snippet('simple', t 'wow, you were right!'),
 
-		snippet({ trig = "date" }, {
+		snippet({ trig = 'date' }, {
 			f(function()
-				return string.format(string.gsub(vim.bo.commentstring, "%%s", " %%s"), os.date())
+				return string.format(string.gsub(vim.bo.commentstring, '%%s', ' %%s'), os.date())
 			end, {}),
 		}),
-		snippet({ trig = "haiku" }, {
+		snippet({ trig = 'haiku' }, {
 			f(function()
 				-- stylua: ignore
 				local adj = { "autumn", "hidden", "bitter", "misty", "silent", "empty",
@@ -44,80 +44,80 @@ ls.add_snippets(nil, {
 					"wave", "water", "resonance", "sun", "log", "dream", "cherry", "tree", "fog",
 					"frost", "voice", "paper", "frog", "smoke", "star" }
 
-				return string.format("%s %s", adj[math.random(1, #adj)], noun[math.random(1, #noun)])
+				return string.format('%s %s', adj[math.random(1, #adj)], noun[math.random(1, #noun)])
 			end, {}),
 		}),
 	},
 	sh = {
-		snippet("shebang", fmt("#!/bin/sh\n{}", { i(0) })),
+		snippet('shebang', fmt('#!/bin/sh\n{}', { i(0) })),
 	},
 	python = {
-		snippet("shebang", fmt("#!/usr/bin/env python\n{}", { i(0) })),
+		snippet('shebang', fmt('#!/usr/bin/env python\n{}', { i(0) })),
 	},
 	markdown = {
 		snippet(
-			"link",
-			fmt("[{}]({})", {
-				i(1, "name"),
-				i(2, "url"),
+			'link',
+			fmt('[{}]({})', {
+				i(1, 'name'),
+				i(2, 'url'),
 			})
 		),
 	},
 	zig = {
 		snippet(
-			"main",
+			'main',
 			t {
 				'const std = @import("std");',
-				"",
-				"pub fn main() void {",
-				"    const stdout = std.io.getStdOut().writer();",
+				'',
+				'pub fn main() void {',
+				'    const stdout = std.io.getStdOut().writer();',
 				'    try stdout.print("Hello, {s}!\\n", .{"world"});',
-				"}",
+				'}',
 			}
 		),
 
 		snippet(
-			"gpa",
+			'gpa',
 			t {
-				"var gpa = std.heap.GeneralPurposeAllocator(.{}){};",
-				"defer std.debug.assert(!gpa.deinit());",
-				"",
-				"const allocator = gpa.allocator();",
+				'var gpa = std.heap.GeneralPurposeAllocator(.{}){};',
+				'defer std.debug.assert(!gpa.deinit());',
+				'',
+				'const allocator = gpa.allocator();',
 			}
 		),
-		snippet("imps", t 'const std = @import("std");'),
+		snippet('imps', t 'const std = @import("std");'),
 
-		snippet("panic", t '@panic("TODO")'),
+		snippet('panic', t '@panic("TODO")'),
 
 		snippet(
-			"fn",
-			fmta("fn <>(<>) void{\n    <>\n}", {
-				i(1, "name"),
-				c(2, { t "comptime T: type", t "" }),
-				i(3, "body"),
+			'fn',
+			fmta('fn <>(<>) void{\n    <>\n}', {
+				i(1, 'name'),
+				c(2, { t 'comptime T: type', t '' }),
+				i(3, 'body'),
 			})
 		),
 
 		snippet(
-			"info",
+			'info',
 			fmta('std.log.info("<>", .{<>});', {
-				c(1, { t "{}", t "{s}", t "{any}" }),
-				i(2, "vars"),
+				c(1, { t '{}', t '{s}', t '{any}' }),
+				i(2, 'vars'),
 			})
 		),
 
 		snippet(
-			"info_var",
+			'info_var',
 			fmta('std.log.info("<>={}", .{<>});', {
-				i(1, "var_name"),
+				i(1, 'var_name'),
 				extras.rep(1),
 			})
 		),
 		snippet(
-			"print",
+			'print',
 			fmta('std.debug.print("<>\\n", .{<>});', {
-				c(1, { t "{}", t "{s}", t "{any}" }),
-				i(2, "vars"),
+				c(1, { t '{}', t '{s}', t '{any}' }),
+				i(2, 'vars'),
 			})
 		),
 	},

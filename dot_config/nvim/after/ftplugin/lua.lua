@@ -1,1 +1,1 @@
-vim.opt_local.formatprg = "stylua -"
+vim.opt_local.formatprg = 'stylua -'

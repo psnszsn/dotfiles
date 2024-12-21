@@ -1,6 +1,6 @@
 return {
 	{ -- Collection of various small independent plugins/modules
-		"echasnovski/mini.nvim",
+		'echasnovski/mini.nvim',
 		config = function()
 			-- Better Around/Inside textobjects
 			--
@@ -8,37 +8,37 @@ return {
 			--  - va)  - [V]isually select [A]round [)]paren
 			--  - yinq - [Y]ank [I]nside [N]ext [']quote
 			--  - ci'  - [C]hange [I]nside [']quote
-			require("mini.ai").setup { n_lines = 500 }
+			require('mini.ai').setup { n_lines = 500 }
 
 			-- Add/delete/replace surroundings (brackets, quotes, etc.)
 			--
-			require("mini.surround").setup {
+			require('mini.surround').setup {
 				mappings = {
-					add = "ys",
-					delete = "ds",
-					find = "",
-					find_left = "",
-					highlight = "",
-					replace = "cs",
-					update_n_lines = "",
+					add = 'ys',
+					delete = 'ds',
+					find = '',
+					find_left = '',
+					highlight = '',
+					replace = 'cs',
+					update_n_lines = '',
 
 					-- Add this only if you don't want to use extended mappings
-					suffix_last = "",
-					suffix_next = "",
+					suffix_last = '',
+					suffix_next = '',
 				},
-				search_method = "cover_or_next",
+				search_method = 'cover_or_next',
 			}
 
 			-- Remap adding surrounding to Visual mode selection
-			vim.keymap.del("x", "ys")
+			vim.keymap.del('x', 'ys')
 			-- vim.keymap.set("x", "S", [[:<C-u>lua MiniSurround.add('visual')<CR>]], { silent = true })
 
 			-- Make special mapping for "add surrounding for line"
-			vim.keymap.set("n", "yss", "ys_", { remap = true })
+			vim.keymap.set('n', 'yss', 'ys_', { remap = true })
 
-			require("mini.comment").setup()
-			require("mini.align").setup()
-			require("mini.splitjoin").setup()
+			require('mini.comment').setup()
+			require('mini.align').setup()
+			require('mini.splitjoin').setup()
 		end,
 	},
 }

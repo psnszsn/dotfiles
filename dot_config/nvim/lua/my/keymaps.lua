@@ -103,3 +103,26 @@ vim.keymap.set('i', '<S-down>', '<nop>')
 
 vim.keymap.set('n', 'Q', '<nop>')
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>')
+
+-- vim.keymap.set("n", "p", function()
+-- 	vim.cmd.normal { "p", bang = true }
+-- 	if vim.b.saved_cursor then
+-- 		local pos = vim.fn.getpos "."
+-- 		pos[3] = vim.b.saved_cursor[3]
+-- 		vim.fn.setpos(".", pos)
+-- 		vim.b.saved_cursor = nil
+-- 	end
+-- end)
+vim.keymap.set('n', 'yy', function()
+	vim.keymap.set('n', 'p', function()
+		vim.cmd.normal { 'p', bang = true }
+		local pos = vim.fn.getpos '.'
+		pos[3] = vim.b.saved_cursor[3]
+		vim.fn.setpos('.', pos)
+		vim.b.saved_cursor = nil
+
+		vim.keymap.del('n', 'p')
+	end)
+	vim.b.saved_cursor = vim.fn.getpos '.'
+	vim.cmd.normal { 'yy', bang = true }
+end)

@@ -121,8 +121,8 @@ vim.keymap.set('n', 'yy', function()
 		vim.fn.setpos('.', pos)
 		vim.b.saved_cursor = nil
 
-		vim.keymap.del('n', 'p')
-	end)
+		vim.keymap.del('n', 'p', { buffer = true })
+	end, { buffer = true })
 	vim.b.saved_cursor = vim.fn.getpos '.'
 	vim.cmd.normal { 'yy', bang = true }
 end)

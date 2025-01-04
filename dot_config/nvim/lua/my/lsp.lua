@@ -93,7 +93,13 @@ nvim_lsp.lua_ls.setup {
 			},
 			workspace = {
 				-- Make the server aware of Neovim runtime files
-				library = vim.api.nvim_get_runtime_file('', true),
+				-- library = vim.api.nvim_get_runtime_file('', true),
+				library = {
+					vim.env.VIMRUNTIME,
+					-- Depending on the usage, you might want to add additional paths here.
+					'${3rd}/luv/library',
+					-- "${3rd}/busted/library",
+				},
 				checkThirdParty = false,
 			},
 			-- Do not send telemetry data containing a randomized but unique identifier

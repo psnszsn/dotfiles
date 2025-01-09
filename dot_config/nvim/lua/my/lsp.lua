@@ -75,7 +75,7 @@ nvim_lsp.pyright.setup {
 	capabilities = capabilities,
 	settings = {
 		python = {
-			analysis = { },
+			analysis = {},
 		},
 	},
 }

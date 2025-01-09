@@ -52,7 +52,7 @@ end
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
-local servers = { 'clangd', 'rust_analyzer', 'gopls', 'svelte', 'superhtml' }
+local servers = { 'clangd', 'rust_analyzer', 'svelte', 'superhtml' }
 for _, lsp in ipairs(servers) do
 	nvim_lsp[lsp].setup {
 		on_attach = on_attach,
@@ -61,13 +61,21 @@ for _, lsp in ipairs(servers) do
 	}
 end
 
+require('lspconfig').gopls.setup {
+	cmd = { 'gopls', '-remote=auto' },
+	on_attach = on_attach,
+	flags = {
+		debounce_text_changes = 500,
+	},
+}
+
 nvim_lsp.pyright.setup {
 	on_attach = on_attach,
 	flags = { debounce_text_changes = 150 },
 	capabilities = capabilities,
 	settings = {
 		python = {
-			analysis = {},
+			analysis = { },
 		},
 	},
 }

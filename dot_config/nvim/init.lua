@@ -90,6 +90,7 @@ require 'my.lsp'
 require 'my.disable_builtin'
 require 'my.clipboard'
 require 'my.bazel'
+require 'my.weburl'
 
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
 vim.api.nvim_create_autocmd('TextYankPost', {

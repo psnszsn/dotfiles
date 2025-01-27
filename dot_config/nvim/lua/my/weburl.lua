@@ -49,7 +49,7 @@ local function get_web_url(remote, branch, filepath, line1, line2)
 			table.insert(captures, filepath)
 			table.insert(captures, line1)
 			table.insert(captures, line2)
-			return rule.format(table.unpack(captures))
+			return rule.format(unpack(captures))
 		end
 	end
 end

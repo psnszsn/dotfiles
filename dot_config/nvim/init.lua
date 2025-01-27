@@ -1,8 +1,6 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
-vim.filetype.add { extension = { zig2 = 'zig2' } }
-
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
 	vim.fn.system {
@@ -91,6 +89,7 @@ require 'my.disable_builtin'
 require 'my.clipboard'
 require 'my.bazel'
 require 'my.weburl'
+require 'my.term'
 
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
 vim.api.nvim_create_autocmd('TextYankPost', {

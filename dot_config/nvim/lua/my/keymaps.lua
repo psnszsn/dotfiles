@@ -78,10 +78,19 @@ vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = '[ ] Find existing b
 vim.keymap.set('n', '\\', '<cmd>noh<CR>')
 -- vim.keymap.set("n", "U", "<C-R>")
 
-vim.keymap.set('', '<C-h>', '<C-w>h')
-vim.keymap.set('', '<C-j>', '<C-w>j')
-vim.keymap.set('', '<C-k>', '<C-w>k')
-vim.keymap.set('', '<C-l>', '<C-w>l')
+vim.keymap.set('', '<C-h>', function()
+	vim.cmd.wincmd 'h'
+end)
+
+vim.keymap.set('', '<C-j>', function()
+	vim.cmd.wincmd 'j'
+end)
+vim.keymap.set('', '<C-k>', function()
+	vim.cmd.wincmd 'k'
+end)
+vim.keymap.set('', '<C-l>', function()
+	vim.cmd.wincmd 'l'
+end)
 
 vim.keymap.set('', 'H', '^')
 vim.keymap.set('', 'L', '$')
@@ -104,15 +113,14 @@ vim.keymap.set('i', '<S-down>', '<nop>')
 vim.keymap.set('n', 'Q', '<nop>')
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>')
 
--- vim.keymap.set("n", "p", function()
--- 	vim.cmd.normal { "p", bang = true }
--- 	if vim.b.saved_cursor then
--- 		local pos = vim.fn.getpos "."
--- 		pos[3] = vim.b.saved_cursor[3]
--- 		vim.fn.setpos(".", pos)
--- 		vim.b.saved_cursor = nil
--- 	end
--- end)
+vim.keymap.set('c', '<C-n>', function()
+	return vim.fn.wildmenumode() == 1 and '<C-n>' or '<Down>'
+end, { expr = true })
+
+vim.keymap.set('c', '<C-p>', function()
+	return vim.fn.wildmenumode() == 1 and '<C-p>' or '<Up>'
+end, { expr = true })
+
 vim.keymap.set('n', 'yy', function()
 	vim.keymap.set('n', 'p', function()
 		vim.cmd.normal { 'p', bang = true }

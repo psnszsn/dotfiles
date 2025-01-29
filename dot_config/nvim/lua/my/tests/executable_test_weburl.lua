@@ -8,9 +8,17 @@ local cases = {
 		baseurl = 'https://github.com/psnszsn/dotfiles/blob/main/dot_config/nvim/init.lua#L22-L24',
 	},
 	{
+		remote = 'git@code.uber.internal:devexp/devpod-monorepo',
+		baseurl = 'https://sg.uberinternal.com/code.uber.internal/uber-code/devexp-devpod-monorepo@main/-/blob/dot_config/nvim/init.lua?L22-L24',
+	},
+	{
 		remote = 'code.com:hello/world',
 		baseurl = 'https://sg.uberinternal.com/code.com/uber-code/hello-world@main/-/blob/dot_config/nvim/init.lua?L22-L24',
 	},
+	-- {
+	-- 	remote = 'code.uber.internal:devexp/devpod-monorepo',
+	-- 	baseurl = 'https://sg.uberinternal.com/code.com/uber-code/hello-world@main/-/blob/dot_config/nvim/init.lua?L22-L24',
+	-- },
 }
 
 local T = {}

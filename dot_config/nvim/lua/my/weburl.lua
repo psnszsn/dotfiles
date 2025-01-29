@@ -20,7 +20,7 @@ local rules = {
 		end,
 	},
 	{
-		pattern = '^(.-):([^/]+)/(.+)$',
+		pattern = '^git@(.-):([^/]+)/(.+)$',
 		format = function(host, user, repo, branch, filepath, line1, line2)
 			return string.format(
 				'https://sg.uberinternal.com/%s/uber-code/%s-%s@%s/-/blob/%s?%s',
@@ -39,12 +39,18 @@ table.insert(rules, {
 	format = rules[1].format,
 })
 
+table.insert(rules, {
+	pattern = '^(.-):([^/]+)/(.+)$',
+	format = rules[2].format,
+})
+
 ---@param remote string
 ---@param branch string
 local function get_web_url(remote, branch, filepath, line1, line2)
 	for _, rule in ipairs(rules) do
 		local captures = { remote:match(rule.pattern) }
 		if #captures ~= 0 then
+		vim.print(captures)
 			table.insert(captures, branch)
 			table.insert(captures, filepath)
 			table.insert(captures, line1)

@@ -2,6 +2,7 @@
 from __future__ import annotations
 import requests
 import tarfile
+from zipfile import ZipFile
 import io
 from dataclasses import dataclass
 from pathlib import Path
@@ -38,6 +39,7 @@ pkgs = [
         manpage='fd-v10.2.0-x86_64-unknown-linux-gnu/fd.1',
         fishcomp='fd-v10.2.0-x86_64-unknown-linux-gnu/autocomplete/fd.fish',
     ),
+    Pkg('stylua', url='https://github.com/JohnnyMorganz/StyLua/releases/download/v2.0.2/stylua-linux-x86_64-musl.zip'),
 ]
 
 # command: wget -qO- https://github.com/LuaLS/lua-language-server/releases/download/3.13.3/lua-language-server-3.13.3-linux-x64.tar.gz | tar xvz -C ~/.local/bin
@@ -57,22 +59,26 @@ for pkg in pkgs:
         print(f'Failed to download file. Status code: {response.status_code}')
         exit()
 
-    with tarfile.open(fileobj=file_like_object, mode='r:gz') as tar:
-        print(tar.getmembers())
-        if pkg.manpage:
-            member = tar.getmember(pkg.manpage)
-            member.name = Path(pkg.manpage).name
-            tar.extract(path=manpage_dir, member=member)
-        if pkg.fishcomp:
-            member = tar.getmember(pkg.fishcomp)
-            member.name = Path(pkg.fishcomp).name
-            tar.extract(path=fishcomp_dir, member=member)
-        if pkg.member:
-            member = tar.getmember(pkg.member)
-            member.name = pkg.name
-            tar.extract(path=bin_dir, member=member)
-        else:
-            tar.extractall
-            tar.extractall(path=bin_dir)
+    if pkg.url.endswith('tar.gz'):
+        with tarfile.open(fileobj=file_like_object, mode='r:gz') as tar:
+            print(tar.getmembers())
+            if pkg.manpage:
+                member = tar.getmember(pkg.manpage)
+                member.name = Path(pkg.manpage).name
+                tar.extract(path=manpage_dir, member=member)
+            if pkg.fishcomp:
+                member = tar.getmember(pkg.fishcomp)
+                member.name = Path(pkg.fishcomp).name
+                tar.extract(path=fishcomp_dir, member=member)
+            if pkg.member:
+                member = tar.getmember(pkg.member)
+                member.name = pkg.name
+                tar.extract(path=bin_dir, member=member)
+            else:
+                tar.extractall
+                tar.extractall(path=bin_dir)
+    elif pkg.url.endswith('zip'):
+        with ZipFile(file_like_object, "r") as myzip:
+            myzip.extractall(bin_dir)
 
-        print(f'Extracted to: {bin_dir}')
+    print(f'Extracted to: {bin_dir}')

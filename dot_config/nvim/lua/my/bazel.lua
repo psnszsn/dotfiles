@@ -81,6 +81,6 @@ function Set_pyright_paths(extra_paths)
 end
 
 function Bzl()
-	local ws = '/home/user/devpod-monorepo'
+	local ws = '/home/user/devpod-monorepo-gh'
 	add_python_deps_to_pyright(':bin', ws)
 end

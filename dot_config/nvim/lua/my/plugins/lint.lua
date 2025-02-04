@@ -7,6 +7,9 @@ return {
 			python = {
 				'mypy',
 			},
+			go = {
+				'revive',
+			},
 		}
 	end,
 }

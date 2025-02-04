@@ -136,3 +136,8 @@ vim.filetype.add {
 		zon = 'zig',
 	},
 }
+vim.filetype.add {
+	pattern = {
+		['/tmp/arh%-cli.*'] = 'markdown',
+	},
+}

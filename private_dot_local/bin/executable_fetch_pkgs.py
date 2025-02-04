@@ -39,7 +39,17 @@ pkgs = [
         manpage='fd-v10.2.0-x86_64-unknown-linux-gnu/fd.1',
         fishcomp='fd-v10.2.0-x86_64-unknown-linux-gnu/autocomplete/fd.fish',
     ),
-    Pkg('stylua', url='https://github.com/JohnnyMorganz/StyLua/releases/download/v2.0.2/stylua-linux-x86_64-musl.zip'),
+    Pkg(
+        'stylua',
+        url='https://github.com/JohnnyMorganz/StyLua/releases/download/v2.0.2/stylua-linux-x86_64-musl.zip',
+        member='stylua',
+    ),
+    Pkg('revive', url='https://github.com/mgechev/revive/releases/download/v1.6.0/revive_linux_amd64.tar.gz'),
+    Pkg(
+        'delta',
+        url='https://github.com/dandavison/delta/releases/download/0.18.2/delta-0.18.2-x86_64-unknown-linux-gnu.tar.gz',
+        member='delta-0.18.2-x86_64-unknown-linux-gnu/delta',
+    ),
 ]
 
 # command: wget -qO- https://github.com/LuaLS/lua-language-server/releases/download/3.13.3/lua-language-server-3.13.3-linux-x64.tar.gz | tar xvz -C ~/.local/bin
@@ -78,7 +88,7 @@ for pkg in pkgs:
                 tar.extractall
                 tar.extractall(path=bin_dir)
     elif pkg.url.endswith('zip'):
-        with ZipFile(file_like_object, "r") as myzip:
+        with ZipFile(file_like_object, 'r') as myzip:
             myzip.extractall(bin_dir)
 
     print(f'Extracted to: {bin_dir}')

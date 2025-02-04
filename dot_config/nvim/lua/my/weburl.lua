@@ -50,7 +50,7 @@ local function get_web_url(remote, branch, filepath, line1, line2)
 	for _, rule in ipairs(rules) do
 		local captures = { remote:match(rule.pattern) }
 		if #captures ~= 0 then
-		vim.print(captures)
+			vim.print(captures)
 			table.insert(captures, branch)
 			table.insert(captures, filepath)
 			table.insert(captures, line1)

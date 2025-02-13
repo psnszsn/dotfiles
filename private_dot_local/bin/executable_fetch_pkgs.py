@@ -31,7 +31,7 @@ pkgs = [
         url='https://github.com/astral-sh/ruff/releases/download/0.9.2/ruff-x86_64-unknown-linux-gnu.tar.gz',
         member='ruff-x86_64-unknown-linux-gnu/ruff',
     ),
-    Pkg('lf', url='https://github.com/gokcehan/lf/releases/download/r32/lf-linux-amd64.tar.gz '),
+    Pkg('lf', url='https://github.com/gokcehan/lf/releases/download/r32/lf-linux-amd64.tar.gz'),
     Pkg(
         'fd',
         url='https://github.com/sharkdp/fd/releases/download/v10.2.0/fd-v10.2.0-x86_64-unknown-linux-gnu.tar.gz',
@@ -50,12 +50,14 @@ pkgs = [
         url='https://github.com/dandavison/delta/releases/download/0.18.2/delta-0.18.2-x86_64-unknown-linux-gnu.tar.gz',
         member='delta-0.18.2-x86_64-unknown-linux-gnu/delta',
     ),
+    Pkg('fish', url='https://github.com/fish-shell/fish-shell/releases/download/4.0b1/fish-static-linux-x86_64.tar.xz'),
 ]
 
 # command: wget -qO- https://github.com/LuaLS/lua-language-server/releases/download/3.13.3/lua-language-server-3.13.3-linux-x64.tar.gz | tar xvz -C ~/.local/bin
 
 
 for pkg in pkgs:
+    print(pkg.name)
     if (bin_dir / pkg.name).exists():
         print(f'skipping {pkg}')
         continue
@@ -69,8 +71,8 @@ for pkg in pkgs:
         print(f'Failed to download file. Status code: {response.status_code}')
         exit()
 
-    if pkg.url.endswith('tar.gz'):
-        with tarfile.open(fileobj=file_like_object, mode='r:gz') as tar:
+    if pkg.url.endswith('tar.gz') or  pkg.url.endswith('tar.xz') :
+        with tarfile.open(fileobj=file_like_object, mode='r') as tar:
             print(tar.getmembers())
             if pkg.manpage:
                 member = tar.getmember(pkg.manpage)

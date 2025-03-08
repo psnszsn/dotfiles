@@ -29,7 +29,10 @@ require('lazy').setup({
 	{
 		'ggandor/leap.nvim',
 		config = function()
-			require('leap').create_default_mappings()
+			-- require('leap').create_default_mappings()
+			vim.keymap.set({ 'n', 'x', 'o' }, 's', '<Plug>(leap-forward)')
+			vim.keymap.set({ 'n', 'x', 'o' }, '<C-s>', '<Plug>(leap-backward)')
+			vim.keymap.set({ 'n', 'x', 'o' }, 'gs', '<Plug>(leap-from-window)')
 		end,
 		dependencies = { 'tpope/vim-repeat' },
 	},
@@ -90,6 +93,7 @@ require 'my.clipboard'
 require 'my.bazel'
 require 'my.weburl'
 require 'my.term'
+require 'my.rmcomment'
 
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
 vim.api.nvim_create_autocmd('TextYankPost', {

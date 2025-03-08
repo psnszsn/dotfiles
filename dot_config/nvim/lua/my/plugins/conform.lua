@@ -22,6 +22,7 @@ return {
 			javascript = { { 'prettierd', 'prettier' } },
 			shtml = { 'superhtml' },
 			json = { 'jq' },
+			jsonc = { 'prettier' },
 			fish = { 'fish_indent' },
 			-- zig = { "zigfmt" },
 		},

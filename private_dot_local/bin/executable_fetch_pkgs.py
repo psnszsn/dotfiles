@@ -4,6 +4,7 @@ import requests
 import tarfile
 from zipfile import ZipFile
 import io
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -51,13 +52,16 @@ pkgs = [
         member='delta-0.18.2-x86_64-unknown-linux-gnu/delta',
     ),
     Pkg('fish', url='https://github.com/fish-shell/fish-shell/releases/download/4.0b1/fish-static-linux-x86_64.tar.xz'),
+    Pkg('zigup', url='https://github.com/marler8997/zigup/releases/download/v2025_01_02/zigup-x86_64-linux.tar.gz'),
 ]
 
 # command: wget -qO- https://github.com/LuaLS/lua-language-server/releases/download/3.13.3/lua-language-server-3.13.3-linux-x64.tar.gz | tar xvz -C ~/.local/bin
 
 
 for pkg in pkgs:
-    print(pkg.name)
+    if len(sys.argv) > 1:
+        if not pkg.name == sys.argv[1]:
+            continue
     if (bin_dir / pkg.name).exists():
         print(f'skipping {pkg}')
         continue

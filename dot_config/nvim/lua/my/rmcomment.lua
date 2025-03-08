@@ -1,10 +1,8 @@
 local function remove_comment_lines()
 	local bufnr = vim.api.nvim_get_current_buf()
-	local lang = vim.fn.fnamemodify(vim.fn.expand '%:t', ':e')
-
-	local parser = vim.treesitter.get_parser(bufnr, lang)
+	local parser = vim.treesitter.get_parser(bufnr)
 	if not parser then
-		print('Tree-sitter parser not available for language: ' .. lang)
+		print('Tree-sitter parser not found for bufnr ' .. bufnr)
 		return
 	end
 

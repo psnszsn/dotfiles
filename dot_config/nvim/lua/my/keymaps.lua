@@ -110,6 +110,12 @@ vim.keymap.set('i', '<down>', '<nop>')
 vim.keymap.set('i', '<S-up>', '<nop>')
 vim.keymap.set('i', '<S-down>', '<nop>')
 
+vim.keymap.set('c', '<C-a>', '<home>', { noremap = true })
+vim.keymap.set('c', '<C-f>', '<right>', { noremap = true })
+vim.keymap.set('c', '<C-b>', '<left>', { noremap = true })
+vim.keymap.set('c', '<Esc>b', '<S-left>', { noremap = true })
+vim.keymap.set('c', '<Esc>f', '<S-right>', { noremap = true })
+
 vim.keymap.set('n', 'Q', '<nop>')
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>')
 

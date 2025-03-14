@@ -28,8 +28,11 @@ abbr -a cs cd
 abbr -a k kubectl
 alias myip="curl https://ipinfo.io"
 
-for cmd in ifup ifdown wg-quick apk service
-	abbr -a $cmd "doas $cmd"
+if command -v doas > /dev/null
+	for cmd in ifup ifdown wg-quick apk service
+		abbr -a $cmd "doas $cmd"
+	end
+	abbr -a sudo 'doas'
 end
 
 if not test -L (which ip)
@@ -44,9 +47,6 @@ if command -v zoxide > /dev/null
 	zoxide init fish | source
 end
 
-if command -v doas > /dev/null
-	abbr -a sudo 'doas'
-end
 
 if command -v eza > /dev/null
 	abbr -a l 'eza -l'

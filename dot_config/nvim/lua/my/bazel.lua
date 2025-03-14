@@ -1,8 +1,7 @@
+local util = require 'lspconfig.util'
 local M = {}
 
 print 'hello'
-
--- return 1
 
 local on_success = function(bazel_info)
 	local Path = require 'plenary.path'
@@ -27,6 +26,8 @@ local on_success = function(bazel_info)
 	save_pyright_config_json(get_keys(extra_paths), include)
 end
 
+---@param target string
+---@param workspace string
 local function add_python_deps_to_pyright(target, workspace)
 	local query = 'bazel cquery '
 		.. target
@@ -50,7 +51,8 @@ local function add_python_deps_to_pyright(target, workspace)
 				-- vim.
 				table.insert(extra_paths, path)
 			else
-				table.insert(extra_paths, workspace .. '/bazel-devpod-monorepo/external/' .. extra_path)
+				local ws_tail = vim.fn.fnamemodify(workspace, ':t')
+				table.insert(extra_paths, workspace .. '/bazel-' .. ws_tail .. '/external/' .. extra_path)
 			end
 		end
 		-- print(table.concat(extra_paths, "\n"))
@@ -81,6 +83,15 @@ function Set_pyright_paths(extra_paths)
 end
 
 function Bzl()
-	local ws = '/home/user/devpod-monorepo-gh'
-	add_python_deps_to_pyright(':bin', ws)
+	-- local ws = '/home/user/devpod-monorepo-gh'
+	local filepath = vim.api.nvim_buf_get_name(0)
+	local ws = util.root_pattern 'WORKSPACE'(filepath)
+	if ws == nil then
+		vim.notify('Could not find bazel root', vim.log.levels.ERROR)
+		return
+	end
+	vim.print(ws)
+	add_python_deps_to_pyright(':test', ws)
 end
+
+vim.api.nvim_create_user_command('Bzl', Bzl, { desc = 'Get the Web URL for the current line/range' })

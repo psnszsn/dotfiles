@@ -1,3 +1,5 @@
+require 'my.nested'
+
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
@@ -89,7 +91,6 @@ require 'my.options'
 require 'my.keymaps'
 require 'my.lsp'
 require 'my.disable_builtin'
-require 'my.clipboard'
 require 'my.bazel'
 require 'my.weburl'
 require 'my.term'
@@ -145,3 +146,10 @@ vim.filetype.add {
 		['/tmp/arh%-cli.*'] = 'markdown',
 	},
 }
+
+vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+  group = vim.api.nvim_create_augroup('Lint', { clear = true }),
+  callback = function()
+    require("lint").try_lint()
+  end,
+})

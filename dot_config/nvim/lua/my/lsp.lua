@@ -84,7 +84,8 @@ nvim_lsp.zls.setup {
 	on_attach = on_attach,
 	flags = { debounce_text_changes = 150 },
 	capabilities = capabilities,
-	cmd = { '/home/vlad/clonez/zls/zig-out/bin/zls' },
+	-- cmd = { '/home/vlad/clonez/zls/zig-out/bin/zls' },
+	cmd = { '/home/vlad/clonez/zigscient/zig-out/bin/zigscient' },
 }
 
 nvim_lsp.lua_ls.setup {

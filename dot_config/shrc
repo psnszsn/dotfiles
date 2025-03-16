@@ -9,5 +9,7 @@ PATH=$PATH:~/.local/bin
 
 if [ "$(tty)" = "/dev/tty1" ]
 then
-	exec $HOME/.local/bin/startsway.sh
+	# exec $HOME/.local/bin/startsway.sh
+    exec dbus-run-session -- niri --session
+	# exec niri --session
 fi

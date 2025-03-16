@@ -51,8 +51,19 @@ pkgs = [
         url='https://github.com/dandavison/delta/releases/download/0.18.2/delta-0.18.2-x86_64-unknown-linux-gnu.tar.gz',
         member='delta-0.18.2-x86_64-unknown-linux-gnu/delta',
     ),
-    Pkg('fish', url='https://github.com/fish-shell/fish-shell/releases/download/4.0b1/fish-static-linux-x86_64.tar.xz'),
-    Pkg('zigup', url='https://github.com/marler8997/zigup/releases/download/v2025_01_02/zigup-x86_64-linux.tar.gz'),
+    Pkg(
+        'fish',
+        url='https://github.com/fish-shell/fish-shell/releases/download/4.0b1/fish-static-linux-x86_64.tar.xz',
+    ),
+    Pkg(
+        'zigup',
+        url='https://github.com/marler8997/zigup/releases/download/v2025_01_02/zigup-x86_64-linux.tar.gz',
+    ),
+    Pkg(
+        'kdlfmt',
+        url='https://github.com/hougesen/kdlfmt/releases/download/v0.0.14/kdlfmt-x86_64-unknown-linux-musl.tar.xz',
+        member='kdlfmt-x86_64-unknown-linux-musl/kdlfmt',
+    ),
 ]
 
 # command: wget -qO- https://github.com/LuaLS/lua-language-server/releases/download/3.13.3/lua-language-server-3.13.3-linux-x64.tar.gz | tar xvz -C ~/.local/bin
@@ -75,7 +86,7 @@ for pkg in pkgs:
         print(f'Failed to download file. Status code: {response.status_code}')
         exit()
 
-    if pkg.url.endswith('tar.gz') or  pkg.url.endswith('tar.xz') :
+    if pkg.url.endswith('tar.gz') or pkg.url.endswith('tar.xz'):
         with tarfile.open(fileobj=file_like_object, mode='r') as tar:
             print(tar.getmembers())
             if pkg.manpage:
@@ -92,7 +103,7 @@ for pkg in pkgs:
                 tar.extract(path=bin_dir, member=member)
             else:
                 tar.extractall
-                tar.extractall(path=bin_dir)
+                tar.extractall(path=bin_dir, filter='tar')
     elif pkg.url.endswith('zip'):
         with ZipFile(file_like_object, 'r') as myzip:
             myzip.extractall(bin_dir)

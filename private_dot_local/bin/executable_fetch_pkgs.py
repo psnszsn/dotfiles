@@ -64,6 +64,7 @@ pkgs = [
         url='https://github.com/hougesen/kdlfmt/releases/download/v0.0.14/kdlfmt-x86_64-unknown-linux-musl.tar.xz',
         member='kdlfmt-x86_64-unknown-linux-musl/kdlfmt',
     ),
+    Pkg('zellij', url='https://github.com/zellij-org/zellij/releases/download/v0.42.1/zellij-x86_64-unknown-linux-musl.tar.gz'),
 ]
 
 # command: wget -qO- https://github.com/LuaLS/lua-language-server/releases/download/3.13.3/lua-language-server-3.13.3-linux-x64.tar.gz | tar xvz -C ~/.local/bin

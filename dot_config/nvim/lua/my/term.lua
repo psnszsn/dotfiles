@@ -39,7 +39,7 @@ vim.keymap.set('n', '<space>t', function()
 	term_buffer_id = vim.api.nvim_get_current_buf()
 end)
 
-vim.keymap.set('t', '<C-h>', function()
+vim.keymap.set('t', '<C-m>', function()
 	vim.cmd.wincmd 'h'
 end)
 

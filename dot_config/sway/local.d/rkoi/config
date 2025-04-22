@@ -10,9 +10,9 @@ exec swayidle -w \
 bindsym XF86MonBrightnessDown exec light -U 5
 bindsym XF86MonBrightnessUp exec light -A 5
 
-bar {
-     swaybar_command waybar
-}
+# bar {
+#      swaybar_command waybar
+# }
 
 bindsym $mod+Up exec playerctl play
 bindsym $mod+Down exec playerctl pause

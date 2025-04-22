@@ -1,10 +1,37 @@
 local builtin = require 'telescope.builtin'
 
+local key_mappings = {
+	{ 'm', 'h' },
+	{ 'n', 'j' },
+	{ 'e', 'k' },
+	{ 'i', 'l' },
+
+	{ 'y', 'o' },
+	{ 'u', 'i' },
+	{ 'h', 'n' },
+	{ 'k', 'e' },
+
+	{ 'j', 'y' },
+	{ 'l', 'u' },
+
+	{ 'o', 'm' }, -- maybe not needed
+}
+
+for _, mapping in ipairs(key_mappings) do
+	local from, to = mapping[1], mapping[2]
+	vim.keymap.set({ 'n', 'v' }, from, to, { noremap = true, silent = true })
+	vim.keymap.set({ 'n', 'v' }, from:upper(), to:upper(), { noremap = true, silent = true })
+end
+
+vim.keymap.set({ 'n', 'v' }, '<C-;>', '<C-i>', { noremap = true })
+-- vim.keymap.set({ 'n', 'v' }, '<C-k>', '<C-]>', { noremap = true })
+
+
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
 -- Remap for dealing with word wrap
-vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
-vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+vim.keymap.set('n', 'e', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true, noremap=true ,})
+vim.keymap.set('n', 'n', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true, noremap=true })
 
 vim.keymap.set('', '<leader>c', '"+y')
 vim.keymap.set('', '<leader>ps', '"+p')
@@ -76,24 +103,25 @@ vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = '[ ] Find existing b
 -- end, { desc = "Format buffer" })
 
 vim.keymap.set('n', '\\', '<cmd>noh<CR>')
+
 -- vim.keymap.set("n", "U", "<C-R>")
 
-vim.keymap.set('', '<C-h>', function()
+vim.keymap.set('', '<C-m>', function()
 	vim.cmd.wincmd 'h'
 end)
 
-vim.keymap.set('', '<C-j>', function()
+vim.keymap.set('', '<C-n>', function()
 	vim.cmd.wincmd 'j'
 end)
-vim.keymap.set('', '<C-k>', function()
+vim.keymap.set('', '<C-e>', function()
 	vim.cmd.wincmd 'k'
 end)
-vim.keymap.set('', '<C-l>', function()
+vim.keymap.set('', '<C-i>', function()
 	vim.cmd.wincmd 'l'
 end)
 
-vim.keymap.set('', 'H', '^')
-vim.keymap.set('', 'L', '$')
+vim.keymap.set('', 'M', '^')
+vim.keymap.set('', 'I', '$')
 
 -- vim.keymap.set("n", "<Tab>", ":tabnext<CR>")
 -- vim.keymap.set("n", "<S-Tab>", ":tabprevious<CR>")
@@ -127,7 +155,7 @@ vim.keymap.set('c', '<C-p>', function()
 	return vim.fn.wildmenumode() == 1 and '<C-p>' or '<Up>'
 end, { expr = true })
 
-vim.keymap.set('n', 'yy', function()
+vim.keymap.set('n', 'jj', function()
 	vim.keymap.set('n', 'p', function()
 		vim.cmd.normal { 'p', bang = true }
 		local pos = vim.fn.getpos '.'

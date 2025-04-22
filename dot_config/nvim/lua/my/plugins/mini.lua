@@ -14,7 +14,7 @@ return {
 			--
 			require('mini.surround').setup {
 				mappings = {
-					add = 'ys',
+					add = 'js',
 					delete = 'ds',
 					find = '',
 					find_left = '',
@@ -30,13 +30,13 @@ return {
 			}
 
 			-- Remap adding surrounding to Visual mode selection
-			vim.keymap.del('x', 'ys')
+			vim.keymap.del('x', 'js')
 			vim.keymap.set('x', 'S', function()
 				require('mini.surround').add 'visual'
 			end, { silent = true })
 
 			-- Make special mapping for "add surrounding for line"
-			vim.keymap.set('n', 'yss', 'ys_', { remap = true })
+			vim.keymap.set('n', 'jss', 'ys_', { remap = true })
 
 			require('mini.comment').setup()
 			require('mini.align').setup()

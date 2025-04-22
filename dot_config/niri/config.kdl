@@ -39,7 +39,9 @@ layout {
 spawn-at-startup "waybar"
 spawn-at-startup "gammastep" "-l" "51:4"
 spawn-at-startup "/usr/libexec/pipewire-launcher"
-spawn-at-startup "sh" "-c" "swaybg -m fill -i $(find /home/vlad/documents/SYNC/wallpapers -type f -maxdepth 1 | shuf -n1)"
+spawn-at-startup "sh" "-c" "swaybg -m fill -o HDMI-A-2 -i $(find /home/vlad/documents/SYNC/wallpapers -type f -maxdepth 1 | shuf -n1) -o HDMI-A-1 -m tile -i $(find /home/vlad/documents/SYNC/wallpapers/tiled/ -type f -maxdepth 1 | shuf -n1)"
+spawn-at-startup "swayidle" "-w" "timeout" "601" "niri msg action power-off-monitors" "timeout" "600" "swaylock -f" "before-sleep" "swaylock -f"
+
 
 prefer-no-csd
 screenshot-path "~/pictures/screenshots/%Y-%m-%d %H-%M-%S.png"
@@ -55,6 +57,12 @@ window-rule {
 
     block-out-from "screen-capture"
 }
+window-rule {
+    match app-id="firefox$" title="^Picture-in-Picture$"
+
+    open-floating true
+    default-floating-position x=32 y=32 relative-to="bottom-left"
+}
 
 binds {
     Mod+Shift+Slash { show-hotkey-overlay; }
@@ -62,25 +70,25 @@ binds {
     // Suggested binds for running programs: terminal, app launcher, screen locker.
     Mod+Space { spawn "fuzzel"; }
     Mod+Return { spawn "ghostty"; }
-    Mod+E { spawn "nautilus" "--new-window"; }
+    // Mod+E { spawn "nautilus" "--new-window"; }
     Super+Alt+L { spawn "swaylock"; }
 
-    XF86AudioRaiseVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1+"; }
-    XF86AudioLowerVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1-"; }
+    XF86AudioRaiseVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.05+"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.05-"; }
     XF86AudioMute        allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
     XF86AudioMicMute     allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle"; }
 
     Mod+Q { close-window; }
 
-    Mod+H     { focus-column-or-monitor-left; }
-	Mod+J     { focus-window-or-workspace-down; }
-    Mod+K     { focus-window-or-workspace-up; }
-    Mod+L     { focus-column-or-monitor-right; }
+    Mod+M     { focus-column-or-monitor-left; }
+	Mod+N     { focus-window-or-workspace-down; }
+    Mod+E     { focus-window-or-workspace-up; }
+    Mod+I     { focus-column-or-monitor-right; }
 
-    Mod+Shift+H     { move-column-left; }
-	Mod+Shift+J     { move-window-down-or-to-workspace-down; }
-    Mod+Shift+K     { move-window-up-or-to-workspace-up; }
-    Mod+Shift+L     { move-column-right; }
+    Mod+Shift+M     { move-column-left; }
+	Mod+Shift+N     { move-window-down-or-to-workspace-down; }
+    Mod+Shift+E     { move-window-up-or-to-workspace-up; }
+    Mod+Shift+I     { move-column-right; }
 
     Mod+Home { focus-column-first; }
     Mod+End  { focus-column-last; }
@@ -101,7 +109,7 @@ binds {
     Mod+Shift+Page_Down { move-workspace-down; }
     Mod+Shift+Page_Up   { move-workspace-up; }
     Mod+Shift+U         { move-workspace-down; }
-    Mod+Shift+I         { move-workspace-up; }
+    Mod+Shift+Y         { move-workspace-up; }
 
     Mod+WheelScrollDown      cooldown-ms=150 { focus-workspace-down; }
     Mod+WheelScrollUp        cooldown-ms=150 { focus-workspace-up; }
@@ -156,6 +164,6 @@ binds {
     Ctrl+Print { screenshot-screen; }
     Alt+Print { screenshot-window; }
 
-    Mod+Shift+E { quit; }
+    Mod+Shift+Q { quit; }
     Mod+Shift+P { power-off-monitors; }
 }

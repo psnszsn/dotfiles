@@ -26,12 +26,11 @@ end
 vim.keymap.set({ 'n', 'v' }, '<C-;>', '<C-i>', { noremap = true })
 -- vim.keymap.set({ 'n', 'v' }, '<C-k>', '<C-]>', { noremap = true })
 
-
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
 -- Remap for dealing with word wrap
-vim.keymap.set('n', 'e', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true, noremap=true ,})
-vim.keymap.set('n', 'n', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true, noremap=true })
+vim.keymap.set('n', 'e', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true, noremap = true })
+vim.keymap.set('n', 'n', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true, noremap = true })
 
 vim.keymap.set('', '<leader>c', '"+y')
 vim.keymap.set('', '<leader>ps', '"+p')

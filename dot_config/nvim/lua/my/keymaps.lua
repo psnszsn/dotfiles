@@ -15,16 +15,21 @@ local key_mappings = {
 	{ 'l', 'u' },
 
 	{ 'o', 'm' }, -- maybe not needed
+
 }
+
 
 for _, mapping in ipairs(key_mappings) do
 	local from, to = mapping[1], mapping[2]
-	vim.keymap.set({ 'n', 'v' }, from, to, { noremap = true, silent = true })
-	vim.keymap.set({ 'n', 'v' }, from:upper(), to:upper(), { noremap = true, silent = true })
+	vim.keymap.set('n', from, to, { noremap = true, silent = true })
+	vim.keymap.set('n', from:upper(), to:upper(), { noremap = true, silent = true })
 end
 
-vim.keymap.set({ 'n', 'v' }, '<C-;>', '<C-i>', { noremap = true })
+vim.keymap.set('n', '<C-;>', '<C-i>', { noremap = true })
+
 -- vim.keymap.set({ 'n', 'v' }, '<C-k>', '<C-]>', { noremap = true })
+
+-- vim.opt.langmap="mh,nj,ek,il,yo,ui,hn,ke,jy,lu,om"
 
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 

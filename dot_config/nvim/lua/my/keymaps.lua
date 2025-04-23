@@ -15,9 +15,7 @@ local key_mappings = {
 	{ 'l', 'u' },
 
 	{ 'o', 'm' }, -- maybe not needed
-
 }
-
 
 for _, mapping in ipairs(key_mappings) do
 	local from, to = mapping[1], mapping[2]

@@ -23,9 +23,14 @@ for _, mapping in ipairs(key_mappings) do
 	vim.keymap.set('n', from:upper(), to:upper(), { noremap = true, silent = true })
 end
 
+vim.keymap.set('v', 'n', 'j', { noremap = true, silent = true })
+vim.keymap.set('v', 'e', 'k', { noremap = true, silent = true })
+
+
 vim.keymap.set('n', '<C-;>', '<C-i>', { noremap = true })
 
 -- vim.keymap.set({ 'n', 'v' }, '<C-k>', '<C-]>', { noremap = true })
+
 
 -- vim.opt.langmap="mh,nj,ek,il,yo,ui,hn,ke,jy,lu,om"
 
@@ -108,17 +113,17 @@ vim.keymap.set('n', '\\', '<cmd>noh<CR>')
 
 -- vim.keymap.set("n", "U", "<C-R>")
 
-vim.keymap.set('', '<C-m>', function()
+vim.keymap.set('', '<A-m>', function()
 	vim.cmd.wincmd 'h'
 end)
 
-vim.keymap.set('', '<C-n>', function()
+vim.keymap.set('', '<A-n>', function()
 	vim.cmd.wincmd 'j'
 end)
-vim.keymap.set('', '<C-e>', function()
+vim.keymap.set('', '<A-e>', function()
 	vim.cmd.wincmd 'k'
 end)
-vim.keymap.set('', '<C-i>', function()
+vim.keymap.set('', '<A-i>', function()
 	vim.cmd.wincmd 'l'
 end)
 

@@ -28,6 +28,7 @@ require('lazy').setup({
 	-- require("my.plugins.debugprint"),
 
 	{ 'folke/which-key.nvim', opts = {} },
+	{ 'sindrets/diffview.nvim', opts = {} },
 	{
 		'ggandor/leap.nvim',
 		config = function()

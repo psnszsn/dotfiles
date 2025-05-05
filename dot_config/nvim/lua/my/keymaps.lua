@@ -6,15 +6,11 @@ local key_mappings = {
 	{ 'e', 'k' },
 	{ 'i', 'l' },
 
-	{ 'y', 'o' },
-	{ 'u', 'i' },
 	{ 'h', 'n' },
+	{ 'j', 'm' },
 	{ 'k', 'e' },
+	{ 'l', 'i' },
 
-	{ 'j', 'y' },
-	{ 'l', 'u' },
-
-	{ 'o', 'm' }, -- maybe not needed
 }
 
 for _, mapping in ipairs(key_mappings) do
@@ -25,10 +21,6 @@ end
 
 vim.keymap.set('v', 'n', 'j', { noremap = true, silent = true })
 vim.keymap.set('v', 'e', 'k', { noremap = true, silent = true })
-
-vim.keymap.set('n', '<C-;>', '<C-i>', { noremap = true })
-
--- vim.keymap.set({ 'n', 'v' }, '<C-k>', '<C-]>', { noremap = true })
 
 -- vim.opt.langmap="mh,nj,ek,il,yo,ui,hn,ke,jy,lu,om"
 

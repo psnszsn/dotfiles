@@ -10,7 +10,6 @@ local key_mappings = {
 	{ 'j', 'm' },
 	{ 'k', 'e' },
 	{ 'l', 'i' },
-
 }
 
 for _, mapping in ipairs(key_mappings) do

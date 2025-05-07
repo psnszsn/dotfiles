@@ -1,5 +1,0 @@
-window-decoration = false
-command = "fish"
-font-feature = -calt
-
-keybind = ctrl+shift+l=clear_screen

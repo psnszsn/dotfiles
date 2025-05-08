@@ -15,16 +15,14 @@ abbr -a cal "cal -m"
 abbr -a dush "du -sh"
 abbr -a lst "exa -la -s modified"
 abbr -a lsls "fd --changed-within 1d -X exa -dl -rs modified"
-abbr -a yay paru
-abbr -a p paru
 abbr -a py python
-abbr -a hx helix
 abbr -a cz chezmoi
-abbr -a czc czedit.sh
 abbr -a j just
 abbr -a nvd "alacritty -e nvim &"
 abbr -a cs cd
 abbr -a k kubectl
+abbr -a lf yazi
+abbr -a y yazi
 alias myip="curl https://ipinfo.io"
 
 if command -v doas > /dev/null
@@ -46,6 +44,9 @@ if command -v zoxide > /dev/null
 	zoxide init fish | source
 end
 
+if command -v doas > /dev/null
+	abbr -a sudo 'doas'
+end
 
 if command -v eza > /dev/null
 	abbr -a l 'eza -l'
@@ -57,6 +58,9 @@ else
 	abbr -a lll 'ls -la'
 end
 
+if not set -q EDITOR
+    set -x EDITOR "nvim"
+end
 
 set -gx FZF_DEFAULT_COMMAND 'fd --type file --hidden'
 set -gx FZF_CTRL_T_COMMAND $FZF_DEFAULT_COMMAND
@@ -68,7 +72,7 @@ fish_add_path -p ~/.cargo/bin ~/go/bin ~/.local/share/npm/bin
 
 
 if status is-login
-    if test -z "$DISPLAY" -a $XDG_VTNR = 1
+    if test -z "$DISPLAY" -a "$XDG_VTNR" = 1
         echo "dissspl"
     end
 

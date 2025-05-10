@@ -6,24 +6,20 @@
 	{{- end }}
 
 [alias]
-    co = checkout
-    sw = switch
-    last = log -1 HEAD
-    st = status
-    lg = log --graph --abbrev-commit --decorate --date=relative --all
-    diffkitty = "difftool --no-symlinks --dir-diff --tool kitty"
+	co = checkout
+	sw = switch
+	last = log -1 HEAD
+	st = status
+	lg = log --graph --abbrev-commit --decorate --date=relative --all
+	diffkitty = "difftool --no-symlinks --dir-diff --tool kitty"
 
 [color]
-    diff = auto
-    status = auto
-    branch = auto
+	diff = auto
+	status = auto
+	branch = auto
 	ui = true
 [core]
 	editor = nvim
-    ; pager = delta
-
-[difftool "kitty"]
-    cmd = kitty +kitten diff $LOCAL $REMOTE
 
 [pull]
 	ff = only

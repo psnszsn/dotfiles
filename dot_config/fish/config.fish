@@ -7,9 +7,6 @@ abbr -a g git
 abbr -a c cargo
 abbr -a m make
 abbr -a pacman "sudo pacman"
-abbr -a start "systemctl start"
-abbr -a stop "systemctl stop"
-abbr -a status "systemctl status"
 abbr -a nin "ninja -C build"
 abbr -a cal "cal -m"
 abbr -a dush "du -sh"
@@ -58,13 +55,11 @@ else
 	abbr -a lll 'ls -la'
 end
 
-if not set -q EDITOR
-    set -x EDITOR "nvim"
-end
 
 set -gx FZF_DEFAULT_COMMAND 'fd --type file --hidden'
 set -gx FZF_CTRL_T_COMMAND $FZF_DEFAULT_COMMAND
 set -gx FZF_ALT_C_COMMAND 'fd --type directory --hidden'
+set -gx MANPAGER 'nvim +Man!'
 
 fish_add_path -p ~/.cargo/bin ~/go/bin ~/.local/share/npm/bin
 

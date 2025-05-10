@@ -157,4 +157,4 @@ vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
 
 vim.api.nvim_create_user_command('GitPager', function()
 	require('my.pager').run()
-end, { desc = 'enable git pager mode'})
+end, { desc = 'enable git pager mode' })

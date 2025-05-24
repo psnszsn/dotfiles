@@ -15,7 +15,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
 			require('telescope.builtin').lsp_document_symbols,
 			{ buffer = event.buf, desc = '[D]ocument [S]ymbols' }
 		)
-
 	end,
 })
 

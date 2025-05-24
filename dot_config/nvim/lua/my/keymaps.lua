@@ -15,7 +15,7 @@ local key_mappings = {
 for _, mapping in ipairs(key_mappings) do
 	local from, to = mapping[1], mapping[2]
 	vim.keymap.set('n', from, to, { noremap = true, silent = true })
-	vim.keymap.set('n', from:upper(), to:upper(), { noremap = true, silent = true })
+	-- vim.keymap.set('n', from:upper(), to:upper(), { noremap = true, silent = true })
 end
 
 vim.keymap.set('v', 'n', 'j', { noremap = true, silent = true })

@@ -16,7 +16,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
 			{ buffer = event.buf, desc = '[D]ocument [S]ymbols' }
 		)
 
-		vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = event.buf, desc = 'Hover Documentation' })
 	end,
 })
 

@@ -1,13 +1,5 @@
 local M = {}
 
-vim.api.nvim_create_autocmd('TermOpen', {
-	group = vim.api.nvim_create_augroup('custom-term-open', { clear = true }),
-	callback = function()
-		vim.opt_local.number = false
-		vim.opt_local.relativenumber = false
-	end,
-})
-
 vim.api.nvim_create_autocmd('WinEnter', {
 	pattern = 'term://*',
 	group = vim.api.nvim_create_augroup('custom-term-enter', { clear = true }),

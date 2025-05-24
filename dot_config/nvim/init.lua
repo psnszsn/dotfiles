@@ -4,7 +4,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
-if not vim.loop.fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
 	vim.fn.system {
 		'git',
 		'clone',
@@ -17,7 +17,6 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup({
-	require 'my.plugins.lsp',
 	require 'my.plugins.cmp',
 	require 'my.plugins.telescope',
 	require 'my.plugins.treesitter',
@@ -26,6 +25,8 @@ require('lazy').setup({
 	require 'my.plugins.conform',
 	require 'my.plugins.mini',
 	-- require("my.plugins.debugprint"),
+
+	{ 'j-hui/fidget.nvim', opts = {} },
 
 	{ 'folke/which-key.nvim', opts = {} },
 	{ 'sindrets/diffview.nvim', opts = {} },
@@ -158,3 +159,4 @@ vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
 vim.api.nvim_create_user_command('GitPager', function()
 	require('my.pager').run()
 end, { desc = 'enable git pager mode' })
+

@@ -1,13 +1,8 @@
-;; Home row mods QWERTY example with more complexity.
-;; Some of the changes from the basic example:
-;; - when a home row mod activates tap, the home row mods are disabled
-;;   while continuing to type rapidly
-;; - tap-hold-release helps make the hold action more responsive
-;; - pressing another key on the same half of the keyboard
-;;   as the home row mod will activate an early tap action
+;;; vim: set filetype=kbd commentstring=\;\;\ %s:
 
 (defcfg
-  process-unmapped-keys yes
+  process-unmapped-keys no
+  concurrent-tap-hold yes
   macos-dev-names-include (
     "Apple Internal Keyboard / Trackpad"
   )
@@ -17,76 +12,71 @@
   q w e r t y u i o p
   a s d f g h j k l ;
   z x c v b n m
-  rmet ralt
+  met spc rmet ralt
 )
 
 (defvar
-  ;; Note: consider using different time values for your different fingers.
-  ;; For example, your pinkies might be slower to release keys and index
-  ;; fingers faster.
-  tap-time 200
-  hold-time 150
-
   left-hand-keys (
-    q w e r t
-    a s d f g
-    z x c v b
+    q w f p b
+    a r s t g
+    z x c d v
   )
   right-hand-keys (
-    y u i o p
-    h j k l ;
-    n m , . /
+    j l u y ;
+    m n e i o
+    k h , . /
   )
 )
+
+(deftemplate charmod (char mod keys)
+  (switch 
+    ((key-timing 3 less-than 250)) $char break
+    () (tap-hold-release-keys 200 500 $char $mod $keys) break
+  )
+)
+
 
 (deflayer base
   _ _ f p b j l u @y @;
-   _ r s t g m n e @i @o
+   @a @r @s @t g m @n @e @i @o
     x c d v z k h
-	 ret bspc
+	 spc XX ret bspc
 )
 
-(defchords colon 500
-  (i  ) i
-  (  o) o
-  (i o) S-;
-)
-(defchords backspace 500
-  (y  ) y
-  (  ;) ;
+;; (defchords colon 50
+;;   (i  ) (t! charmod i lalt $right-hand-keys)
+;;   (  o) (t! charmod o rmet $right-hand-keys)
+;;   (i o) S-;
+;; )
+
+(defchords backspace 50
+  (y) y
+  (;) ;
   (y ;) bspc
+
+)
+
+(defchordsv2
+  (s d f)  esc  50 first-release  ()
+  (l ;)    S-;  50 first-release  ()
 )
 
 (defalias
-  i (chord colon i)
-  o (chord colon o)
+
   y (chord backspace y)
   ; (chord backspace ;)
+
+  a (t! charmod a lmet $left-hand-keys)
+  r (t! charmod r lalt $left-hand-keys)
+  s (t! charmod s lsft $left-hand-keys)
+  t (t! charmod t lctl $left-hand-keys)
+
+  n (t! charmod n rctl $right-hand-keys)
+  e (t! charmod e rsft $right-hand-keys)
+  i (t! charmod i lalt $right-hand-keys)
+  o (t! charmod o rmet $right-hand-keys)
+  ;; i (chord colon i)
+  ;; o (chord colon o)
+
 )
 
-;; 
-;;  (deflayer base
-;;    @a  @s  @d  @f  @j  @k  @l  @;
-;;  )
-;; 
-;;  (deflayer nomods
-;;    a   s   d   f   j   k   l   ;
-;;  )
-;;  (deffakekeys
-;;    to-base (layer-switch base)
-;;  )
-;;  (defalias
-;;    tap (multi
-;;      (layer-switch nomods)
-;;      (on-idle-fakekey to-base tap 20)
-;;    )
-;; 
-;;    a (tap-hold-release-keys $tap-time $hold-time (multi a @tap) lmet $left-hand-keys)
-;;    s (tap-hold-release-keys $tap-time $hold-time (multi s @tap) lalt $left-hand-keys)
-;;    d (tap-hold-release-keys $tap-time $hold-time (multi d @tap) lctl $left-hand-keys)
-;;    f (tap-hold-release-keys $tap-time $hold-time (multi f @tap) lsft $left-hand-keys)
-;;    j (tap-hold-release-keys $tap-time $hold-time (multi j @tap) rsft $right-hand-keys)
-;;    k (tap-hold-release-keys $tap-time $hold-time (multi k @tap) rctl $right-hand-keys)
-;;    l (tap-hold-release-keys $tap-time $hold-time (multi l @tap) ralt $right-hand-keys)
-;;    ; (tap-hold-release-keys $tap-time $hold-time (multi ; @tap) rmet $right-hand-keys)
-;;  )

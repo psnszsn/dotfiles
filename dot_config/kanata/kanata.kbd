@@ -1,10 +1,13 @@
 ;;; vim: set filetype=kbd commentstring=\;\;\ %s:
 
 (defcfg
-  process-unmapped-keys no
+  process-unmapped-keys yes
   concurrent-tap-hold yes
   macos-dev-names-include (
     "Apple Internal Keyboard / Trackpad"
+  )
+  linux-dev (
+    "/dev/input/by-id/usb-Microsoft_Surface_Type_Cover-event-kbd"
   )
 )
 
@@ -29,10 +32,11 @@
 )
 
 (deftemplate charmod (char mod keys)
-  (switch 
-    ((key-timing 3 less-than 250)) $char break
-    () (tap-hold-release-keys 200 500 $char $mod $keys) break
-  )
+  (tap-hold-release 201 280 $char $mod) 
+  ;; (switchs
+  ;;   ((key-timing 3 less-than 200)) s break
+  ;;   () (tap-hold-release-keys 200 280 $char $mod $keys) break
+  ;; )
 )
 
 
@@ -53,16 +57,25 @@
   (y) y
   (;) ;
   (y ;) bspc
-
 )
 
 (defchordsv2
   (s d f)  esc  50 first-release  ()
   (l ;)    S-;  50 first-release  ()
+  (j m)    -    50 first-release  ()
+  (m ,)    S--  50 first-release  ()
+  (r t)    S-[  50 first-release  ()
+  (y u)    S-]  50 first-release  ()
+  (f g)    S-9  50 first-release  ()
+  (h j)    S-0  50 first-release  ()
+  (c v)    [    50 first-release  ()
+  (n m)    ]    50 first-release  ()
+  (a s)    tab  50 first-release  ()
+  (j k)    ret  50 first-release  ()
+  
 )
 
 (defalias
-
   y (chord backspace y)
   ; (chord backspace ;)
 
@@ -74,7 +87,7 @@
   n (t! charmod n rctl $right-hand-keys)
   e (t! charmod e rsft $right-hand-keys)
   i (t! charmod i lalt $right-hand-keys)
-  o (t! charmod o rmet $right-hand-keys)
+  o (t! charmod o lmet $right-hand-keys)
   ;; i (chord colon i)
   ;; o (chord colon o)
 

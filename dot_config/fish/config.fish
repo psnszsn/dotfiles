@@ -45,6 +45,10 @@ if command -v doas > /dev/null
 	abbr -a sudo 'doas'
 end
 
+if not set -q EDITOR
+    set -x EDITOR nvim
+end
+
 if command -v eza > /dev/null
 	abbr -a l 'eza -l'
 	abbr -a ls 'eza'

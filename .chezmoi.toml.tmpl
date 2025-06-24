@@ -1,12 +1,12 @@
 # vim:ft=toml
 
-{{- $email := promptString "Git email address for the author/committer" }}
-{{- $gitsign := promptBool "Enable git signing malarkey" }}
+{{- $email := promptStringOnce . "email" "Git email address for the author/committer" }}
+{{- $gitsign := promptBoolOnce . "gitsign" "Enable git signing malarkey" }}
 
 [merge]
-    command = "nvim"
-    args = ["-d", "{{`{{ .Destination }}`}}", "{{`{{ .Source }}", "{{ .Target }}`}}"]
+command = "nvim"
+args = ["-d", "{{`{{ .Destination }}`}}", "{{`{{ .Source }}", "{{ .Target }}`}}"]
 
 [data]
-    email = "{{ $email }}"
-	gitsign = {{ $gitsign }}
+email = "{{ $email }}"
+gitsign = {{ $gitsign }}

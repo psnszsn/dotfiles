@@ -55,7 +55,7 @@ function Set_pyright_paths(extra_paths)
 end
 
 function Bzl()
-	local ws = vim.fs.root(0,'WORKSPACE')
+	local ws = vim.fs.root(0, 'WORKSPACE')
 	if ws == nil then
 		vim.notify('Could not find bazel root', vim.log.levels.ERROR)
 		return

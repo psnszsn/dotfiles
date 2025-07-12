@@ -1,30 +1,4 @@
--- local util = require 'lspconfig.util'
 local M = {}
-
-print 'hello'
-
-local on_success = function(bazel_info)
-	local Path = require 'plenary.path'
-	local extra_paths = {}
-	local ws_name = bazel_info.workspace_name
-	local workspace = bazel_info.workspace
-	for _, line in pairs(bazel_info.stdout) do
-		local depset = line:match 'depset%(%[(.*)%]' or ''
-		for extra_path in depset:gmatch '"(.-)"' do
-			if extra_path:match('^' .. ws_name) then
-				for _, pattern in pairs { workspace, workspace .. '/bazel-bin' } do
-					local path = extra_path:gsub('^' .. ws_name, pattern)
-					if Path:new(path):is_dir() then
-						extra_paths[path] = true
-					end
-				end
-			else
-				extra_paths[workspace .. '/external/' .. extra_path] = true
-			end
-		end
-	end
-	save_pyright_config_json(get_keys(extra_paths), include)
-end
 
 ---@param target string
 ---@param workspace string
@@ -69,9 +43,7 @@ local function add_python_deps_to_pyright(target, workspace)
 end
 
 function Set_pyright_paths(extra_paths)
-	local util = require 'lspconfig.util'
-
-	local clients = util.get_lsp_clients {
+	local clients = vim.lsp.get_clients {
 		bufnr = vim.api.nvim_get_current_buf(),
 		name = 'pyright',
 	}
@@ -83,9 +55,7 @@ function Set_pyright_paths(extra_paths)
 end
 
 function Bzl()
-	-- local ws = '/home/user/devpod-monorepo-gh'
-	local filepath = vim.api.nvim_buf_get_name(0)
-	local ws = util.root_pattern 'WORKSPACE'(filepath)
+	local ws = vim.fs.root(0,'WORKSPACE')
 	if ws == nil then
 		vim.notify('Could not find bazel root', vim.log.levels.ERROR)
 		return

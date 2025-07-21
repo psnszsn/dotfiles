@@ -52,6 +52,13 @@ return {
 			local minipick = require 'mini.pick'
 			local miniextra = require 'mini.extra'
 
+			minipick.setup {
+				mappings = {
+					scroll_down = '<C-d>',
+					scroll_up = '<C-u>',
+				},
+			}
+
 			vim.keymap.set('n', '<leader>ff', minipick.builtin.files, { desc = '[F]ind [F]iles' })
 			vim.keymap.set('n', '<leader>fe', miniextra.pickers.explorer, { desc = '[F]ile [E]xplorer' })
 			vim.keymap.set('n', '<leader>fb', minipick.builtin.buffers, { desc = '[F]ind existing [b]uffers' })

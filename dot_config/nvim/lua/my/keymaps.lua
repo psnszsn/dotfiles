@@ -1,5 +1,3 @@
-local builtin = require 'telescope.builtin'
-
 local key_mappings = {
 	{ 'm', 'h' },
 	{ 'n', 'j' },
@@ -19,6 +17,7 @@ for _, mapping in ipairs(key_mappings) do
 end
 
 vim.keymap.set('n', 'L', 'I', { noremap = true, silent = true })
+vim.keymap.set('n', 'H', 'N', { noremap = true, silent = true })
 vim.keymap.set('v', 'n', 'j', { noremap = true, silent = true })
 vim.keymap.set('v', 'e', 'k', { noremap = true, silent = true })
 
@@ -39,71 +38,12 @@ vim.keymap.set('x', '<leader>px', '"_dP')
 vim.keymap.set('n', '<leader>m', ':make<CR>')
 vim.keymap.set('n', '<leader>v', ':tabe $MYVIMRC<CR>')
 vim.keymap.set('n', '<leader>l', ':set list! | :IndentBlanklineToggle<CR>')
--- vim.keymap.set("n", "-", vim.cmd.Ex)
+
 vim.keymap.set('n', '-', require('oil').open, { desc = 'Open parent directory' })
 vim.keymap.set('n', '<leader>a', '<esc>ggVG<CR>')
 vim.keymap.set('n', '<leader>ww', ':w<CR>')
 
--- Shortcut for searching your neovim configuration files
-vim.keymap.set('n', '<leader>sn', function()
-	builtin.find_files { cwd = vim.fn.stdpath 'config' }
-end, { desc = '[S]earch [N]eovim files' })
-
--- vim.keymap.set("n", "<leader>-", function()
--- require("telescope").extensions.frecency.frecency({ workspace = "CWD" })
--- local in_git_repo = vim.fn.systemlist("git rev-parse --is-inside-work-tree")[1] == "true"
--- if in_git_repo then
--- 	builtin.git_files()
--- else
--- 	builtin.find_files()
--- 	-- builtin.find_files({ cwd = require("telescope.utils").buffer_dir() })
--- end
--- end, { desc = "Find files (git/local)" })
-
--- vim.keymap.set("n", "<leader><leader>-", function()
--- 	builtin.find_files({ cwd = require("telescope.utils").buffer_dir() })
--- end, { desc = "Telescope find files in buffer dir" })
-
-vim.keymap.set('n', '<leader>?', builtin.oldfiles, { desc = '[?] Find recently opened files' })
-vim.keymap.set('n', '<leader><leader>', function()
-	require('telescope').extensions.smart_open.smart_open {
-		cwd_only = true,
-	}
-end, { noremap = true, silent = true })
-vim.keymap.set('n', '<leader>/', function()
-	-- You can pass additional configuration to telescope to change theme, layout, etc.
-	builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-		winblend = 10,
-		previewer = false,
-	})
-end, { desc = '[/] Fuzzily search in current buffer' })
-
-vim.keymap.set('n', '<leader>fg', builtin.git_files, { desc = '[F]ind [G]it Files' })
-vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = '[F]ind [F]iles' })
-vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = '[F]ind [H]elp' })
-vim.keymap.set('n', '<leader>fw', builtin.grep_string, { desc = '[F]ind current [W]ord' })
-vim.keymap.set('n', '<leader>rg', builtin.live_grep, { desc = 'Find by [R]ip[G]rep' })
-vim.keymap.set('n', '<leader>fd', builtin.diagnostics, { desc = '[F]ind [D]iagnostics' })
-vim.keymap.set('n', '<leader>fr', builtin.resume, { desc = '[F]find [R]resume' })
-vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = '[ ] Find existing buffers' })
---
------------
--- vim.keymap.set("n", "<space>fo", function()
--- 	local win_state = vim.fn.winsaveview()
--- 	local formatprg = vim.opt_local.formatprg:get()
---
--- 	-- vim.cmd.execute("normal! i ")
--- 	-- vim.cmd.execute([[normal! a\<bs>"]])
---
--- 	vim.cmd("%!" .. formatprg)
--- 	-- vim.cmd("keepjumps normal gggqG")
---
--- 	vim.fn.winrestview(win_state)
--- end, { desc = "Format buffer" })
-
 vim.keymap.set('n', '\\', '<cmd>noh<CR>')
-
--- vim.keymap.set("n", "U", "<C-R>")
 
 vim.keymap.set('', '<A-m>', function()
 	vim.cmd.wincmd 'h'
@@ -121,10 +61,6 @@ end)
 
 vim.keymap.set('', 'M', '^')
 vim.keymap.set('', 'I', '$')
-
--- vim.keymap.set("n", "<Tab>", ":tabnext<CR>")
--- vim.keymap.set("n", "<S-Tab>", ":tabprevious<CR>")
--- vim.keymap.set("n", "<leader><BS>", "<c-^>")
 
 vim.keymap.set('n', '<up>', '<nop>')
 vim.keymap.set('n', '<down>', '<nop>')

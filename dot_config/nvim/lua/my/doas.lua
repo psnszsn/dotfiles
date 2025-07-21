@@ -5,10 +5,6 @@ local function onstdout(id, data, _)
 		data = table.concat(data, ' ')
 	end
 
-	print('Data:', data)
-	-- local msg = "install " .. u .. " finished"
-	-- vim.notify(data, vim.log.levels.INFO)
-
 	if vim.endswith(data, 'password: ') then
 		local password = vim.fn.inputsecret 'Password:'
 		vim.fn.chansend(id, { password .. '\r\n' })
@@ -27,24 +23,18 @@ function M.doas(term)
 	end
 
 	local command = ('dd if=%s of=%s bs=1048576'):format(vim.fn.shellescape(tempfile), vim.fn.shellescape(path))
-	-- print("")
-	-- vim.schedule(function()
-	-- 	vim.notify("HELLOP")
-	-- end)
-	print(command)
 	local id = vim.fn.jobstart('doas ' .. command, {
 		on_stdout = onstdout,
 		on_stderr = onstdout,
 		on_exit = function(_, exitcode)
+			vim.cmd.edit { bang = true }
+			-- vim.bo.modified = false
+			-- vim.cmd.checktime()
 			print('doas exitcode:', exitcode)
 			vim.fn.delete(tempfile)
-			vim.cmd 'e!'
 		end,
 		pty = true,
 	})
-	-- _ = id
 end
-
-M.doas 'f'
 
 return M

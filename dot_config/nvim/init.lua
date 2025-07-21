@@ -18,7 +18,6 @@ vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup({
 	require 'my.plugins.cmp',
-	require 'my.plugins.telescope',
 	require 'my.plugins.treesitter',
 	require 'my.plugins.gitsigns',
 	require 'my.plugins.lint',
@@ -60,11 +59,16 @@ require('lazy').setup({
 	{
 		'lukas-reineke/indent-blankline.nvim',
 		main = 'ibl',
-		opts = {
-			indent = {
-				char = '┊',
-			},
-		},
+		config = function()
+			local hooks = require 'ibl.hooks'
+			hooks.register(hooks.type.WHITESPACE, hooks.builtin.hide_first_tab_indent_level)
+			-- hooks.register(hooks.type.WHITESPACE, hooks.builtin.hide_first_space_indent_level)
+			require('ibl').setup {
+				indent = {
+					char = '┊',
+				},
+			}
+		end,
 	},
 	{
 		'windwp/nvim-autopairs',
@@ -97,6 +101,7 @@ require 'my.bazel'
 require 'my.weburl'
 require 'my.term'
 require 'my.rmcomment'
+require 'my.bufdelete'
 
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
 vim.api.nvim_create_autocmd('TextYankPost', {
@@ -159,3 +164,7 @@ vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
 vim.api.nvim_create_user_command('GitPager', function()
 	require('my.pager').run()
 end, { desc = 'enable git pager mode' })
+
+vim.api.nvim_create_user_command('Doas', function()
+	require('my.doas').doas()
+end, {})

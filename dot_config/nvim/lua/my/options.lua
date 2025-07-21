@@ -28,6 +28,7 @@ opt.list = false -- Show some invisible characters
 opt.number = true -- Print line number
 opt.relativenumber = false -- Relative line numbers
 opt.signcolumn = 'yes' -- Show sign column
+opt.winborder = 'rounded'
 
 opt.listchars = { tab = '▸ ', trail = '·', nbsp = '+', eol = '¬' }
 -- set listchars=tab:▸\ ,eol:¬

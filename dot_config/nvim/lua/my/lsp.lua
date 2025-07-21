@@ -9,12 +9,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
 			vim.lsp.buf.definition()
 		end, { buffer = event.buf })
 
-		vim.keymap.set(
-			'n',
-			'<leader>ds',
-			require('telescope.builtin').lsp_document_symbols,
-			{ buffer = event.buf, desc = '[D]ocument [S]ymbols' }
-		)
+		vim.keymap.set('n', '<leader>ds', function()
+			require('mini.extra').pickers.lsp { scope = 'document_symbols' }
+		end, { buffer = event.buf, desc = '[D]ocument [S]ymbols' })
 	end,
 })
 

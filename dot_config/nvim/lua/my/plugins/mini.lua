@@ -41,6 +41,28 @@ return {
 			require('mini.comment').setup()
 			require('mini.align').setup()
 			require('mini.splitjoin').setup()
+			require('mini.visits').setup()
+
+			-- vim.opt.background = 'light'
+			-- vim.cmd.colorscheme 'minicyan'
+
+			require('mini.pick').setup {}
+			require('mini.extra').setup {}
+
+			local minipick = require 'mini.pick'
+			local miniextra = require 'mini.extra'
+
+			vim.keymap.set('n', '<leader>ff', minipick.builtin.files, { desc = '[F]ind [F]iles' })
+			vim.keymap.set('n', '<leader>fe', miniextra.pickers.explorer, { desc = '[F]ile [E]xplorer' })
+			vim.keymap.set('n', '<leader>fb', minipick.builtin.buffers, { desc = '[F]ind existing [b]uffers' })
+			vim.keymap.set('n', '<leader>rg', minipick.builtin.grep_live, { desc = 'Find by [R]ip[G]rep' })
+			-- Shortcut for searching your neovim configuration files
+			vim.keymap.set('n', '<leader>sn', function()
+				minipick.builtin.files({}, { source = { cwd = vim.fn.stdpath 'config' } })
+			end, { desc = '[S]earch [N]eovim files' })
+			vim.keymap.set('n', '<leader><leader>', function()
+				miniextra.pickers.visit_paths()
+			end, { noremap = true, silent = true })
 		end,
 	},
 }

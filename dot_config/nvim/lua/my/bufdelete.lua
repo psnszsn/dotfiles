@@ -1,5 +1,5 @@
 local function bufdelete(args)
-	local buf=vim.api.nvim_get_current_buf()
+	local buf = vim.api.nvim_get_current_buf()
 	for _, win in ipairs(vim.fn.win_findbuf(buf)) do
 		vim.api.nvim_win_call(win, function()
 			if not vim.api.nvim_win_is_valid(win) or vim.api.nvim_win_get_buf(win) ~= buf then
@@ -9,7 +9,7 @@ local function bufdelete(args)
 			local alt = vim.fn.bufnr '#'
 			if alt ~= buf and vim.fn.buflisted(alt) == 1 then
 				vim.api.nvim_win_set_buf(win, alt)
-				vim.print("arst")
+				vim.print 'arst'
 				return
 			end
 
@@ -25,7 +25,7 @@ local function bufdelete(args)
 		end)
 	end
 	if vim.api.nvim_buf_is_valid(buf) then
-		vim.cmd.bdelete{buf, bang=true}
+		vim.cmd.bdelete { buf, bang = true }
 	end
 end
 

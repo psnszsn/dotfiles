@@ -103,4 +103,3 @@ vim.keymap.set('n', 'yy', function()
 	vim.b.saved_cursor = vim.fn.getpos '.'
 	vim.cmd.normal { 'yy', bang = true }
 end)
-

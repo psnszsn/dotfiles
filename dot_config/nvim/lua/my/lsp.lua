@@ -10,7 +10,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 		end, { buffer = event.buf })
 
 		vim.keymap.set('n', '<leader>ds', function()
-			require('mini.extra').pickers.lsp { scope = 'document_symbols' }
+			require('mini.extra').pickers.lsp { scope = 'document_symbol' }
 		end, { buffer = event.buf, desc = '[D]ocument [S]ymbols' })
 	end,
 })

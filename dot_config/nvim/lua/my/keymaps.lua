@@ -90,7 +90,7 @@ vim.keymap.set('c', '<C-p>', function()
 	return vim.fn.wildmenumode() == 1 and '<C-p>' or '<Up>'
 end, { expr = true })
 
-vim.keymap.set('n', 'jj', function()
+vim.keymap.set('n', 'yy', function()
 	vim.keymap.set('n', 'p', function()
 		vim.cmd.normal { 'p', bang = true }
 		local pos = vim.fn.getpos '.'
@@ -103,3 +103,4 @@ vim.keymap.set('n', 'jj', function()
 	vim.b.saved_cursor = vim.fn.getpos '.'
 	vim.cmd.normal { 'yy', bang = true }
 end)
+

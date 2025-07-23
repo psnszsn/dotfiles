@@ -10,10 +10,10 @@ from pathlib import Path
 
 bin_dir = Path(__file__).parent
 manpage_dir = Path.home() / '.local/share/man/man.1'
-manpage_dir.mkdir(exist_ok=True)
+manpage_dir.mkdir(exist_ok=True, parents=True)
 
 fishcomp_dir = Path.home() / '.local/share/fish/vendor_completions.d'
-fishcomp_dir.mkdir(exist_ok=True)
+fishcomp_dir.mkdir(exist_ok=True, parents=True)
 
 
 @dataclass
@@ -65,6 +65,8 @@ pkgs = [
         member='kdlfmt-x86_64-unknown-linux-musl/kdlfmt',
     ),
     Pkg('zellij', url='https://github.com/zellij-org/zellij/releases/download/v0.42.1/zellij-x86_64-unknown-linux-musl.tar.gz'),
+    Pkg('terraform-ls', url='https://releases.hashicorp.com/terraform-ls/0.36.5/terraform-ls_0.36.5_linux_amd64.zip'),
+    Pkg('yazi', url='https://github.com/sxyazi/yazi/releases/download/v25.5.31/yazi-x86_64-unknown-linux-gnu.zip'),
     Pkg(
         'zine',
         url='https://github.com/kristoff-it/zine/releases/download/v0.10.0/x86_64-linux-musl.tar.xz',
@@ -107,8 +109,9 @@ for pkg in pkgs:
                 member.name = pkg.name
                 tar.extract(path=bin_dir, member=member)
             else:
-                tar.extractall
-                tar.extractall(path=bin_dir, filter='tar')
+                # tar.extractall
+                # tar.extractall(path=bin_dir, filter='tar')
+                tar.extractall(path=bin_dir)
     elif pkg.url.endswith('zip'):
         with ZipFile(file_like_object, 'r') as myzip:
             myzip.extractall(bin_dir)

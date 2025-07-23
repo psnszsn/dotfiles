@@ -4,7 +4,15 @@ vim.api.nvim_create_autocmd('WinEnter', {
 	pattern = 'term://*',
 	group = vim.api.nvim_create_augroup('custom-term-enter', { clear = true }),
 	callback = function()
-		vim.cmd.startinsert()
+		local win = vim.api.nvim_get_current_win()
+		local buf = vim.api.nvim_get_current_buf()
+		local total_lines = vim.api.nvim_buf_line_count(buf)
+		local cursor_line = vim.api.nvim_win_get_cursor(win)[1]
+
+		-- Only enter insert mode if cursor is on the last line
+		if cursor_line == total_lines then
+			vim.cmd.startinsert()
+		end
 	end,
 })
 

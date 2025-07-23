@@ -24,6 +24,7 @@ return {
 			json = { 'jq' },
 			jsonc = { 'prettier' },
 			fish = { 'fish_indent' },
+			terraform = { 'terraform_fmt' },
 			-- zig = { "zigfmt" },
 		},
 		-- Set up format-on-save

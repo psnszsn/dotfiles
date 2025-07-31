@@ -1,6 +1,6 @@
 "$schema" = "https://yazi-rs.github.io/schemas/keymap.json"
 
-[manager]
+[mgr]
 prepend_keymap = [
 	# Hopping
 	{ on = "e", run = "arrow prev", desc = "Previous file" },

@@ -9,7 +9,6 @@ local key_mappings = {
 	{ 'k', 'e' },
 	{ 'l', 'i' },
 }
-
 for _, mapping in ipairs(key_mappings) do
 	local from, to = mapping[1], mapping[2]
 	vim.keymap.set('n', from, to, { noremap = true, silent = true })

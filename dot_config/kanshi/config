@@ -65,3 +65,8 @@ profile miniryz {
 	output "Dell Inc. DELL P2720DC 81WTK9B7042S" position 0,0
 	output "LG Electronics LG Ultra HD 0x0002AEAA" position 2560,0 scale 1.8
 }
+
+profile f12 {
+	output "BOE NV122WUM-N42 Unknown" position 0,1440 scale 1.2
+	output "LG Electronics LG Ultra HD 0x0002AEAA" position 0,0 scale 1.5
+}

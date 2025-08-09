@@ -13,6 +13,14 @@ input {
     // Focus windows and outputs automatically when moving the mouse into them.
     // Setting max-scroll-amount="0%" makes it work only on windows already fully on screen.
     focus-follows-mouse max-scroll-amount="20%"
+
+    touchpad {
+        tap
+        natural-scroll
+    }
+	    tablet {
+        map-to-output "eDP-1"
+    }
 }
 
 cursor {
@@ -37,9 +45,11 @@ layout {
 }
 
 spawn-at-startup "waybar"
+spawn-at-startup "kanshi"
 spawn-at-startup "gammastep" "-l" "51:4"
 spawn-at-startup "/usr/libexec/pipewire-launcher"
-spawn-at-startup "sh" "-c" "swaybg -m fill -o HDMI-A-2 -i $(find /home/vlad/documents/SYNC/wallpapers -type f -maxdepth 1 | shuf -n1) -o HDMI-A-1 -m tile -i $(find /home/vlad/documents/SYNC/wallpapers/tiled/ -type f -maxdepth 1 | shuf -n1)"
+spawn-at-startup "sh" "-c" "swaybg -m fill -i $(find /home/vlad/documents/SYNC/wallpapers -type f -maxdepth 1 | sort -R | head -n1) -o DP-1 -m tile -i $(find /home/vlad/documents/SYNC/wallpapers/tiled/ -type f -maxdepth 1 | sort -R | head -n1)"
+
 spawn-at-startup "swayidle" "-w" "timeout" "601" "niri msg action power-off-monitors" "timeout" "600" "swaylock -f" "before-sleep" "swaylock -f"
 
 
@@ -95,15 +105,15 @@ binds {
     Mod+Ctrl+Home { move-column-to-first; }
     Mod+Ctrl+End  { move-column-to-last; }
 
-    Mod+Ctrl+H     { focus-monitor-left; }
-    Mod+Ctrl+J     { focus-monitor-down; }
-    Mod+Ctrl+K     { focus-monitor-up; }
-    Mod+Ctrl+L     { focus-monitor-right; }
+    Mod+Ctrl+M     { focus-monitor-left; }
+    Mod+Ctrl+N     { focus-monitor-down; }
+    Mod+Ctrl+E     { focus-monitor-up; }
+    Mod+Ctrl+I     { focus-monitor-right; }
 
-    Mod+Shift+Ctrl+H     { move-column-to-monitor-left; }
-    Mod+Shift+Ctrl+J     { move-column-to-monitor-down; }
-    Mod+Shift+Ctrl+K     { move-column-to-monitor-up; }
-    Mod+Shift+Ctrl+L     { move-column-to-monitor-right; }
+    Mod+Shift+Ctrl+M     { move-column-to-monitor-left; }
+    Mod+Shift+Ctrl+N     { move-column-to-monitor-down; }
+    Mod+Shift+Ctrl+E     { move-column-to-monitor-up; }
+    Mod+Shift+Ctrl+I     { move-column-to-monitor-right; }
 
 
     Mod+Shift+Page_Down { move-workspace-down; }
@@ -167,4 +177,10 @@ binds {
 
     Mod+Shift+Q { quit; }
     Mod+Shift+P { power-off-monitors; }
+
+	// Focus browser
+	Mod+B { spawn "sh" "-c" "niri msg -j windows | jq 'map(select(.app_id==\"Firefox\")) | first | .id' | xargs  niri msg action focus-window --id"; }
+	// Focus ghostty
+	Mod+P { spawn "sh" "-c" "niri msg -j windows | jq 'map(select(.app_id==\"com.mitchellh.ghostty\")) | first | .id' | xargs  niri msg action focus-window --id"; }
+
 }

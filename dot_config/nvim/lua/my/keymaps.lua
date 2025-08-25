@@ -5,8 +5,8 @@ local key_mappings = {
 	{ 'i', 'l' },
 
 	{ 'h', 'n' },
-	{ 'j', 'm' },
-	{ 'k', 'e' },
+	{ 'j', 'e' },
+	{ 'k', 'm' },
 	{ 'l', 'i' },
 }
 for _, mapping in ipairs(key_mappings) do
@@ -14,6 +14,7 @@ for _, mapping in ipairs(key_mappings) do
 	vim.keymap.set('n', from, to, { noremap = true, silent = true })
 	-- vim.keymap.set('n', from:upper(), to:upper(), { noremap = true, silent = true })
 end
+
 
 vim.keymap.set('n', 'L', 'I', { noremap = true, silent = true })
 vim.keymap.set('n', 'H', 'N', { noremap = true, silent = true })
@@ -36,7 +37,7 @@ vim.keymap.set('', '<leader>ps', '"+p')
 vim.keymap.set('x', '<leader>px', '"_dP')
 vim.keymap.set('n', '<leader>m', ':make<CR>')
 vim.keymap.set('n', '<leader>v', ':tabe $MYVIMRC<CR>')
-vim.keymap.set('n', '<leader>l', ':set list! | :IndentBlanklineToggle<CR>')
+vim.keymap.set('n', '<leader>l', ':set list!<CR>')
 
 vim.keymap.set('n', '-', require('oil').open, { desc = 'Open parent directory' })
 vim.keymap.set('n', '<leader>a', '<esc>ggVG<CR>')

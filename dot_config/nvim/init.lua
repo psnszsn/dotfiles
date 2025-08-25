@@ -30,15 +30,28 @@ require('lazy').setup({
 	{ 'folke/which-key.nvim', opts = {} },
 	{ 'sindrets/diffview.nvim', opts = {} },
 	{
-		'ggandor/leap.nvim',
-		config = function()
-			-- require('leap').create_default_mappings()
-			vim.keymap.set({ 'n', 'x', 'o' }, 's', '<Plug>(leap-forward)')
-			vim.keymap.set({ 'n', 'x', 'o' }, '<C-s>', '<Plug>(leap-backward)')
-			vim.keymap.set({ 'n', 'x', 'o' }, 'gs', '<Plug>(leap-from-window)')
-		end,
-		dependencies = { 'tpope/vim-repeat' },
+		'folke/flash.nvim',
+		event = 'VeryLazy',
+		---@type Flash.Config
+		opts = {},
+		keys = {
+			{ "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+			{ "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+			{ "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
+			{ "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+			{ "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+		},
 	},
+	-- {
+	-- 	'ggandor/leap.nvim',
+	-- 	config = function()
+	-- 		-- require('leap').create_default_mappings()
+	-- 		vim.keymap.set({ 'n', 'x', 'o' }, 's', '<Plug>(leap-forward)')
+	-- 		vim.keymap.set({ 'n', 'x', 'o' }, '<C-s>', '<Plug>(leap-backward)')
+	-- 		vim.keymap.set({ 'n', 'x', 'o' }, 'gs', '<Plug>(leap-from-window)')
+	-- 	end,
+	-- 	dependencies = { 'tpope/vim-repeat' },
+	-- },
 	{
 		'rebelot/kanagawa.nvim',
 		priority = 1000,

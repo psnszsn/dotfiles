@@ -10,7 +10,7 @@
     "modules-right": [
         "tray",
         "idle_inhibitor",
-        "pulseaudio",
+        "wireplumber#sink",
         "network",
         "cpu",
         "memory",
@@ -123,26 +123,16 @@
         "format-linked": "{ifname} (No IP) ",
         "format-disconnected": "Disconnected ⚠",
         "format-alt": "{ifname}: {ipaddr}/{cidr}"
+
     },
-    "pulseaudio": {
-        // "scroll-step": 1, // %, can be a float
-        "format": "{volume}% {icon} {format_source}",
-        "format-bluetooth": "{volume}% {icon} {format_source}",
-        "format-bluetooth-muted": " {icon} {format_source}",
-        "format-muted": " {format_source}",
-        "format-source": "{volume}% ",
-        "format-source-muted": "",
-        "format-icons": {
-            "headphone": "",
-            "hands-free": "",
-            "headset": "",
-            "phone": "",
-            "portable": "",
-            "car": "",
-            "default": ["", "", ""]
-        },
-        "on-click": "pavucontrol"
-    },
+	"wireplumber#sink": {
+		"format": "{volume}% {icon}",
+		"format-muted": "",
+		"format-icons": ["", "", ""],
+		"on-click": "pavucontrol",
+		"on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+		"scroll-step": 1
+	},
     "custom/media": {
         "format": "{icon} {}",
         "return-type": "json",

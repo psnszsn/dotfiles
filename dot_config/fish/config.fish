@@ -10,7 +10,7 @@ abbr -a pacman "sudo pacman"
 abbr -a nin "ninja -C build"
 abbr -a cal "cal -m"
 abbr -a dush "du -sh"
-abbr -a lst "exa -la -s modified"
+abbr -a lst "eza -la -s modified"
 abbr -a lsls "fd --changed-within 1d -X exa -dl -rs modified"
 abbr -a py python
 abbr -a cz chezmoi

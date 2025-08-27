@@ -39,11 +39,6 @@ profile tower_dell_alb {
 	output eDP-1 position 640,1440
 }
 
-profile tower_dell_negru {
-	output "Dell Inc. DELL P2720DC 81WTK9B7042S" position 0,0
-	output eDP-1 position 640,1440
-}
-
 profile dell_dual {
 	output "Dell Inc. DELL P2720DC 81WTK9B7042S" position 0,460
 	output "Dell Inc. DELL U2722DE 5593BH3" position 2560,0 transform 90
@@ -69,4 +64,9 @@ profile miniryz {
 profile f12 {
 	output "BOE NV122WUM-N42 Unknown" position 0,1440 scale 1.2
 	output "LG Electronics LG Ultra HD 0x0002AEAA" position 0,0 scale 1.5
+}
+
+profile f12t {
+	output "BOE NV122WUM-N42 Unknown" position 0,0 scale 1.2
+	output "Dell Inc. DELL P2720DC 81WTK9B7042S" position 0,1000
 }

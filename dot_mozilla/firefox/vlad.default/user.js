@@ -28,3 +28,5 @@ user_pref("datareporting.sessions.current.clean", true);
 user_pref("datareporting.healthreport.uploadEnabled", false);
 user_pref("datareporting.policy.dataSubmissionEnabled", false);
 user_pref("datareporting.sessions.current.clean", true);
+
+user_pref("browser.ml.chat.enabled", false);

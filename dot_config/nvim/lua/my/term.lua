@@ -43,4 +43,13 @@ vim.keymap.set('t', '<A-m>', function()
 	vim.cmd.wincmd 'h'
 end)
 
+local term_clear = function()
+  vim.fn.feedkeys("^L", 'n')
+  local sb = vim.bo.scrollback
+  vim.bo.scrollback = 1
+  vim.bo.scrollback = sb
+end
+
+vim.keymap.set('t', '<C-l>', term_clear)
+
 return M

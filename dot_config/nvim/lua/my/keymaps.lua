@@ -15,7 +15,7 @@ for _, mapping in ipairs(key_mappings) do
 	-- vim.keymap.set('n', from:upper(), to:upper(), { noremap = true, silent = true })
 end
 
-vim.keymap.set('n', 'L', 'I', { noremap = true, silent = true })
+vim.keymap.set('', 'L', 'I', { noremap = true, silent = true })
 vim.keymap.set('n', 'H', 'N', { noremap = true, silent = true })
 vim.keymap.set('v', 'n', 'j', { noremap = true, silent = true })
 vim.keymap.set('v', 'e', 'k', { noremap = true, silent = true })
@@ -102,3 +102,10 @@ vim.keymap.set('n', 'yy', function()
 	vim.b.saved_cursor = vim.fn.getpos '.'
 	vim.cmd.normal { 'yy', bang = true }
 end)
+
+local function insertFullPath()
+  local filepath = vim.fn.expand('%')
+  vim.fn.setreg('+', filepath)
+end
+
+vim.keymap.set('n', 'yp', insertFullPath, { noremap = true, silent = true })

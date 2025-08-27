@@ -104,8 +104,8 @@ vim.keymap.set('n', 'yy', function()
 end)
 
 local function insertFullPath()
-  local filepath = vim.fn.expand('%')
-  vim.fn.setreg('+', filepath)
+	local filepath = vim.fn.expand '%'
+	vim.fn.setreg('+', filepath)
 end
 
 vim.keymap.set('n', 'yp', insertFullPath, { noremap = true, silent = true })

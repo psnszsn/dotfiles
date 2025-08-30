@@ -19,7 +19,7 @@ return {
 		formatters_by_ft = {
 			lua = { 'stylua' },
 			python = { 'ruff_format' },
-			javascript = { { 'prettierd', 'prettier' } },
+			javascript = { 'prettier' },
 			shtml = { 'superhtml' },
 			json = { 'jq' },
 			jsonc = { 'prettier' },

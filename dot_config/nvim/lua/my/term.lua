@@ -8,9 +8,10 @@ vim.api.nvim_create_autocmd('WinEnter', {
 		local buf = vim.api.nvim_get_current_buf()
 		local total_lines = vim.api.nvim_buf_line_count(buf)
 		local cursor_line = vim.api.nvim_win_get_cursor(win)[1]
+		local win_height = vim.api.nvim_win_get_height(win)
 
-		-- Only enter insert mode if cursor is on the last line
-		if cursor_line == total_lines then
+		-- Only enter insert mode if cursor is on the last page
+		if cursor_line >= total_lines - win_height + 1 then
 			vim.cmd.startinsert()
 		end
 	end,
@@ -31,7 +32,7 @@ vim.keymap.set('n', '<space>t', function()
 			end
 			return
 		end
-
+		
 		-- Open terminal buffer in new window and update tracked window
 		vim.cmd.vnew()
 		vim.api.nvim_win_set_buf(0, term_buffer_id)

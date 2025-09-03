@@ -18,18 +18,24 @@ vim.api.nvim_create_autocmd('WinEnter', {
 
 local job_id = 0
 local term_buffer_id = 0
+local term_window_id = 0
 
 vim.keymap.set('n', '<space>t', function()
 	if term_buffer_id ~= 0 and vim.api.nvim_buf_is_valid(term_buffer_id) then
-		local windows = vim.api.nvim_list_wins()
-		for _, win_id in ipairs(windows) do
-			if vim.api.nvim_win_get_buf(win_id) == term_buffer_id then
-				vim.api.nvim_set_current_win(win_id)
-				return
+		-- If the tracked window still exists
+		if term_window_id ~= 0 and vim.api.nvim_win_is_valid(term_window_id) then
+			vim.api.nvim_set_current_win(term_window_id)
+			-- If it doesn't have the terminal buffer, open it there
+			if vim.api.nvim_win_get_buf(term_window_id) ~= term_buffer_id then
+				vim.api.nvim_win_set_buf(term_window_id, term_buffer_id)
 			end
+			return
 		end
+
+		-- Open terminal buffer in new window and update tracked window
 		vim.cmd.vnew()
 		vim.api.nvim_win_set_buf(0, term_buffer_id)
+		term_window_id = vim.api.nvim_get_current_win()
 		return
 	end
 
@@ -37,6 +43,7 @@ vim.keymap.set('n', '<space>t', function()
 	vim.cmd.term 'fish'
 	job_id = vim.bo.channel
 	term_buffer_id = vim.api.nvim_get_current_buf()
+	term_window_id = vim.api.nvim_get_current_win()
 end)
 
 vim.keymap.set('t', '<A-m>', function()

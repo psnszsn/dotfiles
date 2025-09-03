@@ -103,9 +103,44 @@ vim.keymap.set('n', 'yy', function()
 	vim.cmd.normal { 'yy', bang = true }
 end)
 
-local function insertFullPath()
-	local filepath = vim.fn.expand '%'
-	vim.fn.setreg('+', filepath)
-end
+vim.keymap.set('n', 'yp', function()
+	vim.fn.setreg('+', vim.fn.expand '%:p')
+end, { noremap = true, silent = true })
 
-vim.keymap.set('n', 'yp', insertFullPath, { noremap = true, silent = true })
+vim.keymap.set('n', '<leader>ft', function()
+	local pick = require 'mini.pick'
+	local terminal_buffers = {}
+
+	for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+		if vim.bo[bufnr].buftype == 'terminal' and vim.api.nvim_buf_is_loaded(bufnr) then
+			local name = vim.api.nvim_buf_get_name(bufnr)
+			if name == '' then
+				name = '[Terminal]'
+			else
+				name = vim.fn.fnamemodify(name, ':t')
+			end
+			table.insert(terminal_buffers, {
+				text = string.format('%d: %s', bufnr, name),
+				bufnr = bufnr,
+			})
+		end
+	end
+
+	if #terminal_buffers == 0 then
+		vim.notify('No terminal buffers found', vim.log.levels.INFO)
+		return
+	end
+
+	pick.start {
+		source = {
+			items = terminal_buffers,
+			choose = function(item)
+				if item then
+					local picker_state = pick.get_picker_state()
+					local win_target = picker_state and picker_state.windows.target or vim.api.nvim_get_current_win()
+					vim.api.nvim_win_set_buf(win_target, item.bufnr)
+				end
+			end,
+		},
+	}
+end, { desc = '[F]ind [T]erminal buffers' })

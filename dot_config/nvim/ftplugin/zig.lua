@@ -22,3 +22,14 @@ opt_local.commentstring = '// %s'
 vim.keymap.set('n', '<leader>sl', function()
 	require('telescope.builtin').find_files { cwd = '/usr/lib/zig/std/' }
 end)
+
+vim.api.nvim_create_autocmd('BufWritePre', {
+	pattern = { '*.zig', '*.zon' },
+	group = vim.api.nvim_create_augroup('zlsfixall', { clear = true }),
+	callback = function(ev)
+		vim.lsp.buf.code_action {
+			context = { only = { 'source.fixAll' } },
+			apply = true,
+		}
+	end,
+})

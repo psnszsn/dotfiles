@@ -32,7 +32,7 @@ vim.keymap.set('n', '<space>t', function()
 			end
 			return
 		end
-		
+
 		-- Open terminal buffer in new window and update tracked window
 		vim.cmd.vnew()
 		vim.api.nvim_win_set_buf(0, term_buffer_id)

@@ -1,0 +1,30 @@
+{
+  "niri/workspaces": {
+    "on-click": "activate"
+  },
+
+  "niri/window": {
+    "format": "{}",
+    "rewrite": {
+    },
+    "separate-outputs": true
+  },
+
+  "wireplumber": {
+    "format": "vol:{volume}",
+    "on-click": "pavucontrol",
+    "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+    "scroll-step": 1
+  },
+
+  // "tray": {
+  //   "icon-size": 21,
+  //   "spacing": 10
+  // },
+
+  "clock": {
+    "format": "{:%H:%M %a}",
+    "on-click": "ghostty -e fish -C 'cal -3 -M'",
+    "tooltip": false
+  }
+}

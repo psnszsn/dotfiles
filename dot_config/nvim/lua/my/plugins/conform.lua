@@ -22,7 +22,7 @@ return {
 			javascript = { 'prettier' },
 			shtml = { 'superhtml' },
 			json = { 'jq' },
-			jsonc = { 'prettier' },
+			jsonc = { 'denonerd' },
 			fish = { 'fish_indent' },
 			terraform = { 'terraform_fmt' },
 			-- zig = { "zigfmt" },
@@ -33,6 +33,10 @@ return {
 		formatters = {
 			shfmt = {
 				prepend_args = { '-i', '2' },
+			},
+			denonerd = {
+				command = "nerdctl",
+				args={"run", "-i", "denoland/deno:2.5.2", "fmt", "--ext", "jsonc", "-"}
 			},
 		},
 	},

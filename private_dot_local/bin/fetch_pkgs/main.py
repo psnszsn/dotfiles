@@ -156,7 +156,7 @@ pkgs = [
     ),
     Pkg(
         'zigup',
-        url='https://github.com/marler8997/zigup/releases/download/v2025_01_02/zigup-x86_64-linux.tar.gz',
+        url='https://github.com/marler8997/zigup/releases/download/v2025_05_24/zigup-x86_64-linux.tar.gz',
         bin='zigup',
     ),
     Pkg(

@@ -4,6 +4,7 @@
   /* `otf-font-awesome` is required to be installed for icons */
   font-family: Roboto, Helvetica, Arial, sans-serif, "Font Awesome 5 Free";
   /* font-family: "Fira Code", "Font Awesome 5 Free"; */
+  font-family: monospace;
   font-size: 13px;
   min-height: 0;
 }

@@ -1,0 +1,22 @@
+[[keyboard.bindings]]
+action = "SpawnNewInstance"
+key = "N"
+mods = "Control|Shift"
+
+[[keyboard.bindings]]
+action = "ClearHistory"
+key = "L"
+mods = "Control|Shift"
+
+[terminal]
+
+[font]
+size = 13.0
+
+[selection]
+save_to_clipboard = true
+
+[keyboard]
+
+[terminal.shell]
+program = "/usr/bin/fish"

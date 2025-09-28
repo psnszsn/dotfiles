@@ -35,8 +35,8 @@ return {
 				prepend_args = { '-i', '2' },
 			},
 			denonerd = {
-				command = "nerdctl",
-				args={"run", "-i", "denoland/deno:2.5.2", "fmt", "--ext", "jsonc", "-"}
+				command = 'nerdctl',
+				args = { 'run', '-i', 'denoland/deno:2.5.2', 'fmt', '--ext', 'jsonc', '-' },
 			},
 		},
 	},

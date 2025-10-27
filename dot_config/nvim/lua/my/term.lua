@@ -58,11 +58,11 @@ local function toggle_terminal(term_type)
 end
 
 vim.keymap.set('n', '<leader>tt', function()
-	toggle_terminal('fish')
+	toggle_terminal 'fish'
 end)
 
 vim.keymap.set('n', '<leader>tc', function()
-	toggle_terminal('claude')
+	toggle_terminal 'claude'
 end)
 
 vim.keymap.set('t', '<A-m>', function()

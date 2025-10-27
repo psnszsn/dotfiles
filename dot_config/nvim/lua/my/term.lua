@@ -17,34 +17,52 @@ vim.api.nvim_create_autocmd('WinEnter', {
 	end,
 })
 
-local job_id = 0
-local term_buffer_id = 0
+local terminals = {
+	fish = { job_id = 0, buffer_id = 0, cmd = 'fish' },
+	claude = { job_id = 0, buffer_id = 0, cmd = vim.env.CLAUDECMD or 'claude' },
+}
 local term_window_id = 0
 
-vim.keymap.set('n', '<space>t', function()
-	if term_buffer_id ~= 0 and vim.api.nvim_buf_is_valid(term_buffer_id) then
-		-- If the tracked window still exists
+local function toggle_terminal(term_type)
+	local term = terminals[term_type]
+	local cmd = term.cmd
+
+	if term.buffer_id ~= 0 and vim.api.nvim_buf_is_valid(term.buffer_id) then
+		-- Check if we're currently in the term window
 		if term_window_id ~= 0 and vim.api.nvim_win_is_valid(term_window_id) then
+			-- Just switch the buffer in the existing window
+			vim.api.nvim_win_set_buf(term_window_id, term.buffer_id)
 			vim.api.nvim_set_current_win(term_window_id)
-			-- If it doesn't have the terminal buffer, open it there
-			if vim.api.nvim_win_get_buf(term_window_id) ~= term_buffer_id then
-				vim.api.nvim_win_set_buf(term_window_id, term_buffer_id)
-			end
 			return
 		end
 
 		-- Open terminal buffer in new window and update tracked window
 		vim.cmd.vnew()
-		vim.api.nvim_win_set_buf(0, term_buffer_id)
+		vim.api.nvim_win_set_buf(0, term.buffer_id)
 		term_window_id = vim.api.nvim_get_current_win()
 		return
 	end
 
-	vim.cmd.vnew()
-	vim.cmd.term 'fish'
-	job_id = vim.bo.channel
-	term_buffer_id = vim.api.nvim_get_current_buf()
-	term_window_id = vim.api.nvim_get_current_win()
+	-- Check if term window exists but we need to create a new terminal
+	if term_window_id ~= 0 and vim.api.nvim_win_is_valid(term_window_id) then
+		vim.api.nvim_set_current_win(term_window_id)
+		vim.cmd.term(cmd)
+	else
+		vim.cmd.vnew()
+		vim.cmd.term(cmd)
+		term_window_id = vim.api.nvim_get_current_win()
+	end
+
+	term.job_id = vim.bo.channel
+	term.buffer_id = vim.api.nvim_get_current_buf()
+end
+
+vim.keymap.set('n', '<leader>tt', function()
+	toggle_terminal('fish')
+end)
+
+vim.keymap.set('n', '<leader>tc', function()
+	toggle_terminal('claude')
 end)
 
 vim.keymap.set('t', '<A-m>', function()

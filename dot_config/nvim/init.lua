@@ -117,23 +117,28 @@ vim.api.nvim_create_autocmd('BufNewFile', {
 	callback = function()
 		local bufnr = vim.fn.bufnr '%'
 		local bufname = vim.api.nvim_buf_get_name(0)
-		-- local bufname = "asd:"
-		local filename, line = bufname:match '(.+):(%d+)$'
-		-- local reg = vim.regex([[.*:[0-9]\+\(:[0-9]\+\)\=]])
-		-- local m = reg:match_str("asdf:9")
 
-		if filename and vim.fn.filereadable(filename) == 1 then
-			-- vim.cmd("e " .. vim.fn.fnameescape(filename))
+		-- Use vim regex to match file:line or file:line:col
+		-- Pattern: (filename):(line)(:(col))?
+		local matches = vim.fn.matchlist(bufname, [[\v(.{-}):([0-9]+)(:([0-9]+))?$]])
+
+		if #matches == 0 or matches[2] == '' then
+			return
+		end
+
+		local filename = matches[2]
+		local line = tonumber(matches[3])
+		local col = matches[5] ~= '' and tonumber(matches[5]) or 0
+
+		if filename and line and vim.fn.filereadable(filename) == 1 then
 			vim.cmd.edit { filename, mods = { keepalt = true } }
 			vim.api.nvim_buf_delete(bufnr, {})
-			vim.api.nvim_win_set_cursor(0, { tonumber(line), 0 })
+			vim.api.nvim_win_set_cursor(0, { line, col })
 			vim.cmd.filetype 'detect'
 		end
-		vim.print(filename, line)
-		print('rEaDiNg bFr: ', bufname)
 	end,
 	group = colon_ln_group,
-	pattern = '*:[0-9]*{:[0-9]*}\\=',
+	pattern = '*:[0-9]*',
 })
 
 -- ÃĂªŞÞŢãăºşþţ

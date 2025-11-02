@@ -1,8 +1,9 @@
 vim.lsp.enable {
 	'luals',
-	'zls',
-	'terraformls',
 	'pyright',
+	'superhtml',
+	'terraformls',
+	'zls',
 }
 
 vim.api.nvim_create_autocmd('LspAttach', {

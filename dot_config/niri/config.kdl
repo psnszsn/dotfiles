@@ -4,7 +4,7 @@ input {
     keyboard {
         xkb {
             layout "ro"
-			options "caps:escape,shift:both_capslock"
+			options "caps:escape"
         }
     }
 
@@ -36,7 +36,14 @@ animations {
 
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Layout
 layout {
-   gaps 16
+   gaps 10
+
+   struts {
+       // left 64
+       // right 64
+       top -6
+       bottom -6
+   }
    center-focused-column "never"
 
    preset-column-widths {
@@ -89,6 +96,7 @@ binds {
     Mod+Return { spawn "ghostty"; }
     // Mod+E { spawn "nautilus" "--new-window"; }
     Super+Alt+L { spawn "swaylock"; }
+    Super+Ctrl+Q { spawn "swaylock"; }
 
     XF86AudioRaiseVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.05+"; }
     XF86AudioLowerVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.05-"; }

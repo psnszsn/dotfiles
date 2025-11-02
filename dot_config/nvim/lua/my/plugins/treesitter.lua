@@ -24,6 +24,7 @@ return {
 				'python',
 				'query',
 				'rust',
+				'superhtml',
 				'vim',
 				'vimdoc',
 				'zig',

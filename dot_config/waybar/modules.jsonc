@@ -26,5 +26,13 @@
     "format": "{:%H:%M %a}",
     "on-click": "ghostty -e fish -C 'cal -3 -M'",
     "tooltip": false
+  },
+
+  "idle_inhibitor": {
+    "format": "{icon}",
+    "format-icons": {
+      "activated": "<span strikethrough=\"true\">zzz</span>",
+      "deactivated": "zzz"
+    }
   }
 }

@@ -38,7 +38,10 @@ if command -v direnv > /dev/null
 end
 
 if command -v zoxide > /dev/null
-	zoxide init fish | source
+	zoxide init fish | string match -v -r '__fish_data_dir/functions/cd\.fish' | source
+	if ! builtin functions --query __zoxide_cd_internal
+        status get-file functions/cd.fish | string replace --regex -- '^function cd\s' 'function __zoxide_cd_internal ' | source
+    end
 end
 
 if command -v doas > /dev/null

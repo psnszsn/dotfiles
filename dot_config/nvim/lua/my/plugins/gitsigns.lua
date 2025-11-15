@@ -40,7 +40,6 @@ return {
 				gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
 			end, { buffer = bufnr, desc = 'git [r]eset hunk' })
 
-
 			-- normal mode
 			vim.keymap.set('n', '<leader>hs', gitsigns.stage_hunk, { buffer = bufnr, desc = 'git [s]tage hunk' })
 			vim.keymap.set('n', '<leader>hr', gitsigns.reset_hunk, { buffer = bufnr, desc = 'git [r]eset hunk' })
@@ -51,7 +50,6 @@ return {
 			vim.keymap.set('n', '<leader>hb', gitsigns.blame_line, { buffer = bufnr, desc = 'git [b]lame line' })
 			vim.keymap.set('n', '<leader>hb', gitsigns.blame, { buffer = bufnr, desc = 'git [b]lame window' })
 			vim.keymap.set('n', '<leader>hd', gitsigns.diffthis, { buffer = bufnr, desc = 'git [d]iff against index' })
-
 
 			vim.keymap.set('n', '<leader>hD', function()
 				gitsigns.diffthis '@'

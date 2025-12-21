@@ -20,8 +20,11 @@
   ],
 
   "modules-right": [
+    "backlight",
+    "battery",
+    "network",
     "tray",
-	"idle_inhibitor",
+    "idle_inhibitor",
     "wireplumber",
     "clock"
   ]

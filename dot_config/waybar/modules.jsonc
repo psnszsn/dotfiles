@@ -16,6 +16,13 @@
     "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
     "scroll-step": 1
   },
+  "backlight": {
+    "format": "lgt:{percent}"
+  },
+  "battery": {
+    "format": "bat:{capacity}",
+    "format-charging": "bat:{capacity}↑"
+  },
 
   // "tray": {
   //   "icon-size": 21,

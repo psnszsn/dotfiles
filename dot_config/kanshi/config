@@ -70,3 +70,7 @@ profile f12t {
 	output "BOE NV122WUM-N42 Unknown" position 0,0 scale 1.2
 	output "Dell Inc. DELL P2720DC 81WTK9B7042S" position 0,1000
 }
+
+profile asus {
+	output "ASUSTek COMPUTER INC PG32UCDP T6LMQS118855" position 0,0 scale 1.3 mode 3840x2160@120.000
+}

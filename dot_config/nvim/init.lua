@@ -131,7 +131,7 @@ vim.api.nvim_create_autocmd('BufNewFile', {
 		local col = matches[5] ~= '' and tonumber(matches[5]) or 0
 
 		if filename and line and vim.fn.filereadable(filename) == 1 then
-			vim.cmd.edit { filename, mods = { keepalt = true } }
+			vim.cmd.edit { filename, bang = true, mods = { keepalt = true } }
 			vim.api.nvim_buf_delete(bufnr, {})
 			vim.api.nvim_win_set_cursor(0, { line, col })
 			vim.cmd.filetype 'detect'

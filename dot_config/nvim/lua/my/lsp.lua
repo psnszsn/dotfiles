@@ -1,4 +1,5 @@
 vim.lsp.enable {
+	'clangd',
 	'luals',
 	'pyright',
 	'superhtml',

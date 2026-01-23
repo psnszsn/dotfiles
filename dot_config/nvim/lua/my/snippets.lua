@@ -120,6 +120,7 @@ ls.add_snippets(nil, {
 				i(2, 'vars'),
 			})
 		),
+		snippet('buf', t 'var buf: [4096]u8 = undefined;'),
 	},
 })
 

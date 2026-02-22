@@ -13,7 +13,7 @@ return {
 				n_lines = 500,
 				custom_textobjects = {
 					['i'] = ai.gen_spec.treesitter { a = '@assignment.outer', i = '@assignment.rhs' },
-				['m'] = ai.gen_spec.treesitter { a = '@assignment.lhs_full', i = '@assignment.lhs' },
+					['m'] = ai.gen_spec.treesitter { a = '@assignment.lhs_full', i = '@assignment.lhs' },
 				},
 			}
 

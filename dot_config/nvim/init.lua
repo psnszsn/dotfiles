@@ -30,7 +30,7 @@ require('lazy').setup({
 	{ 'folke/which-key.nvim', opts = {} },
 	{ 'sindrets/diffview.nvim', opts = {} },
 	{
-		url = "https://codeberg.org/andyg/leap.nvim",
+		url = 'https://codeberg.org/andyg/leap.nvim',
 		config = function()
 			-- require('leap').create_default_mappings()
 			vim.keymap.set({ 'n', 'x', 'o' }, 's', '<Plug>(leap-forward)')

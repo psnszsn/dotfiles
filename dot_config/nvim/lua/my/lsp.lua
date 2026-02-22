@@ -4,6 +4,7 @@ vim.lsp.enable {
 	'pyright',
 	'superhtml',
 	'terraformls',
+	'ts_ls',
 	'zls',
 }
 

@@ -25,6 +25,7 @@ return {
 			jsonc = { 'denonerd' },
 			fish = { 'fish_indent' },
 			terraform = { 'terraform_fmt' },
+			nix = { 'nixfmt' },
 			-- zig = { "zigfmt" },
 		},
 		-- Set up format-on-save

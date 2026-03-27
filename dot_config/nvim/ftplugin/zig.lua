@@ -21,7 +21,7 @@ opt_local.commentstring = '// %s'
 --
 vim.keymap.set('n', '<leader>sl', function()
 	local result = vim.system({ 'zig', 'env' }, { text = true }):wait()
-	local std_dir = result.stdout:match('%.std_dir = "([^"]+)"')
+	local std_dir = result.stdout:match '%.std_dir = "([^"]+)"'
 	require('mini.pick').builtin.files(nil, { source = { name = 'Zig std', cwd = std_dir } })
 end, { desc = 'Zig std' })
 

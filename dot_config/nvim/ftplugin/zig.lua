@@ -20,8 +20,10 @@ opt_local.commentstring = '// %s'
 -- opt_local.formatoptions-=t formatoptions+=croql
 --
 vim.keymap.set('n', '<leader>sl', function()
-	require('telescope.builtin').find_files { cwd = '/usr/lib/zig/std/' }
-end)
+	local result = vim.system({ 'zig', 'env' }, { text = true }):wait()
+	local std_dir = result.stdout:match('%.std_dir = "([^"]+)"')
+	require('mini.pick').builtin.files(nil, { source = { name = 'Zig std', cwd = std_dir } })
+end, { desc = 'Zig std' })
 
 vim.api.nvim_create_autocmd('BufWritePre', {
 	pattern = { '*.zig', '*.zon' },

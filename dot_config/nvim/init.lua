@@ -27,7 +27,20 @@ require('lazy').setup({
 
 	{ 'j-hui/fidget.nvim', opts = {} },
 
-	{ 'folke/which-key.nvim', opts = {} },
+	{
+		'folke/which-key.nvim',
+		opts = {
+			spec = {
+				{ '<leader>s', group = 'Search' },
+				{ '<leader>f', group = 'Find' },
+				{ '<leader>h', group = 'Git hunk' },
+				{ '<leader>t', group = 'Toggle/Terminal' },
+				{ '<leader>d', group = 'Document' },
+				{ '<leader>p', group = 'Paste' },
+				{ '<leader>w', group = 'Write' },
+			},
+		},
+	},
 	{ 'sindrets/diffview.nvim', opts = {} },
 	{
 		url = 'https://codeberg.org/andyg/leap.nvim',

@@ -1,6 +1,7 @@
 vim.lsp.enable {
 	'clangd',
 	'luals',
+	'nixd',
 	'pyright',
 	'superhtml',
 	'terraformls',

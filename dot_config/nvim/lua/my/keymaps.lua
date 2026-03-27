@@ -30,10 +30,10 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 vim.keymap.set('n', 'e', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true, noremap = true })
 vim.keymap.set('n', 'n', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true, noremap = true })
 
-vim.keymap.set('', '<leader>c', '"+y')
-vim.keymap.set('', '<leader>ps', '"+p')
+vim.keymap.set('', '<leader>c', '"+y', { desc = 'Yank to clipboard' })
+vim.keymap.set('', '<leader>ps', '"+p', { desc = 'Paste from clipboard' })
 
-vim.keymap.set('x', '<leader>px', '"_dP')
+vim.keymap.set('x', '<leader>px', '"_dP', { desc = 'Paste over without yanking' })
 vim.keymap.set('n', '<leader>m', ':make<CR>')
 vim.keymap.set('n', '<leader>v', ':tabe $MYVIMRC<CR>')
 vim.keymap.set('n', '<leader>l', ':set list!<CR>')

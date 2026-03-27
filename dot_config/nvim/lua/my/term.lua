@@ -59,11 +59,11 @@ end
 
 vim.keymap.set('n', '<leader>tt', function()
 	toggle_terminal 'fish'
-end)
+end, { desc = 'Toggle terminal' })
 
 vim.keymap.set('n', '<leader>tc', function()
 	toggle_terminal 'claude'
-end)
+end, { desc = 'Toggle Claude' })
 
 vim.keymap.set('t', '<A-m>', function()
 	vim.cmd.wincmd 'h'

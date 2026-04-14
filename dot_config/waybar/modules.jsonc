@@ -10,6 +10,15 @@
     "separate-outputs": true
   },
 
+  "hyprland/workspaces": {
+    "on-click": "activate"
+  },
+
+  "hyprland/window": {
+    "format": "{}",
+    "separate-outputs": true
+  },
+
   "wireplumber": {
     "format": "vol:{volume}",
     "on-click": "pavucontrol",

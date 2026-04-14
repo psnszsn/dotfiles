@@ -12,11 +12,13 @@
   ],
 
   "modules-left": [
-    "niri/workspaces"
+    "niri/workspaces",
+    "hyprland/workspaces"
   ],
 
   "modules-center": [
-    "niri/window"
+    "niri/window",
+    "hyprland/window"
   ],
 
   "modules-right": [

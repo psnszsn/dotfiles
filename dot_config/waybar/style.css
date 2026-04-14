@@ -53,7 +53,8 @@ window#waybar.chromium {
   border-bottom: 3px solid #ffffff;
 }
 
-#workspaces button.focused {
+#workspaces button.focused,
+#workspaces button.active {
   background-color: #64727d;
   border-bottom: 3px solid #ffffff;
 }

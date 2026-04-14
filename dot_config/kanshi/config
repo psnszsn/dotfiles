@@ -72,5 +72,5 @@ profile f12t {
 }
 
 profile asus {
-	output "ASUSTek COMPUTER INC PG32UCDP T6LMQS118855" position 0,0 scale 1.3 mode 3840x2160@120.000
+	output "ASUSTek COMPUTER INC PG32UCDP T6LMQS118855" position 0,0 scale 1.333333 mode 3840x2160@120.000
 }

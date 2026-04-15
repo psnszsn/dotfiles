@@ -60,6 +60,9 @@ profile miniryz {
 	output "Dell Inc. DELL P2720DC 81WTK9B7042S" position 0,0
 	output "LG Electronics LG Ultra HD 0x0002AEAA" position 2560,0 scale 1.8
 }
+profile f12pure {
+	output "BOE NV122WUM-N42 Unknown" position 0,0 scale 1.2
+}
 
 profile f12 {
 	output "BOE NV122WUM-N42 Unknown" position 0,1440 scale 1.2
@@ -73,4 +76,9 @@ profile f12t {
 
 profile asus {
 	output "ASUSTek COMPUTER INC PG32UCDP T6LMQS118855" position 0,0 scale 1.333333 mode 3840x2160@120.000
+}
+
+profile f12_dell_u2518d_niri {
+	output "Dell Inc. DELL U2518D 3C4YP8C7786L" position 0,0 mode 2560x1440@59.951
+	output "BOE NV122WUM-N42 Unknown" position 363,1440 scale 1.2 mode 1920x1200@60.002
 }

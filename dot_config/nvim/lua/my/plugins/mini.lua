@@ -53,7 +53,6 @@ return {
 			-- vim.opt.background = 'light'
 			-- vim.cmd.colorscheme 'minicyan'
 
-			require('mini.pick').setup {}
 			require('mini.extra').setup {}
 
 			local minipick = require 'mini.pick'
@@ -61,6 +60,7 @@ return {
 
 			minipick.setup {
 				mappings = {
+					delete_left = '',
 					scroll_down = '<C-d>',
 					scroll_up = '<C-u>',
 				},

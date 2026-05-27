@@ -188,7 +188,7 @@ hl.bind(mainMod .. " + B", hl.dsp.focus({ window = "class:^firefox$" }))
 hl.bind(
 	mainMod .. " + G",
 	hl.dsp.exec_cmd(
-		[[hyprctl -j clients | jq -r '[.[] | select(.class=="com.mitchellh.ghostty" and .focusHistoryID > 0)] | sort_by(.focusHistoryID) | first | .address // empty' | xargs -r -I{} hyprctl dispatch focuswindow address:{}]]
+		[[hyprctl -j clients | jq -r '[.[] | select(.class=="com.mitchellh.ghostty" and .focusHistoryID > 0)] | sort_by(.focusHistoryID) | first | .address // empty' | xargs -r -I{} hyprctl dispatch 'hl.dsp.focus({ window = "address:{}" })']]
 	)
 )
 hl.bind(mainMod .. " + slash", hl.dsp.focus({ last = true }))

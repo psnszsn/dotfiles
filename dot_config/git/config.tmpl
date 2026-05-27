@@ -19,9 +19,13 @@
 	ui = true
 [core]
 	editor = nvim
+	excludesFile = ~/.config/git/ignore
 
 [pull]
 	ff = only
+
+[init]
+	defaultBranch = main
 
 {{- if eq .gitsign true }}
 [gpg]

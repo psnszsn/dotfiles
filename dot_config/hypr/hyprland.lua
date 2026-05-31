@@ -12,7 +12,13 @@ hl.monitor({
 
 local terminal = "ghostty"
 local fileManager = "dolphin"
-local menu = "fuzzel"
+local menu = "fuzzel --launch-prefix='uwsm app -- '"
+
+-- Launch apps in their own app.slice scope (via uwsm) instead of inheriting the
+-- compositor's cgroup. Keeps a CPU-heavy app from starving Hyprland.
+local function app(cmd)
+	return hl.dsp.exec_cmd("uwsm app -- " .. cmd)
+end
 
 -------------------------------
 ---- ENVIRONMENT VARIABLES ----
@@ -176,8 +182,8 @@ hl.device({
 
 local mainMod = "SUPER"
 
-hl.bind("SUPER + CTRL + ALT + SHIFT + T", hl.dsp.exec_cmd("/home/vlad/.local/bin/leadrgtk"))
-hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(terminal))
+hl.bind("SUPER + CTRL + ALT + SHIFT + T", app("/home/vlad/.local/bin/leadrgtk"))
+hl.bind(mainMod .. " + Return", app(terminal))
 hl.bind(mainMod .. " + Q", hl.dsp.window.close())
 hl.bind(mainMod .. " + SHIFT + Q", hl.dsp.exec_cmd("uwsm stop")) -- uwsm: don't use hl.dsp.exit()
 hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))

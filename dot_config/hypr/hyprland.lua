@@ -13,6 +13,7 @@ hl.monitor({
 local terminal = "ghostty"
 local fileManager = "dolphin"
 local menu = "fuzzel --launch-prefix='uwsm app -- '"
+local wlKbptr = "/home/vlad/.nix-profile/bin/wl-kbptr"
 
 -- Launch apps in their own app.slice scope (via uwsm) instead of inheriting the
 -- compositor's cgroup. Keeps a CPU-heavy app from starving Hyprland.
@@ -210,6 +211,10 @@ hl.bind(
 hl.bind(mainMod .. " + CTRL + Q", hl.dsp.exec_cmd("hyprlock"))
 hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ mode = "fullscreen", action = "toggle" }))
 hl.bind(mainMod .. " + SHIFT + F", hl.dsp.window.fullscreen({ mode = "maximized", action = "toggle" }))
+hl.bind(
+	mainMod .. " + K",
+	hl.dsp.exec_cmd(wlKbptr .. " -o modes=floating,click -o mode_floating.source=detect -o mode_click.button=left")
+)
 
 -- Move focus with mainMod + Colemak-DH (M=left, N=down, E=up, I=right)
 hl.bind(mainMod .. " + M", hl.dsp.focus({ direction = "l" }))

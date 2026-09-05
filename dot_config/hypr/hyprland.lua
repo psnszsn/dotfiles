@@ -1,10 +1,23 @@
--- See https://wiki.hypr.land/Configuring/Basics/Monitors/
-hl.monitor({
-	output = "",
-	mode = "preferred",
-	position = "auto",
-	scale = 1,
-})
+-- Load optional monitor settings when present.
+local configHome = os.getenv("XDG_CONFIG_HOME")
+if not configHome or configHome == "" then
+	configHome = os.getenv("HOME") .. "/.config"
+end
+local monitorConfig = configHome .. "/hypr/monitors.lua"
+local monitorFile, monitorError, monitorErrno = io.open(monitorConfig, "r")
+if monitorFile then
+	monitorFile:close()
+	dofile(monitorConfig)
+elseif monitorErrno == 2 then
+	hl.monitor({
+		output = "",
+		mode = "preferred",
+		position = "auto",
+		scale = 1,
+	})
+else
+	error(monitorError)
+end
 
 ------------------
 ---- PROGRAMS ----

@@ -1,22 +1,9 @@
--- Load optional monitor settings when present.
-local configHome = os.getenv("XDG_CONFIG_HOME")
-if not configHome or configHome == "" then
-	configHome = os.getenv("HOME") .. "/.config"
-end
-local monitorConfig = configHome .. "/hypr/monitors.lua"
-local monitorFile, monitorError, monitorErrno = io.open(monitorConfig, "r")
-if monitorFile then
-	monitorFile:close()
-	dofile(monitorConfig)
-elseif monitorErrno == 2 then
-	hl.monitor({
-		output = "",
-		mode = "preferred",
-		position = "auto",
-		scale = 1,
-	})
-else
-	error(monitorError)
+-- Optional machine-specific monitor setup. Without it Hyprland falls back to its
+-- own hardcoded default rule (preferred mode, auto position, auto scale).
+-- dofile, not require: require caches, so edits would not survive a reload.
+local monitors = package.searchpath("monitors", package.path)
+if monitors then
+	dofile(monitors)
 end
 
 ------------------

@@ -109,6 +109,11 @@ hl.animation({ leaf = "workspacesIn", enabled = true, speed = 1.21, bezier = "al
 hl.animation({ leaf = "workspacesOut", enabled = true, speed = 1.94, bezier = "almostLinear", style = "fade" })
 hl.animation({ leaf = "zoomFactor", enabled = true, speed = 7, bezier = "quick" })
 
+hl.layer_rule({
+	match = { namespace = "leadrgtk" },
+	no_anim = true,
+})
+
 -- Ref https://wiki.hypr.land/Configuring/Basics/Workspace-Rules/
 -- "Smart gaps" / "No gaps when only" — uncomment all if you wish to use that.
 -- hl.workspace_rule({ workspace = "w[tv1]", gaps_out = 0, gaps_in = 0 })
@@ -183,7 +188,7 @@ hl.device({
 
 local mainMod = "SUPER"
 
-hl.bind("SUPER + CTRL + ALT + SHIFT + T", app("/home/vlad/.local/bin/leadrgtk"))
+hl.bind("SUPER + CTRL + ALT + SHIFT + T", hl.dsp.exec_cmd("/home/vlad/.local/bin/leadrgtk"))
 hl.bind(mainMod .. " + Return", app(terminal))
 hl.bind(mainMod .. " + Q", hl.dsp.window.close())
 hl.bind(mainMod .. " + SHIFT + Q", hl.dsp.exec_cmd("uwsm stop")) -- uwsm: don't use hl.dsp.exit()

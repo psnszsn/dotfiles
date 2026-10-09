@@ -82,3 +82,12 @@ profile f12_dell_u2518d_niri {
 	output "Dell Inc. DELL U2518D 3C4YP8C7786L" position 0,0 mode 2560x1440@59.951
 	output "BOE NV122WUM-N42 Unknown" position 363,1440 scale 1.2 mode 1920x1200@60.002
 }
+
+profile f13_lg {
+	output "LG Electronics LG Ultra HD 0x0002AEAA" position 0,0 scale 2 mode 3840x2160@59.997
+	output eDP-1 position 291,1080 scale 2 mode 2880x1920@120.000
+}
+
+profile f13pure {
+	output eDP-1 position 0,0 scale 2 mode 2880x1920@120.000
+}

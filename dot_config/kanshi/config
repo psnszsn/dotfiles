@@ -91,3 +91,8 @@ profile f13_lg {
 profile f13pure {
 	output eDP-1 position 0,0 scale 2 mode 2880x1920@120.000
 }
+
+profile f13_asus {
+	output eDP-1 position 0,0 scale 2 mode 2880x1920@120.000
+	output "ASUSTek COMPUTER INC PG32UCDP T6LMQS118855" position 1440,0 scale 1.333333 mode 3840x2160@120.000
+}

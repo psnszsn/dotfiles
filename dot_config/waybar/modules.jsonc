@@ -21,6 +21,7 @@
 
   "wireplumber": {
     "format": "vol:{volume}",
+    "format-muted": "<s>vol:{volume}</s>",
     "on-click": "pavucontrol",
     "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
     "scroll-step": 1

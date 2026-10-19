@@ -58,7 +58,6 @@ layout {
      default-column-width {}
 }
 
-spawn-at-startup "kanshi"
 spawn-at-startup "gammastep" "-l" "51:4"
 
 

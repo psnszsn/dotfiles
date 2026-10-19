@@ -1,0 +1,35 @@
+-- See https://wiki.hypr.land/Configuring/Basics/Monitors/
+hl.monitor({
+	output = "HDMI-A-1",
+	mode = "3840x2160@120",
+	position = "0x0",
+	scale = 1.33,
+	bitdepth = 10,
+	cm = "hdr",
+	sdrbrightness = 1.2,
+	sdrsaturation = 1.0,
+})
+{{- if eq .chezmoi.hostname "moluska" }}
+
+-- Framework 13: externals sit at the origin and the laptop centres itself below
+-- whichever one is connected.
+local laptop = { output = "eDP-1", disabled = false, mode = "2880x1920@120", position = "auto-center-down", scale = 2 }
+hl.monitor(laptop)
+hl.monitor({ output = "desc:ASUSTek COMPUTER INC PG32UCDP", mode = "3840x2160@120", position = "0x0", scale = 1.333333 })
+hl.monitor({ output = "desc:LG Electronics LG Ultra HD 0x0002AEAA", mode = "3840x2160@60", position = "0x0", scale = 2 })
+
+-- Docked, logind ignores the lid, so disable eDP-1 to move its workspaces onto
+-- the external monitor. Undocked, leave it alone and let logind suspend.
+hl.bind("switch:on:Lid Switch", function()
+	for _, m in ipairs(hl.get_monitors()) do
+		if m.name ~= "eDP-1" then
+			hl.monitor({ output = "eDP-1", disabled = true })
+			return
+		end
+	end
+end, { locked = true })
+-- laptop carries disabled = false; without it the other fields leave eDP-1 off.
+hl.bind("switch:off:Lid Switch", function()
+	hl.monitor(laptop)
+end, { locked = true })
+{{- end }}

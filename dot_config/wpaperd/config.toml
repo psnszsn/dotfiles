@@ -1,0 +1,10 @@
+[default]
+path = "/home/vlad/documents/SYNC/wallpapers"
+mode = "center"
+duration = "24h"
+recursive = false
+
+# Matched by description like monitors.lua.tmpl, so it follows the monitor rather than the USB-C port.
+["re:PG32UCDP"]
+path = "/home/vlad/documents/SYNC/wallpapers/tiled"
+mode = "tile"

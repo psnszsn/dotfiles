@@ -424,6 +424,8 @@ ShellRoot {
     }
   }
 
+  Leadr {}
+
   Variants {
     model: Quickshell.screens
 

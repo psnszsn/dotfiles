@@ -12,7 +12,7 @@ end
 
 local terminal = "ghostty"
 local fileManager = "dolphin"
-local menu = "fuzzel --launch-prefix='uwsm app -- '"
+local menu = "qs ipc call leadr fuzzy"
 local wlKbptr = "/home/vlad/.nix-profile/bin/wl-kbptr"
 
 -- Launch apps in their own app.slice scope (via uwsm) instead of inheriting the
@@ -110,7 +110,7 @@ hl.animation({ leaf = "workspacesOut", enabled = true, speed = 1.94, bezier = "a
 hl.animation({ leaf = "zoomFactor", enabled = true, speed = 7, bezier = "quick" })
 
 hl.layer_rule({
-	match = { namespace = "leadrgtk" },
+	match = { namespace = "leadr" },
 	no_anim = true,
 })
 
@@ -188,7 +188,7 @@ hl.device({
 
 local mainMod = "SUPER"
 
-hl.bind("SUPER + CTRL + ALT + SHIFT + T", hl.dsp.exec_cmd("/home/vlad/.local/bin/leadrgtk"))
+hl.bind("SUPER + CTRL + ALT + SHIFT + T", hl.dsp.exec_cmd("qs ipc call leadr toggle"))
 hl.bind(mainMod .. " + Return", app(terminal))
 hl.bind(mainMod .. " + Q", hl.dsp.window.close())
 hl.bind(mainMod .. " + SHIFT + Q", hl.dsp.exec_cmd("uwsm stop")) -- uwsm: don't use hl.dsp.exit()

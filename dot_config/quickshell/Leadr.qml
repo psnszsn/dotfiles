@@ -116,10 +116,6 @@ Scope {
   property string pendingDispatch: ""
   // A shell command to run once the overlay has closed.
   property string pendingCommand: ""
-  // The cheatsheet stays centered. A search card centers when it opens, then the
-  // first key in it pins its top edge here so it grows and shrinks downward
-  // instead of re-centering on every resize.
-  property int cardTop: -1
 
   // Fuzzy search view, shown instead of the cheatsheet: { label, hint, items, learn,
   // picks, alphabetical, grid, back }, or `launcher` instead of `items` for the desktop
@@ -152,7 +148,6 @@ Scope {
     pendingCommand = "";
     closeFallback.stop();
     releaseFallback.stop();
-    cardTop = -1;
     open = true;
   }
 
@@ -161,11 +156,6 @@ Scope {
     open = false;
     // Stops `results` re-ranking for a hidden overlay; show() starts from the cheatsheet anyway.
     search = null;
-  }
-
-  // Called before anything that can resize the overlay, while it's still centered.
-  function pinTop() {
-    if (open && cardTop < 0) cardTop = overlay.centeredTop;
   }
 
   // Sticky levels close after their timeout with no keys, counted from entering them
@@ -202,7 +192,6 @@ Scope {
   // Runs before the search field sees the key; returns false to let the field edit
   // the query with it.
   function handleSearchKey(event) {
-    pinTop();
     const ctrl = event.modifiers & Qt.ControlModifier;
     const nested = search.back !== undefined;
     // In a grid, Up/Down move by a row and Left/Right by a cell.
@@ -220,7 +209,6 @@ Scope {
       } else {
         search = null;
         pressed = "";
-        cardTop = -1;
       }
     } else if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
       // Action lists learn the query typed in their parent; learning views their own.
@@ -254,7 +242,6 @@ Scope {
 
   function setQuery(text) {
     if (text === query) return;
-    pinTop();
     query = text;
     selected = 0;
   }
@@ -291,8 +278,6 @@ Scope {
   }
 
   function openSearch(view) {
-    // A search opened from the cheatsheet centers on its own size first.
-    if (!search) cardTop = -1;
     search = view;
     query = "";
     selected = 0;
@@ -716,18 +701,13 @@ Scope {
   }
 
   PanelWindow {
-    id: overlay
-    readonly property int centeredTop: Math.max(0, Math.round(((screen?.height ?? 0) - implicitHeight) / 2))
     visible: leadr.open
     color: "transparent"
     exclusionMode: ExclusionMode.Ignore
     WlrLayershell.layer: WlrLayer.Overlay
     WlrLayershell.namespace: "leadr"
     WlrLayershell.keyboardFocus: leadr.released ? WlrKeyboardFocus.None : WlrKeyboardFocus.Exclusive
-    // Anchored to the top only, so it stays centered horizontally.
-    anchors.top: true
-    margins.top: leadr.cardTop < 0 ? centeredTop
-      : Math.max(0, Math.min(leadr.cardTop, (screen?.height ?? 0) - implicitHeight))
+    // Unanchored and sized to the card, so Hyprland keeps it centered as it resizes.
     implicitWidth: content.implicitWidth
     implicitHeight: content.implicitHeight
 

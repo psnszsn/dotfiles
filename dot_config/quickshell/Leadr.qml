@@ -2,6 +2,7 @@
 // run a Hyprland dispatcher. Toggle with `qs ipc call leadr toggle`.
 import QtQuick
 import QtQuick.Layouts
+import QtQuick.LocalStorage
 import Quickshell
 import Quickshell.Hyprland
 import Quickshell.Io
@@ -585,40 +586,78 @@ Scope {
   }
 
   // Launch counts per item id, and the last choice per exact query: the launcher's in
-  // `selected`, the emoji grid's in `emojiSelected`.
-  property var history: ({ counts: {}, selected: {}, emojiSelected: {} })
-  // Saving before the file has loaded would overwrite it with just this session.
-  property bool historyLoaded: false
+  // `selected`, the emoji grid's in `emojiSelected`. Kept in SQLite (Qt's LocalStorage):
+  // loaded once at startup, then picks update their rows in place.
+  function emptyHistory() { return { counts: {}, selected: {}, emojiSelected: {} } }
+  property var history: emptyHistory()
+  property var db: null
+  // Picks not yet written. They're saved together a moment later, so the SQLite
+  // commit never delays closing the overlay or launching what was picked.
+  property var unsaved: []
 
   function remember(id, learnQuery, picks = "selected") {
     history.counts[id] = (history.counts[id] ?? 0) + 1;
     const folded = learnQuery.toLowerCase();
     if (folded !== "") history[picks][folded] = id;
-    if (historyLoaded) historyFile.setText(JSON.stringify(history));
+    if (!db) return;
+    unsaved.push({ id, picks, query: folded });
+    saveTimer.restart();
   }
 
-  FileView {
-    id: historyFile
-    path: Quickshell.statePath("leadr-history.json")
-    // Missing until the first launch.
-    printErrors: false
-    onLoaded: {
-      try {
-        const parsed = JSON.parse(text());
-        leadr.history = {
-          counts: parsed.counts ?? {},
-          selected: parsed.selected ?? {},
-          emojiSelected: parsed.emojiSelected ?? {},
-        };
-      } catch (e) {
-        console.warn("leadr: ignoring unreadable history:", e);
-      }
-      leadr.historyLoaded = true;
-    }
-    onLoadFailed: error => {
-      if (error === FileViewError.FileNotFound) leadr.historyLoaded = true;
+  function saveHistory() {
+    if (!db || unsaved.length === 0) return;
+    const rows = unsaved;
+    unsaved = [];
+    try {
+      db.transaction(tx => rows.forEach(row => {
+        tx.executeSql("INSERT INTO counts VALUES (?, 1) ON CONFLICT (id) DO UPDATE SET n = n + 1", [row.id]);
+        if (row.query !== "") {
+          tx.executeSql("INSERT OR REPLACE INTO picks VALUES (?, ?, ?)", [row.picks, row.query, row.id]);
+        }
+      }));
+    } catch (e) {
+      // Retrying would fail the same way on every pick; this session just stops saving.
+      console.warn("leadr: couldn't save history, not saving the rest of this session:", e);
+      db = null;
     }
   }
+
+  Timer { id: saveTimer; interval: 1000; onTriggered: leadr.saveHistory() }
+
+  Component.onCompleted: {
+    try {
+      // LocalStorage keeps every database in one engine-wide folder, so the name carries
+      // this config's state dir to keep other Quickshell configs' picks out of it.
+      const database = LocalStorage.openDatabaseSync(
+        `leadr ${Quickshell.statePath("")}`, "", "leadr launch history", 1000000);
+      // Schema changes go through changeVersion from the stored version, e.g. "1" → "2".
+      if (database.version === "") {
+        database.changeVersion("", "1", tx => {
+          tx.executeSql("CREATE TABLE counts (id TEXT PRIMARY KEY, n INTEGER NOT NULL)");
+          tx.executeSql("CREATE TABLE picks"
+            + " (view TEXT NOT NULL, query TEXT NOT NULL, id TEXT NOT NULL, PRIMARY KEY (view, query))");
+        });
+      }
+      const loaded = emptyHistory();
+      database.readTransaction(tx => {
+        const counts = tx.executeSql("SELECT id, n FROM counts").rows;
+        for (let i = 0; i < counts.length; i++) loaded.counts[counts.item(i).id] = counts.item(i).n;
+        const picks = tx.executeSql("SELECT view, query, id FROM picks").rows;
+        for (let i = 0; i < picks.length; i++) {
+          const row = picks.item(i);
+          if (!loaded[row.view]) loaded[row.view] = {};
+          loaded[row.view][row.query] = row.id;
+        }
+      });
+      history = loaded;
+      db = database;
+    } catch (e) {
+      console.warn("leadr: history disabled, couldn't open its database:", e);
+    }
+  }
+
+  // A config reload or shell exit can land inside the save delay.
+  Component.onDestruction: saveHistory()
 
   function runPending() {
     closeFallback.stop();

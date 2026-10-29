@@ -296,6 +296,19 @@ ShellRoot {
       }
     }
 
+    // A bar remap (RemappingPanelWindow) closes the popups anchored to it; reopen
+    // the ones that were open.
+    property bool reopen: false
+    Connections {
+      target: popup.anchorItem.QsWindow.window
+      function onAboutToRemap() { popup.reopen = popup.visible; }
+      function onRemappingChanged() {
+        if (popup.anchorItem.QsWindow.window.remapping || !popup.reopen) return;
+        popup.reopen = false;
+        popup.visible = true;
+      }
+    }
+
     Rectangle {
       anchors.fill: parent
       color: "transparent"
@@ -426,10 +439,26 @@ ShellRoot {
 
   Leadr {}
 
+  // The idle inhibitor gets a surface of its own (1px, transparent, click-through)
+  // rather than riding on a bar, so a bar remap doesn't lift it for a moment.
+  PanelWindow {
+    id: inhibitorSurface
+    visible: root.inhibitIdle
+    anchors { top: true; left: true }
+    implicitWidth: 1
+    implicitHeight: 1
+    color: "transparent"
+    exclusionMode: ExclusionMode.Ignore
+    mask: Region {}
+    WlrLayershell.namespace: "idle-inhibitor"
+
+    IdleInhibitor { window: inhibitorSurface; enabled: true }
+  }
+
   Variants {
     model: Quickshell.screens
 
-    PanelWindow {
+    RemappingPanelWindow {
       id: bar
       required property ShellScreen modelData
       screen: modelData
@@ -437,8 +466,6 @@ ShellRoot {
       anchors { top: true; left: true; right: true }
       implicitHeight: 20
       color: root.bg
-
-      IdleInhibitor { window: bar; enabled: root.inhibitIdle }
 
       Rectangle {
         anchors { left: parent.left; right: parent.right; bottom: parent.bottom }

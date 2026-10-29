@@ -211,12 +211,6 @@ ShellRoot {
     return ca.length - cb.length;
   }
 
-  readonly property PwNode sink: Pipewire.defaultAudioSink
-  readonly property PwNode source: Pipewire.defaultAudioSource
-  readonly property var sinks: Pipewire.nodes.values.filter(n => n.isSink && !n.isStream && n.audio)
-  readonly property var sources: Pipewire.nodes.values.filter(n => !n.isSink && !n.isStream && n.audio)
-  PwObjectTracker { objects: [root.sink, root.source] }
-
   SystemClock { id: clock; precision: SystemClock.Minutes }
 
   function formatHours(h) {
@@ -423,12 +417,12 @@ ShellRoot {
     BarButton {
       text: volumeRow.node?.audio?.muted ? "unmute" : "mute"
       Layout.preferredWidth: 60
-      onClicked: if (volumeRow.node?.audio) volumeRow.node.audio.muted = !volumeRow.node.audio.muted
+      onClicked: Audio.toggleMute(volumeRow.node)
     }
     BarSlider {
       value: volumeRow.node?.audio?.volume ?? 0
       opacity: volumeRow.node?.audio?.muted ? 0.4 : 1
-      onMoved: v => { if (volumeRow.node?.audio) volumeRow.node.audio.volume = v; }
+      onMoved: v => Audio.setVolume(volumeRow.node, v)
     }
     BarText {
       text: `${Math.round((volumeRow.node?.audio?.volume ?? 0) * 100)}`
@@ -676,44 +670,41 @@ ShellRoot {
 
           Chip {
             id: volumeChip
-            readonly property real volume: root.sink?.audio?.volume ?? 0
+            readonly property real volume: Audio.sink?.audio?.volume ?? 0
             text: `vol:${Math.round(volume * 100)}`
-            strikeout: root.sink?.audio?.muted ?? false
+            strikeout: Audio.sink?.audio?.muted ?? false
             onClicked: button => {
               if (button === Qt.LeftButton) volumePopup.toggle();
-              else if (root.sink?.audio) root.sink.audio.muted = !root.sink.audio.muted;
+              else Audio.toggleMute(Audio.sink);
             }
-            onScrolled: delta => {
-              if (root.sink?.audio)
-                root.sink.audio.volume = Math.max(0, Math.min(1, volume + (delta > 0 ? 0.01 : -0.01)));
-            }
+            onScrolled: delta => Audio.nudgeVolume(Audio.sink, delta > 0 ? 0.01 : -0.01)
 
             BarPopup {
               id: volumePopup
               anchorItem: volumeChip
 
               BarText { text: "output"; opacity: 0.6 }
-              VolumeRow { node: root.sink }
+              VolumeRow { node: Audio.sink }
               Repeater {
-                model: root.sinks
+                model: Audio.sinks
                 delegate: BarButton {
                   required property PwNode modelData
                   Layout.fillWidth: true
                   text: modelData.description || modelData.nickname || modelData.name
-                  checked: modelData === root.sink
+                  checked: modelData === Audio.sink
                   onClicked: Pipewire.preferredDefaultAudioSink = modelData
                 }
               }
 
               BarText { text: "input"; opacity: 0.6; Layout.topMargin: 6 }
-              VolumeRow { node: root.source }
+              VolumeRow { node: Audio.source }
               Repeater {
-                model: root.sources
+                model: Audio.sources
                 delegate: BarButton {
                   required property PwNode modelData
                   Layout.fillWidth: true
                   text: modelData.description || modelData.nickname || modelData.name
-                  checked: modelData === root.source
+                  checked: modelData === Audio.source
                   onClicked: Pipewire.preferredDefaultAudioSource = modelData
                 }
               }

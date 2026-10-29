@@ -23,10 +23,14 @@ Scope {
   //   sticky: nested bindings that stay open, closing after `timeout` ms idle
   //   appClass: focus that app's window, or pick one with a fuzzy search if it has several
   //   launcher: fuzzy search all desktop apps
+  //   call: a function, run in place (for sticky levels)
   // `takesFocus` marks dispatchers that focus a window: Hyprland refuses those while
   // an exclusive layer surface holds the keyboard, so sticky mode lets go of it first.
+  // A sticky binding's `status` gives the text for the pressed-key box while it's open,
+  // and its `meter` a 0–1 level to draw as a bar there.
   function focus(args) { return { dispatch: `hl.dsp.focus(${args})`, takesFocus: true } }
   function dsp(cmd) { return { dispatch: cmd } }
+  function call(fn) { return { call: fn } }
   function app(cls) { return { appClass: cls } }
   function bind(key, label, action) { return Object.assign({ key, label }, action) }
   function directions(label, make) {
@@ -77,6 +81,40 @@ Scope {
     ]),
   ]
 
+  // Sticky levels only the Fuzzy picker lists: picking one enters it as if its key
+  // was pressed.
+  function mode(label, glyph, action) { return Object.assign({ key: "", label, glyph }, action) }
+
+  readonly property var modes: [
+    mode("Volume", "🔊", {
+      timeout: 3000,
+      status: volumeStatus,
+      meter: () => Math.min(Audio.sink?.audio?.volume ?? 0, 1),
+      // m/i step like Left/Right on the direction keys, n/e like Down/Up.
+      sticky: [
+        bind("m", "Down", call(() => nudgeVolume(-0.05))),
+        bind("n", "Down", call(() => nudgeVolume(-0.05))),
+        bind("e", "Up", call(() => nudgeVolume(0.05))),
+        bind("i", "Up", call(() => nudgeVolume(0.05))),
+        bind("x", "Mute", call(toggleMute)),
+      ],
+    }),
+  ]
+
+  // Stepping the volume unmutes, so the box shows the level you're setting.
+  function nudgeVolume(by) {
+    Audio.nudgeVolume(Audio.sink, by);
+    if (Audio.sink?.audio) Audio.sink.audio.muted = false;
+  }
+
+  function toggleMute() { Audio.toggleMute(Audio.sink) }
+
+  function volumeStatus() {
+    const audio = Audio.sink?.audio;
+    if (!audio) return "—";
+    return audio.muted ? "mute" : `${Math.round(audio.volume * 100)}%`;
+  }
+
   // Emoji opens from the Fuzzy picker into its own grid. emojis.json is Omarchy's list
   // (shell/plugins/emojis, MIT): [{ e: emoji, k: name and keywords }].
   property var emojis: []
@@ -106,11 +144,15 @@ Scope {
   }
 
   property bool open: false
-  // Each level is { bindings, timeout }, where timeout is 0 unless the level is sticky.
+  // Each level is { bindings, timeout, status, meter, back }, where timeout is 0 unless
+  // the level is sticky, status and meter are its binding's (if any), and back is the search state
+  // to return to for a level entered from the Fuzzy picker.
   property var stack: [{ bindings, timeout: 0 }]
   readonly property var current: stack[stack.length - 1].bindings
   property string pressed: ""
   readonly property int stickyTimeout: stack[stack.length - 1].timeout
+  readonly property var status: stack[stack.length - 1].status
+  readonly property var meter: stack[stack.length - 1].meter
   // Set while a sticky focus dispatcher runs without the keyboard.
   property bool released: false
   property string pendingDispatch: ""
@@ -133,8 +175,9 @@ Scope {
   // also keeps the launcher current as apps are installed or removed.
   readonly property var apps: DesktopEntries.applications.values.filter(e => !e.noDisplay).map(appItem)
   readonly property var subjectItems: subjects.map(subjectItem)
+  readonly property var modeItems: modes.map(modeItem)
 
-  function itemsOf(view) { return view.launcher ? subjectItems.concat([emojiEntry], apps) : view.items }
+  function itemsOf(view) { return view.launcher ? subjectItems.concat(modeItems, [emojiEntry], apps) : view.items }
 
   function show() {
     // Keeps focusHistoryID fresh for ordering the window picker.
@@ -152,7 +195,7 @@ Scope {
   }
 
   function hide() {
-    stickyTimer.stop();
+    stopStickyTimer();
     open = false;
     // Stops `results` re-ranking for a hidden overlay; show() starts from the cheatsheet anyway.
     search = null;
@@ -161,8 +204,13 @@ Scope {
   // Sticky levels close after their timeout with no keys, counted from entering them
   // or from their last dispatch.
   function restartStickyTimer() {
-    if (stickyTimeout !== 0) stickyTimer.restart();
-    else stickyTimer.stop();
+    if (stickyTimeout === 0) return stopStickyTimer();
+    stickyCountdown.restart();
+  }
+
+  function stopStickyTimer() {
+    stickyCountdown.stop();
+    stickyLeft = 1;
   }
 
   function handleKey(event) {
@@ -180,8 +228,10 @@ Scope {
       hide();
     } else if (event.key === Qt.Key_Backspace) {
       if (stack.length === 1) return hide();
+      const back = stack[stack.length - 1].back;
       stack = stack.slice(0, -1);
       pressed = "";
+      if (back) restore(back);
       restartStickyTimer();
     } else {
       const binding = current.find(b => b.key === event.text);
@@ -246,11 +296,14 @@ Scope {
     selected = 0;
   }
 
-  function activate(binding) {
+  function activate(binding, back) {
     pressed = binding.key;
     const nested = binding.group ?? binding.sticky;
     if (nested) {
-      stack = stack.concat([{ bindings: nested, timeout: binding.sticky ? binding.timeout : 0 }]);
+      stack = stack.concat([{ bindings: nested, timeout: binding.sticky ? binding.timeout : 0, status: binding.status, meter: binding.meter, back }]);
+      restartStickyTimer();
+    } else if (binding.call) {
+      binding.call();
       restartStickyTimer();
     } else if (binding.launcher) {
       openSearch({
@@ -268,12 +321,13 @@ Scope {
       dispatchAfterClose(binding.dispatch);
     } else if (binding.takesFocus) {
       pendingDispatch = binding.dispatch;
-      stickyTimer.stop();
+      // Held where it is until the dispatch is done and restarts it.
+      stickyCountdown.pause();
       released = true;
       releaseFallback.restart();
     } else {
       Hyprland.dispatch(binding.dispatch);
-      stickyTimer.restart();
+      restartStickyTimer();
     }
   }
 
@@ -357,11 +411,12 @@ Scope {
     });
   }
 
-  function goBack() {
-    const back = search.back;
-    search = back.search;
-    query = back.query;
-    selected = back.selected;
+  function goBack() { restore(search.back) }
+
+  function restore(state) {
+    search = state.search;
+    query = state.query;
+    selected = state.selected;
   }
 
   function appItem(entry) {
@@ -415,6 +470,24 @@ Scope {
     };
     item.run = () => showActions(item);
     return item;
+  }
+
+  function modeItem(def) {
+    const id = `mode:${def.label}`;
+    const keys = def.sticky.map(b => `${b.key} ${b.label}`).join(" · ");
+    return {
+      id,
+      title: def.label,
+      fields: [def.label, keys],
+      details: [keys, keys],
+      glyph: def.glyph,
+      run: learnQuery => {
+        remember(id, learnQuery);
+        const back = backState();
+        search = null;
+        activate(def, back);
+      },
+    };
   }
 
   function windowItem(toplevel) {
@@ -677,10 +750,17 @@ Scope {
     }
   }
 
-  Timer {
-    id: stickyTimer
-    interval: leadr.stickyTimeout
-    onTriggered: leadr.hide()
+  // The share of the sticky timeout left, drawn as the bar under the pressed key.
+  // Running out closes the overlay; `finished` isn't emitted on stop() or restart().
+  property real stickyLeft: 1
+  NumberAnimation {
+    id: stickyCountdown
+    target: leadr
+    property: "stickyLeft"
+    from: 1
+    to: 0
+    duration: leadr.stickyTimeout
+    onFinished: leadr.hide()
   }
 
   // Fallbacks in case the expected Wayland/IPC event never arrives.
@@ -735,11 +815,38 @@ Scope {
 
         Text {
           anchors.centerIn: parent
-          text: leadr.pressed || "●"
+          // Makes room for the meter below.
+          anchors.verticalCenterOffset: leadr.meter ? -12 : 0
+          text: leadr.status?.() || leadr.pressed || "●"
           color: leadr.fg
           font.family: leadr.font
           font.pixelSize: 48
           font.bold: true
+        }
+
+        Rectangle {
+          visible: !!leadr.meter
+          anchors { left: parent.left; right: parent.right; bottom: parent.bottom; margins: 24; bottomMargin: 44 }
+          implicitHeight: 8
+          radius: 4
+          color: leadr.accent
+
+          Rectangle {
+            implicitWidth: parent.width * (leadr.meter?.() ?? 0)
+            implicitHeight: parent.height
+            radius: parent.radius
+            color: leadr.fg
+          }
+        }
+
+        Rectangle {
+          visible: leadr.stickyTimeout !== 0
+          anchors { left: parent.left; bottom: parent.bottom; margins: 24 }
+          implicitWidth: (parent.width - 2 * anchors.margins) * leadr.stickyLeft
+          implicitHeight: 4
+          radius: 2
+          color: leadr.fg
+          opacity: 0.6
         }
       }
 

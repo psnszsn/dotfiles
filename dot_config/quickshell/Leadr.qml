@@ -4,6 +4,7 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.LocalStorage
 import Quickshell
+import Quickshell.Bluetooth
 import Quickshell.Hyprland
 import Quickshell.Io
 import Quickshell.Wayland
@@ -143,6 +144,96 @@ Scope {
     }
   }
 
+  // Bluetooth opens from the Fuzzy picker into a list of devices: Enter connects or
+  // disconnects one, pairing it first if it's new (see Bluez.toggle). The rows follow
+  // each device's state as BlueZ reports it, and Bluez scans while they show.
+  readonly property var bluetoothEntry: ({
+    id: "bluetooth",
+    title: "Bluetooth",
+    fields: ["Bluetooth", "connect pair headphones"],
+    details: ["Connect a device", "Connect a device"],
+    glyph: "🎧",
+    run: learnQuery => {
+      remember("bluetooth", learnQuery);
+      openBluetooth();
+    },
+  })
+
+  // Paired devices first, then the ones discovery found, each by name, so connecting
+  // one doesn't move the selection. Devices BlueZ knows only by address are left out.
+  readonly property var bluetoothItems: {
+    if (!search?.bluetooth || !Bluez.adapter) return [];
+    if (!Bluez.adapter.enabled) return [bluetoothPowerItem()];
+    const known = d => d.paired || d.trusted;
+    return Bluetooth.devices.values
+      .filter(d => known(d) || d.deviceName !== "")
+      .sort((a, b) => (known(b) - known(a)) || a.name.localeCompare(b.name))
+      .map(bluetoothItem)
+      .concat([bluetoothPowerItem()]);
+  }
+
+  function openBluetooth() {
+    openSearch({
+      label: "Bluetooth",
+      hint: "↑↓ Select · Enter → Connect/Disconnect · ^X Forget · Backspace → Back · Esc → Clear/Back",
+      bluetooth: true,
+      back: backState(),
+    });
+  }
+
+  readonly property var deviceGlyphs: ({
+    "audio": "🎧", "input-mouse": "🖱️", "input-keyboard": "⌨️", "input-gaming": "🎮", "phone": "📱",
+  })
+
+  function bluetoothItem(device) {
+    const address = device.address;
+    const icon = Quickshell.iconPath(device.icon, true);
+    const kind = Object.keys(deviceGlyphs).find(k => device.icon.startsWith(k));
+    return {
+      id: `bluetooth:${address}`,
+      title: device.name,
+      fields: [device.name],
+      details: [bluetoothStatus(device)],
+      icon,
+      glyph: icon ? "" : deviceGlyphs[kind] ?? "🔵",
+      // Looked up again when picked: BlueZ can drop a device while the list shows it.
+      run: () => Bluez.toggle(Bluez.device(address)),
+      // Only paired devices have anything to forget; a new one would just turn up again.
+      forget: device.paired || device.trusted ? () => Bluez.forget(Bluez.device(address)) : undefined,
+    };
+  }
+
+  function bluetoothStatus(device) {
+    if (device.pairing) return "Pairing…";
+    switch (device.state) {
+    case BluetoothDeviceState.Connecting: return "Connecting…";
+    case BluetoothDeviceState.Disconnecting: return "Disconnecting…";
+    case BluetoothDeviceState.Connected:
+      return device.batteryAvailable ? `Connected · ${Math.round(device.battery * 100)}%` : "Connected";
+    }
+    return device.paired || device.trusted ? "Paired" : "New · Enter pairs";
+  }
+
+  function bluetoothPowerItem() {
+    const on = Bluez.adapter.enabled;
+    const blocked = Bluez.adapter.state === BluetoothAdapterState.Blocked;
+    const title = on ? "Turn Bluetooth off" : "Turn Bluetooth on";
+    return {
+      id: "bluetooth:power",
+      title,
+      fields: [title],
+      details: [blocked ? "Blocked by rfkill" : on ? "" : "Bluetooth is off"],
+      glyph: "🔌",
+      run: () => Bluez.togglePower(),
+    };
+  }
+
+  Binding {
+    target: Bluez
+    property: "scanning"
+    value: leadr.open && !!leadr.search?.bluetooth
+  }
+
   property bool open: false
   // Each level is { bindings, timeout, status, meter, back }, where timeout is 0 unless
   // the level is sticky, status and meter are its binding's (if any), and back is the search state
@@ -161,12 +252,13 @@ Scope {
 
   // Fuzzy search view, shown instead of the cheatsheet: { label, hint, items, learn,
   // picks, alphabetical, grid, back }, or `launcher` instead of `items` for the desktop
-  // apps. `picks` names the history map of last choices per query ("selected" by default).
+  // apps, or `bluetooth` for the live device list. `picks` names the history map of last choices per query ("selected" by default).
   // `grid` lays the results out as cells (the emoji picker) instead of rows.
   // `back` is the parent search's state for a view opened from it (an actions list,
   // or a window picker), so going back restores its query and selection.
-  // An item is { id, title, fields, details, icon or glyph, run(learnQuery), actions? }; `details`
-  // gives the second line to show when the query matched the same-index field.
+  // An item is { id, title, fields, details, icon or glyph, run(learnQuery), actions?, forget? }; `details`
+  // gives the second line to show when the query matched the same-index field, and
+  // `forget` runs on Ctrl+X.
   property var search: null
   property string query: ""
   property int selected: 0
@@ -177,7 +269,10 @@ Scope {
   readonly property var subjectItems: subjects.map(subjectItem)
   readonly property var modeItems: modes.map(modeItem)
 
-  function itemsOf(view) { return view.launcher ? subjectItems.concat(modeItems, [emojiEntry], apps) : view.items }
+  function itemsOf(view) {
+    if (view.launcher) return subjectItems.concat(modeItems, [emojiEntry, bluetoothEntry], apps);
+    return view.bluetooth ? bluetoothItems : view.items;
+  }
 
   function show() {
     // Keeps focusHistoryID fresh for ordering the window picker.
@@ -276,6 +371,8 @@ Scope {
       moveSelection(search.grid ? gridColumns * 3 : halfPage);
     } else if (ctrl && event.key === Qt.Key_U) {
       moveSelection(search.grid ? -gridColumns * 3 : -halfPage);
+    } else if (ctrl && event.key === Qt.Key_X && results[selected]?.item.forget) {
+      results[selected].item.forget();
     } else {
       return false;
     }

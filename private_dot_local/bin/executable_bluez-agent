@@ -1,0 +1,71 @@
+#!/usr/bin/env nix-shell
+#!nix-shell -i python3 -p "python3.withPackages (p: [ p.dbus-fast ])"
+"""A BlueZ pairing agent, registered as the default one over D-Bus.
+
+It claims no input or display, so BlueZ pairs "just works" style. Paired devices may
+use their services; anything that needs someone to confirm or type a passkey is
+refused, since nobody is there to ask. `bluez-agent 0000` also answers legacy devices
+that ask for a PIN. Runs as your user: BlueZ's D-Bus policy lets any user register.
+
+Methods left out (RequestPasskey, RequestConfirmation, RequestAuthorization, ...)
+answer UnknownMethod, which BlueZ takes as a refusal.
+"""
+import asyncio
+import sys
+
+from dbus_fast import BusType, DBusError
+from dbus_fast.aio import MessageBus
+from dbus_fast.service import ServiceInterface, method
+
+PATH = "/org/bluez/agent/bluez_agent"
+PIN = sys.argv[1] if len(sys.argv) > 1 else None
+
+
+def rejected(reason):
+    return DBusError("org.bluez.Error.Rejected", reason)
+
+
+class Agent(ServiceInterface):
+    def __init__(self, bus):
+        super().__init__("org.bluez.Agent1")
+        self.bus = bus
+
+    async def paired(self, device):
+        node = await self.bus.introspect("org.bluez", device)
+        props = self.bus.get_proxy_object("org.bluez", device, node).get_interface("org.freedesktop.DBus.Properties")
+        return (await props.call_get("org.bluez.Device1", "Paired")).value
+
+    # A device that isn't trusted asks before each service it connects.
+    @method()
+    async def AuthorizeService(self, device: "o", uuid: "s"):
+        if not await self.paired(device):
+            raise rejected("Not paired")
+
+    @method()
+    def RequestPinCode(self, device: "o") -> "s":
+        if PIN is None:
+            raise rejected("No PIN set")
+        return PIN
+
+    @method()
+    def Cancel(self):
+        pass
+
+    @method()
+    def Release(self):
+        pass
+
+
+async def main():
+    bus = await MessageBus(bus_type=BusType.SYSTEM).connect()
+    bus.export(PATH, Agent(bus))
+    node = await bus.introspect("org.bluez", "/org/bluez")
+    manager = bus.get_proxy_object("org.bluez", "/org/bluez", node).get_interface("org.bluez.AgentManager1")
+    await manager.call_register_agent(PATH, "NoInputNoOutput")
+    await manager.call_request_default_agent(PATH)
+    print("bluez-agent: registered as the default agent", flush=True)
+    # BlueZ drops the agent when this connection closes.
+    await bus.wait_for_disconnect()
+
+
+asyncio.run(main())

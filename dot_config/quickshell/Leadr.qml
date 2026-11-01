@@ -197,7 +197,9 @@ Scope {
       icon,
       glyph: icon ? "" : deviceGlyphs[kind] ?? "🔵",
       // Looked up again when picked: BlueZ can drop a device while the list shows it.
-      run: () => Bluez.toggle(Bluez.device(address)),
+      // Pairing closes the overlay, which holds the keyboard, so a pinentry dialog
+      // asking for a code can take it.
+      run: () => { if (Bluez.toggle(Bluez.device(address))) hide(); },
       // Only paired devices have anything to forget; a new one would just turn up again.
       forget: device.paired || device.trusted ? () => Bluez.forget(Bluez.device(address)) : undefined,
     };

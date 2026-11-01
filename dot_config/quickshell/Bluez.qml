@@ -1,8 +1,8 @@
 // Connecting, pairing and scanning for Bluetooth devices, shared by leadr and anything
 // else that lists them. The calls go to BlueZ over D-Bus and return at once; callers
 // follow each device's state as BlueZ reports it. Pairing goes through the
-// bluez-agent user service, which has no input or display: devices that just work
-// pair fine, ones that ask for a passkey or confirmation can't.
+// bluez-agent user service, which asks for any PIN, passkey or confirmation in a
+// pinentry dialog.
 pragma Singleton
 import QtQuick
 import Quickshell
@@ -21,7 +21,8 @@ Singleton {
   }
 
   // Disconnects a connected device, cancels a pairing, and otherwise connects,
-  // pairing first if the device is new.
+  // pairing first if the device is new. Returns true when it starts pairing, which
+  // may open a pinentry dialog for a PIN or code.
   function toggle(device) {
     if (!device) return;
     if (device.pairing) return device.cancelPair();
@@ -33,6 +34,7 @@ Singleton {
     // count it finished early.
     device.pair();
     pairing = pairing.concat([device.address]);
+    return true;
   }
 
   // Trusted devices reconnect by themselves and aren't asked to authorize again, like

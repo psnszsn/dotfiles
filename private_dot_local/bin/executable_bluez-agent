@@ -1,55 +1,171 @@
 #!/usr/bin/env nix-shell
-#!nix-shell -i python3 -p "python3.withPackages (p: [ p.dbus-fast ])"
+#!nix-shell -i python3 -p "python3.withPackages (p: [ p.dbus-fast ])" pinentry-qt
 """A BlueZ pairing agent, registered as the default one over D-Bus.
 
-It claims no input or display, so BlueZ pairs "just works" style. Paired devices may
-use their services; anything that needs someone to confirm or type a passkey is
-refused, since nobody is there to ask. `bluez-agent 0000` also answers legacy devices
-that ask for a PIN. Runs as your user: BlueZ's D-Bus policy lets any user register.
-
-Methods left out (RequestPasskey, RequestConfirmation, RequestAuthorization, ...)
-answer UnknownMethod, which BlueZ takes as a refusal.
+It claims a keyboard and display, so devices that have one too get a passkey or
+a code to compare: pinentry asks for PINs, passkeys and confirmations, and codes
+to type on the device show as notifications. Devices with neither, like most
+headphones, still pair without asking. Paired devices may use their services.
+Runs as your user: BlueZ's D-Bus policy lets any user register.
 """
 import asyncio
-import sys
+import contextlib
+from urllib.parse import quote, unquote
 
-from dbus_fast import BusType, DBusError
+from dbus_fast import BusType, DBusError, Message, MessageType
 from dbus_fast.aio import MessageBus
 from dbus_fast.service import ServiceInterface, method
 
 PATH = "/org/bluez/agent/bluez_agent"
-PIN = sys.argv[1] if len(sys.argv) > 1 else None
 
 
 def rejected(reason):
     return DBusError("org.bluez.Error.Rejected", reason)
 
 
+async def call(bus, destination, path, interface, member, signature="", body=()):
+    reply = await bus.call(Message(
+        destination=destination, path=path, interface=interface, member=member,
+        signature=signature, body=list(body),
+    ))
+    if reply.message_type == MessageType.ERROR:
+        raise DBusError(reply.error_name, reply.body[0] if reply.body else "")
+    return reply.body
+
+
+async def pinentry(*commands):
+    """Runs Assuan commands in a pinentry dialog; returns the last data line.
+
+    Cancelling the dialog rejects the request; cancelling the task closes it."""
+    proc = None
+    data = None
+    try:
+        proc = await asyncio.create_subprocess_exec(
+            "pinentry-qt", stdin=asyncio.subprocess.PIPE, stdout=asyncio.subprocess.PIPE
+        )
+        for command in ("", "SETTITLE Bluetooth", *commands):
+            if command:
+                proc.stdin.write(f"{command}\n".encode())
+                await proc.stdin.drain()
+            while True:
+                line = (await proc.stdout.readline()).decode().rstrip("\n")
+                if line.startswith("D "):
+                    data = unquote(line[2:])
+                elif line.startswith("OK"):
+                    break
+                elif not line.startswith(("S ", "#")):
+                    raise rejected("Canceled")
+        return data
+    # pinentry missing, or gone before it answered.
+    except OSError as e:
+        raise rejected(f"pinentry: {e}") from None
+    finally:
+        if proc and proc.returncode is None:
+            proc.kill()
+        if proc:
+            await proc.wait()
+
+
+def text(s):
+    """An Assuan argument: % and line breaks escaped."""
+    return quote(s, safe=" !\"#$&'()*+,-./:;<=>?@[\\]^_`{|}~")
+
+
 class Agent(ServiceInterface):
-    def __init__(self, bus):
+    def __init__(self, bus, session):
         super().__init__("org.bluez.Agent1")
         self.bus = bus
+        self.session = session
+        self.prompt = None
+        # The notification showing a code to type, to close on Cancel.
+        self.shown = 0
 
-    async def paired(self, device):
-        node = await self.bus.introspect("org.bluez", device)
-        props = self.bus.get_proxy_object("org.bluez", device, node).get_interface("org.freedesktop.DBus.Properties")
-        return (await props.call_get("org.bluez.Device1", "Paired")).value
+    async def prop(self, device, name):
+        (value,) = await call(
+            self.bus, "org.bluez", device, "org.freedesktop.DBus.Properties", "Get", "ss",
+            ["org.bluez.Device1", name],
+        )
+        return value.value
+
+    # BlueZ sends Cancel when the device gives up, which closes the dialog, or
+    # keeps it from opening if the name is still being looked up.
+    async def ask(self, device, *commands):
+        task = self.prompt = asyncio.ensure_future(self.dialog(device, commands))
+        try:
+            return await task
+        except asyncio.CancelledError:
+            raise rejected("Canceled") from None
+        finally:
+            if self.prompt is task:
+                self.prompt = None
+
+    async def dialog(self, device, commands):
+        alias = text(await self.prop(device, "Alias"))
+        return await pinentry(*(c.replace("{alias}", alias) for c in commands))
+
+    async def notify(self, device, body):
+        summary = await self.prop(device, "Alias")
+        # Replaces the last code shown, if it's still up; gone by the time pairing times out.
+        (self.shown,) = await call(
+            self.session, "org.freedesktop.Notifications", "/org/freedesktop/Notifications",
+            "org.freedesktop.Notifications", "Notify", "susssasa{sv}i",
+            ["Bluetooth", self.shown, "bluetooth", summary, body, [], {}, 60000],
+        )
+
+    @method()
+    async def RequestPinCode(self, device: "o") -> "s":
+        pin = await self.ask(device, "SETDESC Enter the PIN for {alias}.", "SETPROMPT PIN:", "GETPIN") or ""
+        if not 1 <= len(pin.encode()) <= 16:
+            raise rejected("A PIN has 1 to 16 characters")
+        return pin
+
+    @method()
+    async def RequestPasskey(self, device: "o") -> "u":
+        passkey = await self.ask(
+            device, "SETDESC Enter the passkey shown on {alias}.", "SETPROMPT Passkey:", "GETPIN"
+        )
+        passkey = (passkey or "").strip()
+        if not (passkey.isascii() and passkey.isdigit()) or int(passkey) > 999999:
+            raise rejected("Not a passkey")
+        return int(passkey)
+
+    @method()
+    async def RequestConfirmation(self, device: "o", passkey: "u"):
+        await self.ask(device, f"SETDESC Does {{alias}} show {passkey:06d}?", "SETOK Pair", "CONFIRM")
+
+    # A device pairing in with nothing to compare.
+    @method()
+    async def RequestAuthorization(self, device: "o"):
+        await self.ask(device, "SETDESC Pair with {alias}?", "SETOK Pair", "CONFIRM")
+
+    # Called again as each digit is typed on the device; only the first shows.
+    @method()
+    async def DisplayPasskey(self, device: "o", passkey: "u", entered: "q"):
+        if entered == 0:
+            await self.notify(device, f"Type {passkey:06d} on the device, then Enter.")
+
+    @method()
+    async def DisplayPinCode(self, device: "o", pincode: "s"):
+        await self.notify(device, f"Type {pincode} on the device, then Enter.")
 
     # A device that isn't trusted asks before each service it connects.
     @method()
     async def AuthorizeService(self, device: "o", uuid: "s"):
-        if not await self.paired(device):
+        if not await self.prop(device, "Paired"):
             raise rejected("Not paired")
 
     @method()
-    def RequestPinCode(self, device: "o") -> "s":
-        if PIN is None:
-            raise rejected("No PIN set")
-        return PIN
-
-    @method()
-    def Cancel(self):
-        pass
+    async def Cancel(self):
+        if self.prompt:
+            self.prompt.cancel()
+        if self.shown:
+            shown, self.shown = self.shown, 0
+            # Fails if the notification has already gone.
+            with contextlib.suppress(DBusError):
+                await call(
+                    self.session, "org.freedesktop.Notifications", "/org/freedesktop/Notifications",
+                    "org.freedesktop.Notifications", "CloseNotification", "u", [shown],
+                )
 
     @method()
     def Release(self):
@@ -58,11 +174,11 @@ class Agent(ServiceInterface):
 
 async def main():
     bus = await MessageBus(bus_type=BusType.SYSTEM).connect()
-    bus.export(PATH, Agent(bus))
-    node = await bus.introspect("org.bluez", "/org/bluez")
-    manager = bus.get_proxy_object("org.bluez", "/org/bluez", node).get_interface("org.bluez.AgentManager1")
-    await manager.call_register_agent(PATH, "NoInputNoOutput")
-    await manager.call_request_default_agent(PATH)
+    session = await MessageBus().connect()
+    bus.export(PATH, Agent(bus, session))
+    manager = ("org.bluez", "/org/bluez", "org.bluez.AgentManager1")
+    await call(bus, *manager, "RegisterAgent", "os", [PATH, "KeyboardDisplay"])
+    await call(bus, *manager, "RequestDefaultAgent", "o", [PATH])
     print("bluez-agent: registered as the default agent", flush=True)
     # BlueZ drops the agent when this connection closes.
     await bus.wait_for_disconnect()

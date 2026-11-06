@@ -9,29 +9,43 @@ local key_mappings = {
 	{ 'k', 'm' },
 	{ 'l', 'i' },
 }
+-- Visual mode: mini.ai owns `i` (vi(, viw, ...). Move its mappings to `l`,
+-- matching normal mode where `l` inserts, so use `vl(`, `vlw`, `vlp`, ...
+-- Then `i` is free to move right like in normal mode.
+for from, to in pairs { i = 'l', ['in'] = 'ln', il = 'll' } do
+	local m = vim.fn.maparg(from, 'x', false, true)
+	if m.callback then
+		vim.keymap.del('x', from)
+		vim.keymap.set('x', to, m.callback, { expr = m.expr == 1, desc = m.desc })
+	end
+end
+
+-- Use 'x' (Visual only), not 'v' or '': those include Select mode, which
+-- would break typing these letters into snippet placeholders.
 for _, mapping in ipairs(key_mappings) do
 	local from, to = mapping[1], mapping[2]
 	vim.keymap.set('n', from, to, { noremap = true, silent = true })
+	if from ~= 'l' then
+		vim.keymap.set('x', from, to, { noremap = true, silent = true })
+	end
 	-- vim.keymap.set('n', from:upper(), to:upper(), { noremap = true, silent = true })
 end
 
-vim.keymap.set('', 'L', 'I', { noremap = true, silent = true })
-vim.keymap.set('n', 'H', 'N', { noremap = true, silent = true })
-vim.keymap.set('v', 'n', 'j', { noremap = true, silent = true })
-vim.keymap.set('v', 'e', 'k', { noremap = true, silent = true })
+vim.keymap.set({ 'n', 'x', 'o' }, 'L', 'I', { noremap = true, silent = true })
+vim.keymap.set({ 'n', 'x' }, 'H', 'N', { noremap = true, silent = true })
 
 -- vim.keymap.set({ 'n', 'v' }, '<C-k>', '<C-]>', { noremap = true })
 
 -- vim.opt.langmap="mh,nj,ek,il,yo,ui,hn,ke,jy,lu,om"
 
-vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
+vim.keymap.set({ 'n', 'x' }, '<Space>', '<Nop>', { silent = true })
 
 -- Remap for dealing with word wrap
-vim.keymap.set('n', 'e', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true, noremap = true })
-vim.keymap.set('n', 'n', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true, noremap = true })
+vim.keymap.set({ 'n', 'x' }, 'e', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true, noremap = true })
+vim.keymap.set({ 'n', 'x' }, 'n', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true, noremap = true })
 
-vim.keymap.set('', '<leader>c', '"+y', { desc = 'Yank to clipboard' })
-vim.keymap.set('', '<leader>ps', '"+p', { desc = 'Paste from clipboard' })
+vim.keymap.set({ 'n', 'x' }, '<leader>c', '"+y', { desc = 'Yank to clipboard' })
+vim.keymap.set({ 'n', 'x' }, '<leader>ps', '"+p', { desc = 'Paste from clipboard' })
 
 vim.keymap.set('x', '<leader>px', '"_dP', { desc = 'Paste over without yanking' })
 vim.keymap.set('n', '<leader>m', ':make<CR>')
@@ -58,8 +72,8 @@ vim.keymap.set('', '<A-i>', function()
 	vim.cmd.wincmd 'l'
 end)
 
-vim.keymap.set('', 'M', '^')
-vim.keymap.set('', 'I', '$')
+vim.keymap.set({ 'n', 'x', 'o' }, 'M', '^')
+vim.keymap.set({ 'n', 'x', 'o' }, 'I', '$')
 
 vim.keymap.set('n', '<up>', '<nop>')
 vim.keymap.set('n', '<down>', '<nop>')

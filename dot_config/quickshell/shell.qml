@@ -7,6 +7,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Bluetooth
+import Quickshell.Hyprland
 import Quickshell.Io
 import Quickshell.Wayland
 import Quickshell.WindowManager
@@ -486,9 +487,13 @@ ShellRoot {
             delegate: Rectangle {
               id: wsButton
               required property Windowset modelData
+              // Hyprland only resends ext-workspace state when a workspace's active state changes,
+              // so a focus request never reaches modelData.urgent; its own IPC does report it.
+              readonly property bool urgent: modelData.urgent
+                || (Hyprland.workspaces.values.find(w => w.name === modelData.name)?.urgent ?? false)
               Layout.fillHeight: true
               implicitWidth: wsLabel.implicitWidth + 18
-              color: modelData.urgent ? "#eb4d4b"
+              color: urgent ? "#eb4d4b"
                 : modelData.active ? root.accent
                 : wsMouse.containsMouse ? Qt.rgba(0, 0, 0, 0.2)
                 : "transparent"
